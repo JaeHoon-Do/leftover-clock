@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leftover Clock Scope</title>
+<style>
+:root {
+  --bg: #f7f5f0; --surface: #ffffff; --ink: #1f2328; --muted: #5d6470;
+  --line: #d9d4c7; --accent: #c2410c; --accent-soft: #fde7d9;
+  --now: #15803d; --later: #b45309; --cut: #8b8f97;
+  --node: #ffffff; --node-line: #b9b2a3;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15171a; --surface: #1e2125; --ink: #e8e6e1; --muted: #a2a8b2;
+    --line: #353a41; --accent: #fb923c; --accent-soft: #3a2416;
+    --now: #4ade80; --later: #fbbf24; --cut: #7d838c;
+    --node: #23272c; --node-line: #4a5059;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15171a; --surface: #1e2125; --ink: #e8e6e1; --muted: #a2a8b2;
+  --line: #353a41; --accent: #fb923c; --accent-soft: #3a2416;
+  --now: #4ade80; --later: #fbbf24; --cut: #7d838c;
+  --node: #23272c; --node-line: #4a5059;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+}
+[lang="ko"] { word-break: keep-all; }
+[hidden] { display: none !important; }
+#lang-toggle {
+  position: fixed; top: 12px; right: 16px; z-index: 10;
+  font: 600 14px system-ui, "Malgun Gothic", sans-serif; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+  padding: 6px 14px; cursor: pointer;
+}
+#lang-toggle:hover { border-color: var(--accent); }
+main { max-width: 760px; margin: 0 auto; padding: 48px 16px 64px; }
+header .status {
+  display: inline-block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 2px 10px;
+}
+h1 { font-size: 34px; line-height: 1.15; margin: 12px 0 8px; }
+.lede { font-size: 18px; color: var(--muted); margin: 0 0 28px; }
+h2 { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 36px 0 10px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+.kernel { border-left: 4px solid var(--accent); }
+.kernel p { margin: 0; font-size: 18px; }
+blockquote { margin: 12px 0 0; padding: 10px 14px; background: var(--accent-soft); border-radius: 8px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 600px) { .grid { grid-template-columns: 1fr; } h1 { font-size: 28px; } }
+.grid .card p { margin: 0; }
+.grid .card h3 { margin: 0 0 6px; font-size: 15px; }
+svg { width: 100%; height: auto; display: block; }
+svg .box { fill: var(--node); stroke: var(--node-line); stroke-width: 1.5; }
+svg .box.hot { stroke: var(--accent); stroke-width: 2.5; }
+svg .t { fill: var(--ink); font: 600 14px system-ui, "Malgun Gothic", sans-serif; }
+svg .s { fill: var(--muted); font: 12px system-ui, "Malgun Gothic", sans-serif; }
+svg .arrow { stroke: var(--muted); stroke-width: 1.5; fill: none; marker-end: url(#ah); }
+svg .arrow.fix { stroke: var(--accent); stroke-dasharray: 5 4; marker-end: url(#ahf); }
+svg #ah path { fill: var(--muted); } svg #ahf path { fill: var(--accent); }
+.caption { font-size: 14px; color: var(--muted); margin: 10px 0 0; }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; }
+summary { cursor: pointer; padding: 14px 18px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 10px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; margin-left: auto; color: var(--muted); font-weight: 400; font-size: 20px; }
+details[open] summary::after { content: "–"; }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.count { color: var(--muted); font-weight: 400; font-size: 14px; }
+details ul { margin: 0; padding: 0 18px 16px 40px; }
+details li { margin: 4px 0; }
+details li em { color: var(--muted); font-style: normal; }
+footer { margin-top: 40px; font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<button id="lang-toggle" type="button">한국어</button>
+
+<!-- Shared arrowhead markers for both language versions -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z"/></marker>
+    <marker id="ahf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z"/></marker>
+  </defs>
+</svg>
+
+<main lang="en">
+<header>
+  <span class="status">Scope · approved</span>
+  <h1>Leftover Clock</h1>
+  <p class="lede">A mobile web app that tells you how old each home-leftover container in your fridge is, from fridge photos alone: no typing, no labels.</p>
+</header>
+
+<h2>The unique kernel</h2>
+<div class="card kernel">
+  <p>Packaged food has a printed date; home food in opaque lidded containers doesn't. Leftover Clock gives each container a <strong>"first seen" date</strong> just by matching it across everyday fridge photos, even after it's been moved or pushed behind something, and catches containers a person glancing at the photo would miss.</p>
+</div>
+
+<h2>The core loop</h2>
+<div class="card">
+  <svg viewBox="0 0 700 330" role="img" aria-label="Core loop: open the fridge, take one photo, the app matches containers to earlier photos and remembers first-seen dates, pins show ages on the latest photo, tap a pin or view the list; a one-tap fix feeds back into matching.">
+    <rect class="box" x="10" y="30" width="150" height="70" rx="10"/>
+    <text class="t" x="85" y="60" text-anchor="middle">Open the fridge</text>
+    <text class="s" x="85" y="80" text-anchor="middle">the learner, at home</text>
+
+    <rect class="box" x="190" y="30" width="150" height="70" rx="10"/>
+    <text class="t" x="265" y="60" text-anchor="middle">Take one photo</text>
+    <text class="s" x="265" y="80" text-anchor="middle">no typing, no labels</text>
+
+    <rect class="box hot" x="370" y="20" width="320" height="90" rx="10"/>
+    <text class="t" x="530" y="50" text-anchor="middle">Match every container to earlier photos</text>
+    <text class="s" x="530" y="72" text-anchor="middle">moved, newly added, or half hidden</text>
+    <text class="s" x="530" y="92" text-anchor="middle">→ keep each one's first-seen date</text>
+
+    <rect class="box" x="370" y="170" width="320" height="70" rx="10"/>
+    <text class="t" x="530" y="200" text-anchor="middle">Pins on the latest photo</text>
+    <text class="s" x="530" y="220" text-anchor="middle">each with its age, tooltips never overlap</text>
+
+    <rect class="box" x="190" y="170" width="150" height="70" rx="10"/>
+    <text class="t" x="265" y="200" text-anchor="middle">Tap a pin</text>
+    <text class="s" x="265" y="220" text-anchor="middle">full details</text>
+
+    <rect class="box" x="10" y="170" width="150" height="70" rx="10"/>
+    <text class="t" x="85" y="200" text-anchor="middle">View as list</text>
+    <text class="s" x="85" y="220" text-anchor="middle">oldest first</text>
+
+    <path class="arrow" d="M160,65 L188,65"/>
+    <path class="arrow" d="M340,65 L368,65"/>
+    <path class="arrow" d="M530,110 L530,168"/>
+    <path class="arrow" d="M370,205 L342,205"/>
+    <path class="arrow" d="M370,225 C300,280 160,280 120,242"/>
+
+    <path class="arrow fix" d="M265,240 C265,310 640,310 640,112"/>
+    <text class="s" x="452" y="318" text-anchor="middle" style="fill:var(--accent)">wrong? one tap: "new container" / "same container as…"</text>
+  </svg>
+  <p class="caption">The highlighted step is the kernel and the open question: will matching actually hold up?</p>
+</div>
+
+<h2>What the date means</h2>
+<div class="card">
+  <p style="margin:0">The date is when the food <strong>now</strong> in the container went in, not when the container first showed up.</p>
+  <ul style="margin:8px 0 0; padding-left:20px">
+    <li>Topping up → the new batch's date (the old food gets moved to the top so it's eaten first)</li>
+    <li>Thrown out and refilled → also the new date</li>
+  </ul>
+  <p style="margin:8px 0 0">The camera can't see inside an opaque container, and a refill usually "looks like it never left its spot," so it's one tap: <strong>"Refilled."</strong> It resets the date and keeps the container.</p>
+  <p class="caption">Open for the PRD: a container missing from one photo and back in the next. Refilled, or just out while someone ate from it?</p>
+</div>
+
+<h2>What "working" looks like</h2>
+<div class="card">
+  <p style="margin:0">Real fridge photos from different days. The latest photo shows a pin on each container with its age, the list sorts them oldest first, and a fix takes one tap when the app gets one wrong.</p>
+  <blockquote><strong>The "oh, that's cool" beat:</strong> a container pushed to the back, with only its lid showing, which the learner couldn't spot at first. The app finds it and keeps its original date.<br>"If the app can find things like that, things a person glancing at the photo would miss, I'd call it a success."</blockquote>
+  <p class="caption">Match rate: test first, then decide. If the numbers are surprisingly good, show them briefly.</p>
+</div>
+
+<h2>Who it's for &amp; why it matters</h2>
+<div class="grid">
+  <div class="card">
+    <h3>Who</h3>
+    <p>The learner, at home. Opens a container days later, wonders "when did I make this?", sniffs it, and often throws the whole thing out. Today there's nothing to go on but memory and smell.</p>
+  </div>
+  <div class="card">
+    <h3>Why</h3>
+    <p>Their own fridge, their own wasted food, and a learning goal: test whether a vision model can recognize the same opaque container across photos, and measure it honestly as a match rate.</p>
+  </div>
+</div>
+
+<h2>Feel</h2>
+<div class="card">
+  <p style="margin:0">Like a map app: pins on the photo with short, non-overlapping tooltips; tap for details; a "view as list" button for when the photo gets crowded. English UI.</p>
+</div>
+
+<h2>Boundary</h2>
+<details open>
+  <summary><span class="dot" style="background:var(--now)"></span>Now: the proof of concept <span class="count">11</span></summary>
+  <ul>
+    <li>Add dated fridge photos (the learner's real photos)</li>
+    <li>Match containers across photos automatically; remember each first-seen date</li>
+    <li>One-tap "Refilled" when the contents change <em>— resets the date, keeps the container</em></li>
+    <li>Timeline for each container <em>— photo crops, date and time, every action (added, refilled, corrected…)</em></li>
+    <li>Timeline for the whole fridge <em>— same contents, across all containers</em></li>
+    <li>Find partly hidden containers (the lid-only case)</li>
+    <li>Pins with non-overlapping short tooltips on the latest photo; tap for details</li>
+    <li>"View as list," oldest first</li>
+    <li>One-tap correction: "This is a new container" / "This is the same container as…"</li>
+    <li>Multiple fridges <em>— cheap to build and worth having</em></li>
+    <li>English UI</li>
+  </ul>
+</details>
+<details>
+  <summary><span class="dot" style="background:var(--later)"></span>Later <span class="count">1</span></summary>
+  <ul>
+    <li>Match rate in the demo <em>— decide after testing</em></li>
+  </ul>
+</details>
+<details>
+  <summary><span class="dot" style="background:var(--cut)"></span>Explicitly cut <span class="count">3</span></summary>
+  <ul>
+    <li>Login and accounts <em>— one person on their own phone doesn't need them</em></li>
+    <li>Multiple users <em>— same reason; the learner is the user</em></li>
+    <li>"Throw this out" notifications <em>— not needed to prove photos alone can date a container</em></li>
+  </ul>
+</details>
+
+<footer>Companion to <code>devpost/scope.md</code>, which is the canonical version.</footer>
+</main>
+
+<main lang="ko" hidden>
+<header>
+  <span class="status">스코프 · 승인</span>
+  <h1>Leftover Clock</h1>
+  <p class="lede">냉장고 사진만으로 집 반찬통 하나하나가 며칠 됐는지 알려 주는 모바일 웹앱. 타이핑도, 라벨도 없습니다.</p>
+</header>
+
+<h2>고유한 핵심</h2>
+<div class="card kernel">
+  <p>포장 식품에는 날짜가 찍혀 있지만, 불투명한 뚜껑 통에 담긴 집 음식에는 없습니다. Leftover Clock은 평소 찍는 냉장고 사진 속 통을 서로 매칭하는 것만으로 통마다 <strong>"처음 본 날"</strong>을 붙여 줍니다. 자리를 옮기거나 뒤로 밀려 가려져도 마찬가지이고, 사진을 대충 보는 사람이 놓치는 통까지 찾아냅니다.</p>
+</div>
+
+<h2>핵심 루프</h2>
+<div class="card">
+  <svg viewBox="0 0 700 330" role="img" aria-label="핵심 루프: 냉장고를 열고, 사진 한 장을 찍으면, 앱이 통을 이전 사진과 매칭해 처음 본 날을 기억하고, 최신 사진 위 핀에 나이를 보여 준다. 핀을 탭하거나 목록으로 본다. 틀리면 한 번 탭으로 고쳐 매칭에 반영한다.">
+    <rect class="box" x="10" y="30" width="150" height="70" rx="10"/>
+    <text class="t" x="85" y="60" text-anchor="middle">냉장고 열기</text>
+    <text class="s" x="85" y="80" text-anchor="middle">본인, 집에서</text>
+
+    <rect class="box" x="190" y="30" width="150" height="70" rx="10"/>
+    <text class="t" x="265" y="60" text-anchor="middle">사진 한 장 찍기</text>
+    <text class="s" x="265" y="80" text-anchor="middle">타이핑·라벨 없음</text>
+
+    <rect class="box hot" x="370" y="20" width="320" height="90" rx="10"/>
+    <text class="t" x="530" y="50" text-anchor="middle">모든 통을 이전 사진과 매칭</text>
+    <text class="s" x="530" y="72" text-anchor="middle">옮겨졌든, 새로 들어왔든, 반쯤 가려졌든</text>
+    <text class="s" x="530" y="92" text-anchor="middle">→ 통마다 처음 본 날 유지</text>
+
+    <rect class="box" x="370" y="170" width="320" height="70" rx="10"/>
+    <text class="t" x="530" y="200" text-anchor="middle">최신 사진 위의 핀</text>
+    <text class="s" x="530" y="220" text-anchor="middle">통마다 나이 표시, 툴팁은 서로 안 겹침</text>
+
+    <rect class="box" x="190" y="170" width="150" height="70" rx="10"/>
+    <text class="t" x="265" y="200" text-anchor="middle">핀 탭</text>
+    <text class="s" x="265" y="220" text-anchor="middle">상세 보기</text>
+
+    <rect class="box" x="10" y="170" width="150" height="70" rx="10"/>
+    <text class="t" x="85" y="200" text-anchor="middle">목록으로 보기</text>
+    <text class="s" x="85" y="220" text-anchor="middle">오래된 순</text>
+
+    <path class="arrow" d="M160,65 L188,65"/>
+    <path class="arrow" d="M340,65 L368,65"/>
+    <path class="arrow" d="M530,110 L530,168"/>
+    <path class="arrow" d="M370,205 L342,205"/>
+    <path class="arrow" d="M370,225 C300,280 160,280 120,242"/>
+
+    <path class="arrow fix" d="M265,240 C265,310 640,310 640,112"/>
+    <text class="s" x="452" y="318" text-anchor="middle" style="fill:var(--accent)">틀렸다면 한 번 탭: "새 통" / "…와 같은 통"</text>
+  </svg>
+  <p class="caption">강조한 단계가 핵심이자 열린 질문입니다. 매칭이 실제로 버텨 줄까요?</p>
+</div>
+
+<h2>날짜의 뜻</h2>
+<div class="card">
+  <p style="margin:0">날짜는 통이 처음 나타난 날이 아니라, <strong>지금</strong> 통에 든 음식을 넣은 날입니다.</p>
+  <ul style="margin:8px 0 0; padding-left:20px">
+    <li>위에 덜어 넣음 → 새로 넣은 날짜(먼저 먹도록 오래된 음식을 위로 올림)</li>
+    <li>다 버리고 같은 통에 다시 담음 → 마찬가지로 새 날짜</li>
+  </ul>
+  <p style="margin:8px 0 0">카메라는 불투명한 통 속을 못 보고, 다시 담은 통은 대개 "그 자리를 떠난 적 없는 것처럼" 보입니다. 그래서 한 번 탭: <strong>"Refilled(다시 담음)"</strong>. 날짜는 새로 시작하고 통은 그대로 유지합니다.</p>
+  <p class="caption">PRD에서 정할 것: 사진 한 장에서 빠졌다가 다음 사진에 돌아온 통. 다시 담은 걸까요, 누가 꺼내 먹던 중이었을까요?</p>
+</div>
+
+<h2>"됐다"의 모습</h2>
+<div class="card">
+  <p style="margin:0">서로 다른 날 찍은 실제 냉장고 사진. 최신 사진에는 통마다 나이가 적힌 핀이 있고, 목록은 오래된 순으로 정렬되며, 앱이 틀리면 한 번 탭으로 고칩니다.</p>
+  <blockquote><strong>"오, 이거 멋진데" 순간:</strong> 뒤로 밀려 뚜껑만 보이던 통. 본인도 처음엔 못 찾았던 그 통을 앱이 찾아내고 원래 날짜를 그대로 유지합니다.<br>"앱이 그런 것까지, 사람이 사진을 대충 봐서는 놓치는 것까지 찾아낸다면 성공이라고 하겠어요."</blockquote>
+  <p class="caption">매칭률: 먼저 테스트하고 결정. 수치가 놀랍게 좋으면 짧게 보여 줍니다.</p>
+</div>
+
+<h2>누구를 위해 &amp; 왜 중요한가</h2>
+<div class="grid">
+  <div class="card">
+    <h3>누구</h3>
+    <p>집에 있는 본인. 며칠 뒤 통을 열고 "이거 언제 만들었지?" 하며 냄새를 맡아 보고, 결국 통째로 버리는 일이 잦습니다. 지금은 기억과 냄새밖에 기댈 데가 없습니다.</p>
+  </div>
+  <div class="card">
+    <h3>왜</h3>
+    <p>내 냉장고, 내가 버리는 음식, 그리고 배우고 싶은 것: 비전 모델이 여러 사진 속 같은 불투명 통을 알아보는지 시험하고, 그걸 매칭률로 정직하게 재는 법.</p>
+  </div>
+</div>
+
+<h2>느낌</h2>
+<div class="card">
+  <p style="margin:0">지도 앱처럼: 사진 위 핀에 서로 겹치지 않는 짧은 툴팁, 탭하면 상세, 사진이 복잡해지면 "목록으로 보기" 버튼. UI는 영어.</p>
+</div>
+
+<h2>경계</h2>
+<details open>
+  <summary><span class="dot" style="background:var(--now)"></span>지금: 개념 증명(PoC) <span class="count">11</span></summary>
+  <ul>
+    <li>날짜가 있는 냉장고 사진 추가(본인이 찍은 실제 사진)</li>
+    <li>사진 간 통 자동 매칭, 통마다 처음 본 날 기억</li>
+    <li>내용물이 바뀌면 한 번 탭 "Refilled" <em>— 날짜는 새로, 통은 그대로</em></li>
+    <li>통별 타임라인 <em>— 사진 조각, 날짜·시각, 모든 동작(새 통 추가, 다시 담음, 수정 등)</em></li>
+    <li>냉장고 전체 타임라인 <em>— 같은 내용을 모든 통에 걸쳐</em></li>
+    <li>일부만 보이는 통 찾기(뚜껑만 보이는 경우)</li>
+    <li>최신 사진 위에 겹치지 않는 짧은 툴팁이 달린 핀, 탭하면 상세</li>
+    <li>"목록으로 보기", 오래된 순</li>
+    <li>한 번 탭 수정: "새 통이에요" / "…와 같은 통이에요"</li>
+    <li>여러 냉장고 <em>— 만들기 쉽고 가치가 있음</em></li>
+    <li>영어 UI</li>
+  </ul>
+</details>
+<details>
+  <summary><span class="dot" style="background:var(--later)"></span>나중 <span class="count">1</span></summary>
+  <ul>
+    <li>데모 영상의 매칭률 <em>— 테스트 후 결정</em></li>
+  </ul>
+</details>
+<details>
+  <summary><span class="dot" style="background:var(--cut)"></span>명시적으로 뺌 <span class="count">3</span></summary>
+  <ul>
+    <li>로그인·계정 <em>— 자기 폰을 쓰는 한 사람에게는 필요 없음</em></li>
+    <li>여러 사용자 <em>— 같은 이유, 사용자는 본인</em></li>
+    <li>"버리세요" 알림 <em>— 사진만으로 통의 날짜를 알 수 있다는 증명에 필요 없음</em></li>
+  </ul>
+</details>
+
+<footer><code>devpost/scope.md</code>의 짝 페이지이며, 원본은 scope.md입니다.</footer>
+</main>
+
+<script>
+(function () {
+  var btn = document.getElementById('lang-toggle');
+  var en = document.querySelector('main[lang="en"]');
+  var ko = document.querySelector('main[lang="ko"]');
+  function show(lang) {
+    var isKo = lang === 'ko';
+    en.hidden = isKo;
+    ko.hidden = !isKo;
+    document.documentElement.lang = lang;
+    document.title = isKo ? 'Leftover Clock 스코프' : 'Leftover Clock Scope';
+    btn.textContent = isKo ? 'English' : '한국어';
+    try { localStorage.setItem('scope-lang', lang); } catch (e) {}
+  }
+  var saved = 'en';
+  try { saved = localStorage.getItem('scope-lang') || 'en'; } catch (e) {}
+  show(saved);
+  btn.addEventListener('click', function () {
+    show(document.documentElement.lang === 'ko' ? 'en' : 'ko');
+  });
+})();
+</script>
+</body>
+</html>

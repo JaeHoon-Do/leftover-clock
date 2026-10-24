@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leftover Clock Spec</title>
+<style>
+:root {
+  --bg: #f7f5f0; --surface: #ffffff; --ink: #1f2328; --muted: #5d6470;
+  --line: #d9d4c7; --accent: #c2410c; --accent-soft: #fde7d9;
+  --phone: #0f766e; --server: #6d28d9; --ext: #b45309; --evalc: #1d4ed8;
+  --node: #ffffff; --node-line: #b9b2a3; --open: #b91c1c;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15171a; --surface: #1e2125; --ink: #e8e6e1; --muted: #a2a8b2;
+    --line: #353a41; --accent: #fb923c; --accent-soft: #3a2416;
+    --phone: #2dd4bf; --server: #a78bfa; --ext: #fbbf24; --evalc: #60a5fa;
+    --node: #23272c; --node-line: #4a5059; --open: #f87171;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15171a; --surface: #1e2125; --ink: #e8e6e1; --muted: #a2a8b2;
+  --line: #353a41; --accent: #fb923c; --accent-soft: #3a2416;
+  --phone: #2dd4bf; --server: #a78bfa; --ext: #fbbf24; --evalc: #60a5fa;
+  --node: #23272c; --node-line: #4a5059; --open: #f87171;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+}
+html[lang="ko"] body { word-break: keep-all; }
+#lang-toggle {
+  position: fixed; top: 12px; right: 16px; z-index: 10;
+  font: 600 14px system-ui, "Malgun Gothic", sans-serif; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+  padding: 6px 14px; cursor: pointer;
+}
+#lang-toggle:hover { border-color: var(--accent); }
+main { max-width: 820px; margin: 0 auto; padding: 48px 16px 64px; }
+.status {
+  display: inline-block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 2px 10px;
+}
+h1 { font-size: 34px; line-height: 1.15; margin: 12px 0 8px; }
+.lede { font-size: 18px; color: var(--muted); margin: 0 0 28px; }
+h2 { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 40px 0 10px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+.card p { margin: 0 0 10px; } .card p:last-child { margin: 0; }
+.card ul { margin: 0; padding-left: 20px; } .card li { margin: 4px 0; }
+code { font: 13px/1.4 ui-monospace, Consolas, monospace; background: var(--accent-soft); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+.halves { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.half { border-top: 4px solid var(--phone); }
+.half.srv { border-top-color: var(--server); }
+.half h3 { margin: 0 0 6px; font-size: 16px; }
+@media (max-width: 600px) { .halves { grid-template-columns: 1fr; } }
+svg { width: 100%; height: auto; display: block; }
+svg text { fill: var(--ink); font: 13px system-ui, "Malgun Gothic", sans-serif; }
+svg .lane { fill: none; stroke-width: 1.5; stroke-dasharray: 5 4; }
+svg .lane-label { font-weight: 700; font-size: 12px; letter-spacing: .06em; }
+svg .box { fill: var(--node); stroke: var(--node-line); stroke-width: 1.5; }
+svg .node.on .box { stroke: var(--accent); stroke-width: 3; fill: var(--accent-soft); }
+svg .sub { fill: var(--muted); font-size: 11px; }
+svg .edge { stroke: var(--node-line); stroke-width: 1.5; fill: none; }
+svg .edge.on { stroke: var(--accent); stroke-width: 2.5; }
+svg .arrow { fill: var(--node-line); }
+.stepper { margin-top: 14px; }
+.step-nav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.step-nav button {
+  font: 600 14px system-ui, "Malgun Gothic", sans-serif; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; cursor: pointer;
+}
+.step-nav button:hover:not(:disabled) { border-color: var(--accent); }
+.step-nav button:disabled { opacity: .4; cursor: default; }
+.dots { display: flex; gap: 6px; flex-wrap: wrap; }
+.dot { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: 600 13px system-ui; cursor: pointer; }
+.dot.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.dot.ev { border-color: var(--evalc); }
+#step-card h3 { margin: 0 0 8px; font-size: 18px; }
+.meta { font-size: 14px; color: var(--muted); margin-top: 10px; }
+.meta b { color: var(--ink); }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin: 8px 0; }
+summary { cursor: pointer; padding: 12px 16px; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 10px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; color: var(--muted); }
+details[open] summary::after { content: "–"; }
+summary .tag { font-weight: 400; font-size: 13px; color: var(--muted); }
+details .body { padding: 0 16px 14px; }
+details .body p { margin: 0 0 8px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; }
+.tablewrap { overflow-x: auto; }
+pre.tree { font: 13px/1.5 ui-monospace, Consolas, monospace; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; overflow-x: auto; margin: 0; }
+.call { border-left: 4px solid var(--open); }
+.call li { margin: 8px 0; }
+.foot { margin-top: 40px; font-size: 13px; color: var(--muted); }
+.swatches { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.sw { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+.sw i { width: 18px; height: 18px; border-radius: 6px; border: 1px solid var(--line); display: inline-block; }
+</style>
+</head>
+<body>
+<button id="lang-toggle" type="button">한국어</button>
+<main>
+  <span class="status" data-t="status"></span>
+  <h1 data-t="title"></h1>
+  <p class="lede" data-t="lede"></p>
+
+  <h2 data-t="h_plain"></h2>
+  <div class="halves">
+    <div class="card half"><h3 data-t="phone_h"></h3><p data-t="phone_p"></p></div>
+    <div class="card half srv"><h3 data-t="server_h"></h3><p data-t="server_p"></p></div>
+  </div>
+  <div class="card" style="margin-top:12px"><p data-t="two_steps"></p><p data-t="why_shape"></p></div>
+
+  <h2 data-t="h_journey"></h2>
+  <div class="card">
+    <svg id="arch" viewBox="0 0 780 430" role="img" aria-labelledby="arch-title"><title id="arch-title">Architecture</title></svg>
+    <div class="stepper">
+      <div class="step-nav">
+        <button id="prev" type="button"></button>
+        <div class="dots" id="dots"></div>
+        <button id="next" type="button"></button>
+      </div>
+      <div id="step-card"></div>
+    </div>
+  </div>
+
+  <h2 data-t="h_stack"></h2>
+  <div class="card"><ul id="stack"></ul></div>
+
+  <h2 data-t="h_run"></h2>
+  <div class="card"><ul id="run"></ul></div>
+
+  <h2 data-t="h_look"></h2>
+  <div class="card">
+    <ul id="look"></ul>
+    <div class="swatches">
+      <span class="sw"><i style="background:#FFF8EE"></i>bg #FFF8EE</span>
+      <span class="sw"><i style="background:#3A2E2A"></i>ink #3A2E2A</span>
+      <span class="sw"><i style="background:#FF6B5B"></i>accent #FF6B5B</span>
+      <span class="sw"><i style="background:#7ED9C3"></i>mint #7ED9C3</span>
+      <span class="sw"><i style="background:#FFD166"></i>butter #FFD166</span>
+    </div>
+  </div>
+
+  <h2 data-t="h_comp"></h2>
+  <div id="comps"></div>
+
+  <h2 data-t="h_data"></h2>
+  <div class="card">
+    <div class="tablewrap"><table id="datatable"></table></div>
+    <p style="margin-top:12px" data-t="data_note"></p>
+  </div>
+
+  <h2 data-t="h_tree"></h2>
+<pre class="tree">leftover-clock/
+├── app/
+│   ├── page.tsx                   # Fridge List
+│   ├── fridges/new/page.tsx       # Add Fridge
+│   ├── fridges/[fridgeId]/
+│   │   ├── page.tsx               # Fridge View ⇄ List View, Container Detail sheet
+│   │   ├── add-photo/page.tsx     # Add Photo → Matching → Photo Check
+│   │   ├── pick/page.tsx          # Same-Container Picker
+│   │   ├── timeline/page.tsx      # Fridge Timeline
+│   │   └── containers/[containerId]/timeline/page.tsx
+│   └── api/
+│       ├── match/route.ts         # step 1: map
+│       └── search/route.ts        # step 2: search for specific containers
+├── components/                    # PhotoMap, UnseenShelf, ContainerSheet, ...
+├── lib/                           # db, actions, matching-client, photo, labels, reminders, age
+├── server/gemini.ts               # prompts + model fallback (shared with eval)
+├── eval/                          # run-eval.ts, truth/, results/
+├── public/fridges/                # 4 fridge illustrations
+├── devpost/                       # scope, prd, spec
+└── README.md · LICENSE (MIT)</pre>
+
+  <h2 data-t="h_fail"></h2>
+  <div class="card"><ul id="fail"></ul></div>
+
+  <h2 data-t="h_simpl"></h2>
+  <div class="card"><ul id="simpl"></ul></div>
+
+  <h2 data-t="h_unknown"></h2>
+  <div class="card"><p data-t="unknown"></p></div>
+
+  <h2 data-t="h_call"></h2>
+  <div class="card call"><ul id="call"></ul></div>
+
+  <p class="foot" data-t="foot"></p>
+</main>
+
+<script>
+var T = {
+en: {
+  toggle: '한국어', status: 'Spec · approved', title: 'Leftover Clock — Technical Spec',
+  lede: 'How the app is built: one Next.js app on Vercel, data kept on your phone, two questions to Gemini per photo, and an evaluation script for an honest match rate.',
+  h_plain: 'How this works, in plain language',
+  phone_h: 'Phone half: the screens',
+  phone_p: 'Everything you see runs in your phone\'s browser. Fridges, photos, containers, and history live in <b>IndexedDB</b>, a small database the browser keeps for this one site on your phone. No account. Come back tomorrow and it reads the same data back.',
+  server_h: 'Server half: two small routes on Vercel',
+  server_p: 'The phone sends the shrunken photo to the app\'s own server code. That code holds the Gemini key (it never reaches the phone), asks Gemini to match, and returns boxes and IDs. It saves nothing.',
+  two_steps: '<b>Two questions per photo.</b> ① <i>Map it:</i> "Here is yesterday\'s photo with its containers and today\'s photo. Which is which, and which are new?" ② <i>Search for specific containers:</i> for each known container step 1 didn\'t find, "Here is its close-up. Is it anywhere in today\'s photo?" Step ② targets the half-hidden, lid-only containers step 1 missed in both real tests. Only what\'s still not found goes to the Unseen Shelf.',
+  why_shape: '<b>Why this shape:</b> one project, one deploy, one outside service (Gemini), no database server. The only reason for a server is hiding the key.',
+  h_journey: 'The core journey through the system',
+  prev: '← Back', next: 'Next →', prd: 'PRD', files: 'Files',
+  lanes: { phone: 'PHONE (browser)', server: 'SERVER (Vercel)', ext: 'OUTSIDE', ev: 'EVALUATION (your PC)' },
+  nodes: {
+    screens: ['Screens', 'list · map · shelf · detail'], idb: ['IndexedDB', 'fridges · photos · events'],
+    photo: ['lib/photo', 'time · shrink · crop'], mclient: ['matching-client', 'step 1 → step 2 → apply'],
+    actions: ['lib/actions', 'apply · refill · split · merge'], labels: ['PhotoMap + labels', 'pins, no overlaps'],
+    match: ['/api/match', 'step 1: map'], search: ['/api/search', 'step 2: search'],
+    gem: ['server/gemini.ts', 'prompts · fallback'], api: ['Gemini API', '3.6 Flash → 3.5 Flash-Lite'],
+    evalr: ['eval/run-eval.ts', 'correct · missed · wrong'], truth: ['Answer keys + photos', 'you confirm each']
+  },
+  steps: [
+    { t: '1. Open the app → Fridge List', d: 'The Fridge List reads your fridges from IndexedDB and shows a card for each, with a timeline button on every card.', prd: 'Fridges · Timelines', files: 'app/page.tsx · lib/db.ts', n: ['screens','idb'], e: ['screens-idb'] },
+    { t: '2. Tap a fridge → Fridge View', d: 'It reads the latest photo and its boxes and draws pins with non-overlapping age tooltips. Active containers not on that photo sit on the Unseen Shelf below.', prd: 'Matching and Pins · Unseen Shelf', files: 'app/fridges/[fridgeId]/page.tsx · components/PhotoMap.tsx · lib/labels.ts', n: ['screens','idb','labels'], e: ['screens-idb','idb-labels'] },
+    { t: '3. Add a photo', d: '"Take photo" opens your phone\'s own camera, and the time is the capture moment. "Upload" reads the photo\'s stored timestamp (exifr); if there is none, it uses now. You can edit the time. The photo is shrunk to about 1200×1600, which also strips GPS.', prd: 'Adding a Photo and Its Date', files: 'app/fridges/[fridgeId]/add-photo/page.tsx · lib/photo.ts', n: ['screens','photo'], e: ['screens-photo'] },
+    { t: '4. Step 1: map it', d: 'While reminders rotate on screen, the phone sends the new photo, the previous photo, and the known boxes to /api/match. Gemini returns a box per container, with an old ID or "new". The prompt says position is weak evidence, to avoid the banana-box wrong link.', prd: 'Matching and Pins · Reminders While Matching', files: 'lib/matching-client.ts · app/api/match/route.ts · server/gemini.ts', n: ['mclient','match','gem','api'], e: ['photo-mclient','mclient-match','match-gem','gem-api'] },
+    { t: '5. Step 2: search for specific containers', d: 'For every known container step 1 didn\'t find, plus everything on the shelf, the phone sends its best crop to /api/search: "is this one anywhere in the photo, even just its lid?" Found boxes replace overlapping "new" ones.', prd: 'Matching and Pins (lid-only case)', files: 'app/api/search/route.ts · server/gemini.ts', n: ['mclient','search','gem','api'], e: ['mclient-search','search-gem','gem-api'] },
+    { t: '6. Apply → pins, or Photo Check', d: 'In one IndexedDB transaction it saves the photo, crops, sightings (matched → old container, unmatched → new container dated to the photo), and events. If step 1 failed or found nothing, it goes to Photo Check instead and nothing is saved.', prd: 'Matching and Pins · Photo Can\'t Be Read', files: 'lib/actions.ts (applyMatch) · components/PhotoCheck.tsx', n: ['mclient','actions','idb','labels'], e: ['mclient-actions','actions-idb','idb-labels'] },
+    { t: '7. Fix with one tap', d: 'Tap a pin to open Container Detail. Refilled, This is a new container, Same container as…, Still there, and Removed each call one function that changes the container and writes its event together.', prd: 'Container Detail and One-Tap Fixes · Unseen Shelf', files: 'components/ContainerSheet.tsx · app/fridges/[fridgeId]/pick/page.tsx · lib/actions.ts', n: ['screens','actions','idb'], e: ['screens-actions','actions-idb'] },
+    { t: '8. View as list · timelines', d: 'The same rows, sorted oldest first. The timelines list sightings (crops with times) and events, per container or per fridge.', prd: 'View as List · Timelines', files: 'components/ContainerList.tsx · components/Timeline.tsx', n: ['screens','idb'], e: ['screens-idb'] },
+    { t: 'E. Measuring the match rate', d: 'On your PC, the evaluation script runs the exact same server/gemini.ts on real photo pairs and compares with the answer keys you confirmed. It counts correct links, misses, and wrong links separately. Tune on 10/22–10/24 photos; measure 10/25–10/26 once, after the prompts are frozen.', prd: 'scope.md > Later · your learning goal', files: 'eval/run-eval.ts · eval/truth/*.json', n: ['evalr','truth','gem','api'], e: ['truth-evalr','evalr-gem','gem-api'], ev: true }
+  ],
+  h_stack: 'Stack (agreed in this conversation)',
+  stack: [
+    '<b>Next.js 16 (App Router) + TypeScript</b>: screens and the two server routes in one project. A new framework for you; tradeoff accepted: learning the server/client split.',
+    '<b>Dexie 4</b> over IndexedDB: photos and crops stored as Blobs on the phone.',
+    '<b>@google/genai 2.x</b>, server-only: <code>models.generateContent</code> with an image, a JSON schema, and <code>thinkingLevel: LOW</code>.',
+    '<b>exifr 7.1.3</b>: reads the stored photo time. No releases since 2021, but stable for this one tag.',
+    '<b>tsx</b> runs the evaluation script. <b>Plain CSS</b> with tokens; fonts through <code>next/font</code>.'
+  ],
+  h_run: 'Where it runs and how someone tries it',
+  run: [
+    '<b>Vercel Hobby (your choice).</b> Free, personal use, HTTPS. <code>GEMINI_API_KEY</code> is set in the Vercel project and in <code>.env.local</code>, never in the repo. Function limit 300 s, body limit 4.5 MB (photos are shrunk first).',
+    '<b>Local:</b> <code>npm run dev</code>, or <code>-H 0.0.0.0</code> to open it from the phone over Wi-Fi.',
+    '<b>iPhone keeps the data</b> only if the site is visited within 7 days, unless it\'s added to the Home Screen. So: Home Screen install + <code>navigator.storage.persist()</code>.',
+    '<b>Demo video:</b> the production URL on your phone with your real photos: pins, the next day\'s photo, the lid-only container found, a one-tap fix, the list, the timelines. The video and the public repo are required; the URL is extra.',
+    '<b>Evaluation:</b> <code>npx tsx eval/run-eval.ts --photos &lt;folder&gt; --pair &lt;truth file&gt;</code>. Photos stay outside the repo (GPS, brand labels).'
+  ],
+  h_look: 'Look and feel',
+  look: [
+    '<b>Round and cute</b> everywhere except the map: Cooking Mama spirit, 16–24px corners, soft shadows, pill buttons, 4 SVG fridge illustrations. Fonts: <b>Fredoka</b> (headings, buttons) and <b>Nunito</b> (body).',
+    '<b>Clean map</b> in the Fridge View: the photo edge to edge, small pin dots, white age chips ("3d") that never overlap, a floating pill bar. The Unseen Shelf below goes back to the cute tone.',
+    '<b>Copy:</b> short, warm, factual. Ages only, never "safe", "fresh", or "eat today", and no "old" highlighting (deferred).'
+  ],
+  h_comp: 'Components (tap to open)',
+  comps: [
+    ['Fridge List', 'Fridges · States', 'Cards (image + name), a timeline button per card, "Add fridge". With no fridges, only an inviting "Add fridge".'],
+    ['Add Fridge', 'Fridges', 'A name, an illustration grid, or "Use my photo" (shrunk to about 600px).'],
+    ['Fridge View + Pin Layout', 'Matching and Pins', 'The latest photo with pins. Tooltips are placed greedily from the top down: right, left, above, below, then nudged outward with a leader line. Re-run on resize. Checked on the real 25-container photo. With no photos yet: an invitation to add the first one.'],
+    ['Add Photo', 'Adding a Photo and Its Date', 'Take or upload; time from capture, then EXIF, then now, editable; a one-line Gemini free-tier notice.'],
+    ['Matching and Reminders', 'Reminders While Matching', 'Rotating cards: "These are your oldest containers" (3 oldest, with crops), "You refill these often, but it\'s been a while" (≥2 refills), or a first-photo message with a tip.'],
+    ['Photo Check', 'Photo Can\'t Be Read', 'An ID-scanner-style checklist, then Retake or Upload another. On the second failure: "We couldn\'t read this photo. Your fridge stays as it was." Nothing is saved.'],
+    ['Matching Server Routes', 'Matching and Pins', '/api/match and /api/search wrap server/gemini.ts. Model: gemini-3.6-flash (LOW thinking). On 429/503/timeout, retry once, then gemini-3.5-flash-lite. The model used is stored on the photo.'],
+    ['Container Detail', 'Container Detail and One-Tap Fixes', 'A bottom sheet: crop, age, date, the last 3 events. Refilled → date = the latest photo\'s time. New container → split this sighting into a new container (the old one goes to the shelf if it\'s not on the photo). Same as… → picker.'],
+    ['Same-Container Picker', 'Container Detail and One-Tap Fixes', 'Defaults to the most recent earlier photo with pins; a toggle switches to a crop grid. Picking merges: the picked one keeps its date and history.'],
+    ['Unseen Shelf', 'Unseen Shelf', 'Active containers not on the latest photo, shown with their clearest crop (largest box) or a default jar. Still there → tag + event, stays listed. Removed → leaves the shelf and the list. Untouched = like Still there.'],
+    ['List View', 'View as List', 'Every active container, oldest first: crop, age, date. Tap → Container Detail.'],
+    ['Timelines', 'Timelines', 'Container: every crop with its time + every event. Fridge: photos + every container event, opened from the Fridge List card.'],
+    ['Evaluation Harness', 'Learning goal', 'Answer keys per photo pair, which you confirm box by box. Counts correct link / missed / wrong link (incl. a new container given an old ID), plus new-correct and absent-correct. Raw output saved per run.']
+  ],
+  h_data: 'Data model (IndexedDB on the phone)',
+  dhead: ['Table', 'What it holds'],
+  drows: [
+    ['fridges', 'name, image (illustration key or own photo)'],
+    ['photos', 'fridge, takenAt, shrunk JPEG (no EXIF), size, model used'],
+    ['containers', 'fridge, <b>dateStart</b> (when the current food went in), active / removed'],
+    ['sightings', 'one container on one photo: box (0–1000), crop, confidence, source'],
+    ['events', 'photo_added · added · refilled · split · merged · still_there · removed, with time']
+  ],
+  data_note: '<b>Age</b> = whole calendar days from dateStart to today. Rows change only through matching or a button, each together with its event. Leave and come back: the same rows are read again. The server keeps nothing.',
+  h_tree: 'File structure',
+  h_fail: 'Where it will realistically break',
+  fail: [
+    '<b>Gemini busy or slow</b> → one retry, then the fallback model, then Photo Check. Your data is untouched.',
+    '<b>Unreadable photo / zero containers</b> → Photo Check → retake. On a second failure, nothing changes.',
+    '<b>Wrong link</b> (a new container inherits an old date) → the prompt rule, measured as "wrong link". One tap on "This is a new container" fixes it.',
+    '<b>Crowded tooltips</b> → leader lines; "View as list" is one tap away.',
+    '<b>Missing photo time</b> → now, editable. iOS evidence is mixed; checked early on your iPhone.'
+  ],
+  h_simpl: 'What was simplified and why',
+  simpl: [
+    'Phone-only storage instead of a server database: one person, one phone.',
+    'Native camera via a file input instead of a live in-app camera view.',
+    '"Clearest crop" = the largest box instead of a sharpness score.',
+    'No confidence review queue: results apply automatically, and fixes take one tap (the PRD decision).',
+    'Photos matched against the latest photo: they\'re expected in time order.',
+    'The match rate comes from held-out real-fridge pairs. No public multi-day fridge dataset exists.'
+  ],
+  h_unknown: 'Your useful unknown',
+  unknown: '<b>How to measure matching honestly.</b> Tuning prompts on the scoring photos inflates the score, so 10/25–10/26 are held out and measured once. One combined number would hide the worst error, so correct / missed / wrong are counted separately.',
+  h_call: 'Decided in review',
+  call: [
+    '<b>Outside dataset.</b> Searched Roboflow, Kaggle, Hugging Face, and arXiv. <b>None found</b> that is permissively licensed, multi-day, and has the same containers. The closest: AICook (listed MIT, 516 staged photos of one fridge, groceries rearranged, no tubs, no dates) and HD-EPIC (CC BY 4.0, multi-day kitchen video, 2.3 TiB, frames would need labeling). <b>Decided:</b> not added to the POC. Neither has the opaque-tub case, and labeling would take hours before 10/27.',
+    '<b>Model.</b> Google now calls gemini-3.6-flash "previous-generation"; gemini-3.8-flash is newer. Decided: compare both on the <i>tuning</i> pairs and keep the better one before the test photos are measured.',
+    '<b>Look-and-feel details</b> (fonts, palette) are my translation of "Cooking Mama + clean map". Change anything you like.'
+  ],
+  foot: 'Canonical document: devpost/spec.md. This page is a visual companion and is regenerated after revisions.'
+},
+ko: {
+  toggle: 'English', status: '명세 · 승인됨', title: 'Leftover Clock — 기술 명세',
+  lede: '앱을 어떻게 만드나: Vercel에 올리는 Next.js 앱 하나, 데이터는 폰 안에, 사진마다 Gemini에 두 번 질문, 정직한 매칭률을 재는 평가 스크립트.',
+  h_plain: '쉬운 말로 — 어떻게 돌아가나',
+  phone_h: '폰 쪽: 화면',
+  phone_p: '눈에 보이는 건 전부 폰 브라우저에서 돕니다. 냉장고·사진·통·이력은 <b>IndexedDB</b>(브라우저가 이 사이트에만 따로 주는 작은 데이터베이스, 폰 안)에 들어 있습니다. 계정이 없습니다. 내일 다시 열면 같은 데이터를 다시 읽습니다.',
+  server_h: '서버 쪽: Vercel의 작은 서버 라우트 두 개',
+  server_p: '폰이 줄인 사진을 앱 자신의 서버 코드로 보냅니다. 그 코드가 Gemini 키를 쥐고(폰엔 절대 안 감) Gemini에게 매칭을 물은 뒤, 박스와 ID를 돌려줍니다. 아무것도 저장하지 않습니다.',
+  two_steps: '<b>사진마다 질문 두 번.</b> ① <i>매핑:</i> "어제 사진과 그 통 목록, 오늘 사진이야. 어느 게 어느 거고, 새 통은 뭐야?" ② <i>콕 집어 찾기:</i> 1단계가 못 찾은 기존 통마다 "이 통 클로즈업이야. 오늘 사진 어딘가에 있어?" ②는 두 번의 실측에서 1단계가 놓친, 반쯤 가려지고 뚜껑만 보이는 통을 겨냥합니다. 여기서도 못 찾은 것만 Unseen Shelf로 갑니다.',
+  why_shape: '<b>이 모양인 이유:</b> 프로젝트 하나, 배포 하나, 외부 서비스 하나(Gemini), 데이터베이스 서버 없음. 서버가 필요한 이유는 키를 숨기는 것 하나뿐입니다.',
+  h_journey: '핵심 여정이 시스템을 지나는 길',
+  prev: '← 이전', next: '다음 →', prd: 'PRD', files: '파일',
+  lanes: { phone: '폰 (브라우저)', server: '서버 (Vercel)', ext: '바깥', ev: '평가 (내 PC)' },
+  nodes: {
+    screens: ['화면', '목록 · 지도 · 선반 · 상세'], idb: ['IndexedDB', '냉장고 · 사진 · 이벤트'],
+    photo: ['lib/photo', '시각 · 줄이기 · 자르기'], mclient: ['matching-client', '1단계 → 2단계 → 적용'],
+    actions: ['lib/actions', '적용 · 리필 · 분리 · 합치기'], labels: ['PhotoMap + labels', '핀, 겹침 없음'],
+    match: ['/api/match', '1단계: 매핑'], search: ['/api/search', '2단계: 찾기'],
+    gem: ['server/gemini.ts', '프롬프트 · 폴백'], api: ['Gemini API', '3.6 Flash → 3.5 Flash-Lite'],
+    evalr: ['eval/run-eval.ts', '맞음 · 놓침 · 잘못'], truth: ['정답지 + 사진', '하나씩 직접 확인']
+  },
+  steps: [
+    { t: '1. 앱 열기 → Fridge List', d: 'IndexedDB에서 냉장고를 읽어 카드로 보여 줍니다. 카드마다 타임라인 버튼이 있습니다.', prd: 'Fridges · Timelines', files: 'app/page.tsx · lib/db.ts', n: ['screens','idb'], e: ['screens-idb'] },
+    { t: '2. 냉장고 누르기 → Fridge View', d: '최신 사진과 그 박스를 읽어 핀과 겹치지 않는 나이 말풍선을 그립니다. 그 사진에 없는 활성 통은 아래 Unseen Shelf에 놓입니다.', prd: 'Matching and Pins · Unseen Shelf', files: 'app/fridges/[fridgeId]/page.tsx · components/PhotoMap.tsx · lib/labels.ts', n: ['screens','idb','labels'], e: ['screens-idb','idb-labels'] },
+    { t: '3. 사진 추가', d: '"Take photo"는 폰 기본 카메라를 열고, 찍은 순간이 시각이 됩니다. "Upload"는 사진에 저장된 시각(exifr)을 읽고, 없으면 지금 시각을 씁니다. 시각은 고칠 수 있습니다. 사진은 약 1200×1600으로 줄이며, 이때 GPS도 지워집니다.', prd: 'Adding a Photo and Its Date', files: 'app/fridges/[fridgeId]/add-photo/page.tsx · lib/photo.ts', n: ['screens','photo'], e: ['screens-photo'] },
+    { t: '4. 1단계: 매핑', d: '화면에 리마인더가 도는 동안 새 사진, 직전 사진, 알려진 박스를 /api/match로 보냅니다. Gemini는 통마다 박스와 옛 ID 또는 "new"를 돌려줍니다. 바나나 통 잘못 이음을 막으려고 프롬프트에 "자리는 약한 단서"라고 넣습니다.', prd: 'Matching and Pins · Reminders While Matching', files: 'lib/matching-client.ts · app/api/match/route.ts · server/gemini.ts', n: ['mclient','match','gem','api'], e: ['photo-mclient','mclient-match','match-gem','gem-api'] },
+    { t: '5. 2단계: 콕 집어 찾기', d: '1단계가 못 찾은 기존 통과 선반 위 통 전부에 대해, 가장 선명한 조각을 /api/search로 보냅니다. "이 통이 사진 어딘가에 있어? 뚜껑만이라도?" 찾은 박스가 1단계의 "new" 박스와 겹치면 그 자리를 대신합니다.', prd: 'Matching and Pins (뚜껑만 보이는 경우)', files: 'app/api/search/route.ts · server/gemini.ts', n: ['mclient','search','gem','api'], e: ['mclient-search','search-gem','gem-api'] },
+    { t: '6. 적용 → 핀, 또는 Photo Check', d: 'IndexedDB 트랜잭션 하나로 사진, 조각, 발견 기록(이어짐 → 옛 통, 안 이어짐 → 사진 날짜의 새 통), 이벤트를 저장합니다. 1단계가 실패했거나 아무것도 못 찾으면 대신 Photo Check로 가고, 아무것도 저장하지 않습니다.', prd: 'Matching and Pins · Photo Can\'t Be Read', files: 'lib/actions.ts (applyMatch) · components/PhotoCheck.tsx', n: ['mclient','actions','idb','labels'], e: ['mclient-actions','actions-idb','idb-labels'] },
+    { t: '7. 한 번 탭으로 고치기', d: '핀을 누르면 Container Detail이 열립니다. Refilled, This is a new container, Same container as…, Still there, Removed는 각각 함수 하나를 부르고, 그 함수가 통을 바꾸면서 이벤트도 함께 씁니다.', prd: 'Container Detail and One-Tap Fixes · Unseen Shelf', files: 'components/ContainerSheet.tsx · app/fridges/[fridgeId]/pick/page.tsx · lib/actions.ts', n: ['screens','actions','idb'], e: ['screens-actions','actions-idb'] },
+    { t: '8. 목록 보기 · 타임라인', d: '같은 데이터를 오래된 순으로 정렬해 보여 줍니다. 타임라인은 통별, 냉장고별로 발견 기록(시각 붙은 조각)과 이벤트를 나열합니다.', prd: 'View as List · Timelines', files: 'components/ContainerList.tsx · components/Timeline.tsx', n: ['screens','idb'], e: ['screens-idb'] },
+    { t: 'E. 매칭률 재기', d: '내 PC에서 평가 스크립트가 앱과 똑같은 server/gemini.ts를 실제 사진 쌍에 돌리고, 직접 확인한 정답지와 비교합니다. 맞게 이음 / 놓침 / 잘못 이음을 따로 셉니다. 다듬기는 10/22~10/24 사진으로 하고, 10/25~10/26 사진은 프롬프트를 고정한 뒤 한 번만 잽니다.', prd: 'scope.md > Later · 학습 목표', files: 'eval/run-eval.ts · eval/truth/*.json', n: ['evalr','truth','gem','api'], e: ['truth-evalr','evalr-gem','gem-api'], ev: true }
+  ],
+  h_stack: '스택 (이 대화에서 합의)',
+  stack: [
+    '<b>Next.js 16 (App Router) + TypeScript</b>: 화면과 서버 라우트 두 개를 한 프로젝트에. 새로 배우는 프레임워크이고, 서버/클라이언트 구분을 익히는 부담은 받아들이기로 했습니다.',
+    '<b>Dexie 4</b>(IndexedDB 래퍼): 사진과 조각을 폰 안에 Blob으로 저장합니다.',
+    '<b>@google/genai 2.x</b>, 서버에서만: 이미지, JSON 스키마, <code>thinkingLevel: LOW</code>로 <code>models.generateContent</code>를 부릅니다.',
+    '<b>exifr 7.1.3</b>: 사진에 저장된 시각을 읽습니다. 2021년 이후 새 버전이 없지만 이 태그 하나 읽기엔 안정적입니다.',
+    '<b>tsx</b>로 평가 스크립트를 돌립니다. 스타일은 <b>순수 CSS</b>와 토큰, 폰트는 <code>next/font</code>로 불러옵니다.'
+  ],
+  h_run: '어디서 돌고, 남이 어떻게 써 보나',
+  run: [
+    '<b>Vercel Hobby (직접 고른 것).</b> 무료, 개인용, HTTPS. <code>GEMINI_API_KEY</code>는 Vercel 프로젝트와 <code>.env.local</code>에만 두고 저장소엔 넣지 않습니다. 함수 한도 300초, 요청 크기 한도 4.5MB(사진은 먼저 줄임).',
+    '<b>로컬:</b> <code>npm run dev</code>. 폰에서 와이파이로 열려면 <code>-H 0.0.0.0</code>.',
+    '<b>iPhone은 7일 동안 사이트를 안 열면 데이터를 지웁니다.</b> 홈 화면에 추가한 앱은 예외라서, 홈 화면 추가와 <code>navigator.storage.persist()</code>로 막습니다.',
+    '<b>데모 영상:</b> 폰에서 배포 주소로 실제 사진을 씁니다. 핀, 다음 날 사진, 뚜껑만 보이는 통 찾기, 한 번 탭 수정, 목록, 타임라인 순서입니다. 필수는 영상과 공개 저장소이고, 주소는 덤입니다.',
+    '<b>평가:</b> <code>npx tsx eval/run-eval.ts --photos &lt;폴더&gt; --pair &lt;정답지&gt;</code>. 사진은 저장소 밖에 둡니다(GPS, 상표).'
+  ],
+  h_look: '룩앤필',
+  look: [
+    '지도 화면을 뺀 나머지는 <b>둥글고 귀엽게</b>: Cooking Mama풍, 모서리 16~24px, 부드러운 그림자, 알약 버튼, SVG 냉장고 일러스트 4개. 폰트는 <b>Fredoka</b>(제목·버튼)와 <b>Nunito</b>(본문).',
+    'Fridge View는 <b>깔끔한 지도</b>: 사진이 화면 끝까지 차고, 작은 핀 점과 겹치지 않는 흰 나이 칩("3d"), 떠 있는 알약 바. 아래 Unseen Shelf는 다시 귀여운 톤입니다.',
+    '<b>문구:</b> 짧고 따뜻하게, 사실만. 나이만 보여 주고 "safe·fresh·eat today"는 쓰지 않으며 "오래됨" 강조도 하지 않습니다(나중으로 미룸).'
+  ],
+  h_comp: '부품 (눌러서 펼치기)',
+  comps: [
+    ['Fridge List', 'Fridges · States', '카드(이미지 + 이름), 카드마다 타임라인 버튼, "Add fridge". 냉장고가 없으면 반기는 "Add fridge"만 보입니다.'],
+    ['Add Fridge', 'Fridges', '이름, 일러스트 고르기, 또는 "Use my photo"(약 600px로 줄임).'],
+    ['Fridge View + 핀 배치', 'Matching and Pins', '최신 사진 위의 핀. 말풍선은 위에서부터 차례로 오른쪽, 왼쪽, 위, 아래 순으로 자리를 찾고, 없으면 바깥으로 밀어 지시선을 긋습니다. 화면 크기가 바뀌면 다시 계산하고, 실제 25개짜리 사진으로 확인합니다. 사진이 아직 없으면 첫 사진을 넣으라고 안내합니다.'],
+    ['Add Photo', 'Adding a Photo and Its Date', '찍기 또는 올리기. 시각은 촬영 시각, EXIF, 지금 순서로 채우고 고칠 수 있습니다. Gemini 무료 티어 고지 한 줄.'],
+    ['Matching과 리마인더', 'Reminders While Matching', '돌아가는 카드: "These are your oldest containers"(가장 오래된 3개와 조각), "You refill these often, but it\'s been a while"(리필 2번 이상), 첫 사진이면 안내와 팁.'],
+    ['Photo Check', 'Photo Can\'t Be Read', '신분증 스캔식 확인 목록 뒤 Retake / Upload another. 두 번째 실패면 "We couldn\'t read this photo. Your fridge stays as it was." 아무것도 저장하지 않습니다.'],
+    ['매칭 서버 라우트', 'Matching and Pins', '/api/match와 /api/search가 server/gemini.ts를 감쌉니다. 모델은 gemini-3.6-flash(LOW thinking). 429/503/시간 초과면 한 번 재시도 후 gemini-3.5-flash-lite. 쓴 모델은 사진에 기록합니다.'],
+    ['Container Detail', 'Container Detail and One-Tap Fixes', '아래에서 올라오는 시트: 조각, 나이, 날짜, 최근 이벤트 3개. Refilled → 날짜 = 최신 사진 시각. New container → 이 발견 기록을 새 통으로 떼어 냄(옛 통이 사진에 없으면 선반으로). Same as… → 고르기 화면.'],
+    ['Same-Container Picker', 'Container Detail and One-Tap Fixes', '기본은 직전 사진과 그 핀, 전환하면 조각 격자. 고르면 합쳐지고, 고른 통이 날짜와 이력을 유지합니다.'],
+    ['Unseen Shelf', 'Unseen Shelf', '최신 사진에 없는 활성 통. 가장 선명한 조각(가장 큰 박스) 또는 기본 병 그림을 보여 줍니다. Still there → 표시와 이벤트, 목록에 남음. Removed → 선반과 목록에서 빠짐. 손대지 않은 통은 Still there처럼 다룹니다.'],
+    ['List View', 'View as List', '활성 통 전부를 오래된 순으로: 조각, 나이, 날짜. 누르면 Container Detail.'],
+    ['Timelines', 'Timelines', '통: 시각 붙은 모든 조각과 모든 이벤트. 냉장고: 사진과 모든 통의 이벤트, Fridge List 카드에서 엽니다.'],
+    ['평가 하네스', '학습 목표', '사진 쌍마다 정답지가 있고, 박스 하나하나를 직접 확인합니다. 맞게 이음 / 놓침 / 잘못 이음(새 통에 옛 ID를 준 경우 포함)과 새 통 맞음, 없음 맞음을 셉니다. 실행마다 원본 출력을 저장합니다.']
+  ],
+  h_data: '데이터 모델 (폰 안 IndexedDB)',
+  dhead: ['테이블', '담는 것'],
+  drows: [
+    ['fridges', '이름, 이미지(일러스트 키 또는 내 사진)'],
+    ['photos', '냉장고, takenAt, 줄인 JPEG(EXIF 없음), 크기, 쓴 모델'],
+    ['containers', '냉장고, <b>dateStart</b>(지금 든 음식을 넣은 때), 활성 / 제거됨'],
+    ['sightings', '한 사진 속 통 하나: 박스(0~1000), 조각, 확신도, 출처'],
+    ['events', 'photo_added · added · refilled · split · merged · still_there · removed, 시각 포함']
+  ],
+  data_note: '<b>나이</b> = dateStart부터 오늘까지의 날짜 수. 데이터는 매칭이나 버튼으로만 바뀌고, 바뀔 때마다 이벤트가 함께 기록됩니다. 나갔다 돌아오면 같은 데이터를 다시 읽습니다. 서버는 아무것도 남기지 않습니다.',
+  h_tree: '파일 구조',
+  h_fail: '현실적으로 깨질 곳',
+  fail: [
+    '<b>Gemini가 바쁘거나 느림</b> → 한 번 재시도, 폴백 모델, 그래도 안 되면 Photo Check. 기존 데이터는 그대로입니다.',
+    '<b>못 읽는 사진 / 통 0개</b> → Photo Check → 다시 찍기. 두 번째 실패면 아무것도 바뀌지 않습니다.',
+    '<b>잘못 이음</b>(새 통이 옛 날짜를 물려받음) → 프롬프트 규칙으로 줄이고, "잘못 이음"으로 측정합니다. "This is a new container" 한 번이면 고쳐집니다.',
+    '<b>말풍선 밀집</b> → 지시선. "View as list"가 한 번 탭 거리에 있습니다.',
+    '<b>사진 시각 없음</b> → 지금 시각을 넣고 고칠 수 있게 합니다. iOS 근거가 엇갈려서 빌드 초반에 사용자 iPhone으로 확인합니다.'
+  ],
+  h_simpl: '단순화한 것과 이유',
+  simpl: [
+    '서버 DB 대신 폰 안 저장: 사람 하나, 폰 하나.',
+    '앱 안 실시간 카메라 화면 대신 파일 입력으로 폰 기본 카메라.',
+    '"가장 선명한 조각" = 선명도 점수 대신 가장 큰 박스.',
+    '확신도 검토 큐 없음: 결과는 자동 적용, 수정은 한 번 탭(PRD 결정).',
+    '최신 사진하고만 매칭: 사진은 시간 순으로 넣는다고 가정.',
+    '매칭률은 따로 떼어 둔 실제 냉장고 사진 쌍으로 잽니다. 여러 날에 걸친 공개 냉장고 데이터셋은 없습니다.'
+  ],
+  h_unknown: '이번에 풀린 궁금증',
+  unknown: '<b>매칭을 정직하게 재는 법.</b> 점수 매길 사진으로 프롬프트를 다듬으면 점수가 부풀려지므로 10/25~10/26은 떼어 두고 한 번만 잽니다. 숫자 하나로 합치면 가장 나쁜 오류가 가려지므로 맞음 / 놓침 / 잘못을 따로 셉니다.',
+  h_call: '검토에서 정한 것',
+  call: [
+    '<b>외부 데이터셋.</b> Roboflow, Kaggle, Hugging Face, arXiv를 찾아봤지만, 허용 라이선스이면서 여러 날에 걸쳐 같은 통이 나오는 사진 데이터셋은 <b>없었습니다</b>. 가장 가까운 것은 AICook(MIT 표기, 한 냉장고를 연출해 찍은 516장, 식재료 재배치, 불투명 통 없음, 날짜 없음)과 HD-EPIC(CC BY 4.0, 여러 날의 부엌 영상, 2.3TiB, 프레임을 직접 라벨링해야 함)입니다. <b>결정:</b> PoC에 넣지 않음. 둘 다 불투명 통 상황이 없고, 라벨링에 10/27 전까지 몇 시간이 듭니다.',
+    '<b>모델.</b> Google이 이제 gemini-3.6-flash를 "이전 세대"라고 부르고, 더 새로운 gemini-3.8-flash가 있습니다. 결정: <i>다듬기용</i> 사진 쌍으로 둘을 비교해 더 나은 쪽을 고르고, 그 뒤에 측정용 사진을 잽니다.',
+    '<b>룩앤필 세부</b>(폰트·색)는 "Cooking Mama + 깔끔한 지도"를 제가 옮긴 것입니다. 마음대로 바꾸셔도 됩니다.'
+  ],
+  foot: '기준 문서: devpost/spec.md. 이 페이지는 시각용 짝이며 수정 뒤 다시 만듭니다.'
+}
+};
+
+var lang = 'en', cur = 0;
+try { var saved = localStorage.getItem('spec-lang'); if (saved === 'ko' || saved === 'en') lang = saved; } catch (e) {}
+
+var NODES = {
+  screens: [20, 50], idb: [20, 140], photo: [190, 50], mclient: [190, 140], actions: [190, 230], labels: [20, 230],
+  match: [400, 50], search: [400, 140], gem: [400, 230], api: [615, 140],
+  evalr: [400, 345], truth: [190, 345]
+};
+var EDGES = {
+  'screens-idb': ['screens','idb'], 'idb-labels': ['idb','labels'], 'screens-photo': ['screens','photo'],
+  'photo-mclient': ['photo','mclient'], 'mclient-match': ['mclient','match'], 'mclient-search': ['mclient','search'],
+  'match-gem': ['match','gem'], 'search-gem': ['search','gem'], 'gem-api': ['gem','api'],
+  'mclient-actions': ['mclient','actions'], 'actions-idb': ['actions','idb'], 'screens-actions': ['screens','actions'],
+  'truth-evalr': ['truth','evalr'], 'evalr-gem': ['evalr','gem']
+};
+var BW = 150, BH = 54;
+function center(k) { var p = NODES[k]; return [p[0] + BW / 2, p[1] + BH / 2]; }
+function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+function edgePath(a, b) {
+  var A = NODES[a], B = NODES[b], ca = center(a), cb = center(b), x1, y1, x2, y2;
+  if (Math.abs(ca[0] - cb[0]) > Math.abs(ca[1] - cb[1])) {
+    x1 = ca[0] < cb[0] ? A[0] + BW : A[0]; x2 = ca[0] < cb[0] ? B[0] : B[0] + BW; y1 = ca[1]; y2 = cb[1];
+  } else {
+    y1 = ca[1] < cb[1] ? A[1] + BH : A[1]; y2 = ca[1] < cb[1] ? B[1] : B[1] + BH; x1 = ca[0]; x2 = cb[0];
+  }
+  return [x1, y1, x2, y2];
+}
+function drawArch() {
+  var L = T[lang], s = L.steps[cur], on = {}, eon = {}, out = [];
+  s.n.forEach(function (k) { on[k] = 1; }); s.e.forEach(function (k) { eon[k] = 1; });
+  out.push('<title id="arch-title">' + esc(L.h_journey) + '</title>');
+  out.push('<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="arrow"/></marker>' +
+    '<marker id="ahon" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--accent)"/></marker></defs>');
+  var lanes = [[8, 18, 352, 280, 'var(--phone)', L.lanes.phone], [388, 18, 174, 280, 'var(--server)', L.lanes.server],
+               [600, 108, 172, 118, 'var(--ext)', L.lanes.ext], [178, 316, 384, 100, 'var(--evalc)', L.lanes.ev]];
+  lanes.forEach(function (l) {
+    out.push('<rect class="lane" x="' + l[0] + '" y="' + l[1] + '" width="' + l[2] + '" height="' + l[3] + '" rx="12" style="stroke:' + l[4] + '"/>');
+    out.push('<text class="lane-label" x="' + (l[0] + 10) + '" y="' + (l[1] + 16) + '" style="fill:' + l[4] + '">' + esc(l[5]) + '</text>');
+  });
+  Object.keys(EDGES).forEach(function (k) {
+    var p = edgePath(EDGES[k][0], EDGES[k][1]);
+    out.push('<line class="edge' + (eon[k] ? ' on' : '') + '" x1="' + p[0] + '" y1="' + p[1] + '" x2="' + p[2] + '" y2="' + p[3] + '" marker-end="url(#' + (eon[k] ? 'ahon' : 'ah') + ')"/>');
+  });
+  Object.keys(NODES).forEach(function (k) {
+    var p = NODES[k], n = L.nodes[k];
+    out.push('<g class="node' + (on[k] ? ' on' : '') + '"><rect class="box" x="' + p[0] + '" y="' + p[1] + '" width="' + BW + '" height="' + BH + '" rx="10"/>' +
+      '<text x="' + (p[0] + BW / 2) + '" y="' + (p[1] + 23) + '" text-anchor="middle" font-weight="600">' + esc(n[0]) + '</text>' +
+      '<text class="sub" x="' + (p[0] + BW / 2) + '" y="' + (p[1] + 41) + '" text-anchor="middle">' + esc(n[1]) + '</text></g>');
+  });
+  document.getElementById('arch').innerHTML = out.join('');
+}
+function drawStep() {
+  var L = T[lang], s = L.steps[cur];
+  document.getElementById('step-card').innerHTML = '<h3>' + s.t + '</h3><p>' + s.d + '</p>' +
+    '<div class="meta"><b>' + L.prd + ':</b> ' + s.prd + '<br><b>' + L.files + ':</b> <code>' + s.files + '</code></div>';
+  var dots = document.querySelectorAll('.dot');
+  for (var i = 0; i < dots.length; i++) dots[i].classList.toggle('on', i === cur);
+  document.getElementById('prev').disabled = cur === 0;
+  document.getElementById('next').disabled = cur === L.steps.length - 1;
+  drawArch();
+}
+function list(id, items) { document.getElementById(id).innerHTML = items.map(function (x) { return '<li>' + x + '</li>'; }).join(''); }
+function render() {
+  var L = T[lang];
+  document.documentElement.lang = lang;
+  document.title = lang === 'en' ? 'Leftover Clock Spec' : 'Leftover Clock 명세';
+  document.getElementById('lang-toggle').textContent = L.toggle;
+  var els = document.querySelectorAll('[data-t]');
+  for (var i = 0; i < els.length; i++) els[i].innerHTML = L[els[i].getAttribute('data-t')];
+  document.getElementById('prev').textContent = L.prev;
+  document.getElementById('next').textContent = L.next;
+  document.getElementById('dots').innerHTML = L.steps.map(function (s, i) {
+    return '<button type="button" class="dot' + (s.ev ? ' ev' : '') + '" data-i="' + i + '" aria-label="' + esc(s.t) + '">' + (s.ev ? 'E' : i + 1) + '</button>';
+  }).join('');
+  list('stack', L.stack); list('run', L.run); list('look', L.look);
+  list('fail', L.fail); list('simpl', L.simpl); list('call', L.call);
+  document.getElementById('comps').innerHTML = L.comps.map(function (c) {
+    return '<details><summary><span>' + c[0] + '</span><span class="tag">' + L.prd + ' · ' + c[1] + '</span></summary><div class="body"><p>' + c[2] + '</p></div></details>';
+  }).join('');
+  document.getElementById('datatable').innerHTML = '<tr><th>' + L.dhead[0] + '</th><th>' + L.dhead[1] + '</th></tr>' +
+    L.drows.map(function (r) { return '<tr><td><code>' + r[0] + '</code></td><td>' + r[1] + '</td></tr>'; }).join('');
+  drawStep();
+  try { localStorage.setItem('spec-lang', lang); } catch (e) {}
+}
+document.getElementById('lang-toggle').addEventListener('click', function () { lang = lang === 'en' ? 'ko' : 'en'; render(); });
+document.getElementById('prev').addEventListener('click', function () { if (cur > 0) { cur--; drawStep(); } });
+document.getElementById('next').addEventListener('click', function () { if (cur < T[lang].steps.length - 1) { cur++; drawStep(); } });
+document.getElementById('dots').addEventListener('click', function (e) {
+  var b = e.target.closest('.dot'); if (b) { cur = +b.getAttribute('data-i'); drawStep(); }
+});
+render();
+</script>
+</body>
+</html>

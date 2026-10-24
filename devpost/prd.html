@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leftover Clock PRD</title>
+<style>
+:root {
+  --bg: #f7f5f0; --surface: #ffffff; --ink: #1f2328; --muted: #5d6470;
+  --line: #d9d4c7; --accent: #c2410c; --accent-soft: #fde7d9;
+  --now: #15803d; --later: #b45309; --cut: #8b8f97; --open: #b91c1c;
+  --node: #ffffff; --node-line: #b9b2a3;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15171a; --surface: #1e2125; --ink: #e8e6e1; --muted: #a2a8b2;
+    --line: #353a41; --accent: #fb923c; --accent-soft: #3a2416;
+    --now: #4ade80; --later: #fbbf24; --cut: #7d838c; --open: #f87171;
+    --node: #23272c; --node-line: #4a5059;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15171a; --surface: #1e2125; --ink: #e8e6e1; --muted: #a2a8b2;
+  --line: #353a41; --accent: #fb923c; --accent-soft: #3a2416;
+  --now: #4ade80; --later: #fbbf24; --cut: #7d838c; --open: #f87171;
+  --node: #23272c; --node-line: #4a5059;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+}
+html[lang="ko"] body { word-break: keep-all; }
+[hidden] { display: none !important; }
+#lang-toggle {
+  position: fixed; top: 12px; right: 16px; z-index: 10;
+  font: 600 14px system-ui, "Malgun Gothic", sans-serif; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+  padding: 6px 14px; cursor: pointer;
+}
+#lang-toggle:hover { border-color: var(--accent); }
+main { max-width: 760px; margin: 0 auto; padding: 48px 16px 64px; }
+.status {
+  display: inline-block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 2px 10px;
+}
+h1 { font-size: 34px; line-height: 1.15; margin: 12px 0 8px; }
+.lede { font-size: 18px; color: var(--muted); margin: 0 0 28px; }
+h2 { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 40px 0 10px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+.expand { border-left: 4px solid var(--accent); }
+.expand p { margin: 0 0 8px; }
+.expand p:last-child { margin: 0; }
+.expand .was { color: var(--muted); }
+svg { width: 100%; height: auto; display: block; }
+svg .box { fill: var(--node); stroke: var(--node-line); stroke-width: 1.5; }
+svg .side .box { stroke-dasharray: 4 3; }
+svg .node { cursor: pointer; }
+svg .node:hover .box, svg .node:focus .box { stroke: var(--accent); }
+svg .node.on .box { stroke: var(--accent); stroke-width: 3; fill: var(--accent-soft); }
+svg .t { fill: var(--ink); font: 600 14px system-ui, "Malgun Gothic", sans-serif; }
+svg .s { fill: var(--muted); font: 12px system-ui, "Malgun Gothic", sans-serif; }
+svg .n { fill: var(--accent); font: 700 12px system-ui, sans-serif; }
+svg .arrow { stroke: var(--muted); stroke-width: 1.5; fill: none; marker-end: url(#ah); }
+svg .arrow.fix { stroke: var(--accent); stroke-dasharray: 5 4; marker-end: url(#ahf); }
+svg #ah path { fill: var(--muted); } svg #ahf path { fill: var(--accent); }
+.caption { font-size: 14px; color: var(--muted); margin: 10px 0 0; }
+.stepper { margin-top: 14px; }
+.stepnav { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.stepnav button {
+  font: 600 14px system-ui, "Malgun Gothic", sans-serif; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; cursor: pointer;
+}
+.stepnav button:hover:not(:disabled) { border-color: var(--accent); }
+.stepnav button:disabled { opacity: .4; cursor: default; }
+.dots { display: flex; gap: 6px; margin-left: auto; }
+.dots span { width: 9px; height: 9px; border-radius: 50%; background: var(--line); cursor: pointer; }
+.dots span.on { background: var(--accent); }
+.step h3 { margin: 0 0 2px; font-size: 20px; }
+.step .src { font-size: 13px; color: var(--muted); margin: 0 0 12px; }
+.step h4 { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 14px 0 4px; }
+.step ul { margin: 0; padding-left: 20px; }
+.step li { margin: 3px 0; }
+.step .assume { color: var(--later); font-weight: 600; }
+.step .openq { color: var(--open); font-weight: 600; }
+ul.ac { list-style: none; padding-left: 0; }
+ul.ac label { display: flex; gap: 8px; align-items: flex-start; cursor: pointer; }
+ul.ac input { margin-top: 5px; accent-color: var(--now); }
+ul.ac input:checked + span { color: var(--muted); text-decoration: line-through; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 600px) { .grid { grid-template-columns: 1fr; } h1 { font-size: 28px; } }
+.grid .card h3 { margin: 0 0 6px; font-size: 15px; }
+.grid .card p { margin: 0; }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; }
+summary { cursor: pointer; padding: 14px 18px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 10px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; margin-left: auto; color: var(--muted); font-weight: 400; font-size: 20px; }
+details[open] summary::after { content: "–"; }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.count { color: var(--muted); font-weight: 400; font-size: 14px; }
+details ul { margin: 0; padding: 0 18px 16px 40px; }
+details li { margin: 4px 0; }
+details li em { color: var(--muted); font-style: normal; }
+.oq { display: flex; gap: 10px; align-items: flex-start; padding: 12px 0; border-top: 1px solid var(--line); }
+.oq:first-child { border-top: 0; padding-top: 0; }
+.oq:last-child { padding-bottom: 0; }
+.tag { flex: none; font-size: 12px; font-weight: 700; border-radius: 999px; padding: 2px 9px; border: 1px solid; white-space: nowrap; }
+.tag.block { color: var(--open); border-color: var(--open); }
+.tag.wait { color: var(--muted); border-color: var(--line); }
+.feedback p { margin: 0 0 8px; } .feedback p:last-child { margin: 0; }
+footer { margin-top: 40px; font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<button id="lang-toggle" type="button">한국어</button>
+<main>
+  <header>
+    <span class="status" data-t="status"></span>
+    <h1>Leftover Clock</h1>
+    <p class="lede" data-t="lede"></p>
+  </header>
+
+  <h2 data-t="h_expand"></h2>
+  <div class="card expand" id="expand"></div>
+
+  <h2 data-t="h_journey"></h2>
+  <div class="card">
+    <div id="diagram"></div>
+    <p class="caption" data-t="caption"></p>
+  </div>
+
+  <div class="stepper">
+    <div class="stepnav">
+      <button type="button" id="prev"></button>
+      <button type="button" id="next"></button>
+      <div class="dots" id="dots"></div>
+    </div>
+    <div class="card step" id="step" aria-live="polite"></div>
+  </div>
+
+  <h2 data-t="h_look"></h2>
+  <div class="grid" id="look"></div>
+
+  <h2 data-t="h_boundary"></h2>
+  <div id="boundary"></div>
+
+  <h2 data-t="h_decisions"></h2>
+  <div class="card"><ul id="decisions" style="margin:0;padding-left:20px"></ul></div>
+
+  <h2 data-t="h_open"></h2>
+  <div class="card" id="open"></div>
+
+  <h2 data-t="h_feedback"></h2>
+  <div class="card feedback" id="feedback"></div>
+
+  <footer data-t="footer"></footer>
+</main>
+
+<script>
+var T = {
+  en: {
+    title: 'Leftover Clock PRD', toggle: '한국어',
+    status: 'PRD · approved',
+    lede: 'How old is each leftover in my fridge? Answered from fridge photos alone — no typing or labeling containers.',
+    h_expand: 'From scope to product', h_journey: 'The core journey', h_look: 'Look and feel',
+    h_boundary: 'What we’re building, and what waits', h_decisions: 'Your product decisions',
+    h_open: 'Open questions', h_feedback: 'Honest feedback',
+    caption: 'Tap a box, or step through below. Dashed boxes are side trips; the dashed orange arrow is a one-tap fix updating the pins.',
+    prev: '← Back', next: 'Next →',
+    see: 'What you see', doo: 'What you do', states: 'States and what-ifs', ac: 'How we’ll know it works',
+    footer: 'Canonical document: devpost/prd.md. This page is a visual companion and is regenerated when the PRD changes.',
+    expand: [
+      ['Scope said: “Correct a mistake with one tap.”', 'Now we know exactly what that means: matching applies on its own, and every container has one-tap answers — Refilled, This is a new container, This is the same container as… (pick from earlier pins or a crop list). Containers the photo missed sit on an Unseen Shelf with Still there / Removed.'],
+      ['Scope left open: “Does a container that disappears and comes back count as refilled?”', 'Resolved: the app never guesses. It matches; you decide with a tap.']
+    ],
+    nodes: [
+      ['Fridge List', 'cute cards'], ['Fridge View', 'photo + pins + shelf'], ['Add Photo', 'date filled in'],
+      ['Matching', 'reminders while waiting'], ['Pins & Shelf', 'ages, unseen shelf'], ['One-tap Fixes', 'detail · shelf buttons'],
+      ['View as List', 'oldest first'], ['Fridge Timeline', 'button on Fridge List'], ['Container Timeline', 'from detail']
+    ],
+    steps: [
+      { h: '1 · Fridge List', src: 'scope.md > The POC Boundary (Multiple fridges)',
+        see: ['A round, cute screen with a card for every fridge: its image and its name.', 'Each image is a fridge illustration picked from a set, or your own photo.', 'Each fridge has a button that opens its Fridge Timeline.'],
+        doo: ['Tap a fridge to open it.', 'Add a fridge: type a name, pick an illustration or set your own photo.'],
+        states: ['No fridges yet: only an inviting “Add fridge”.'],
+        ac: ['Two fridges with different names and images show as two distinct cards.', 'Both an illustration and an own photo work as a fridge image.', 'Photos and containers in one fridge never appear in the other.'] },
+      { h: '2 · Fridge View', src: 'scope.md > Inspiration & Identity',
+        see: ['The latest photo, like a map, with a pin on every container the app saw.', 'The Unseen Shelf right below the photo.', 'Actions: Add photo, View as list.'],
+        doo: ['Glance at ages; tap a pin; add a new photo.'],
+        states: ['No photos yet: an invitation to add the first photo, not an empty map.'],
+        ac: ['Opening a fridge with photos shows its latest photo with pins.'] },
+      { h: '3 · Add Photo', src: 'scope.md > What the Date Means',
+        see: ['The photo, with its date and time already filled in.'],
+        doo: ['Take a photo in the app, or upload one.', 'Change the date and time if needed, then start matching.'],
+        states: ['Taken in the app → capture time.', 'Uploaded → the timestamp stored in the photo.', 'No stored timestamp → the current time.'],
+        ac: ['An uploaded photo from an earlier day shows that day’s date and time.', 'A photo with no stored timestamp shows the current time.', 'A changed date/time becomes the photo’s date everywhere (ages, timeline).'] },
+      { h: '4 · Matching — reminders', src: 'learner addition',
+        see: ['Easy-to-read reminders from this fridge’s history, e.g. “These are your oldest containers.” or “You refill these often, but it’s been a while since their last refill.”'],
+        doo: ['Nothing — just wait; the pins arrive next.'],
+        states: ['First photo, no history: something sensible, never an empty space.', 'Photo can’t be read (no containers found, or matching fails): like an ID-card scanner, a few check prompts (“Is the photo blurry?”), then retake or upload another.', 'Still fails after that: the technology isn’t good enough for that photo. The app says so plainly; the photo isn’t added and nothing changes (low-stakes assumption).'],
+        ac: ['With history present, at least one reminder appears and names real containers from this fridge.', 'With no history, the waiting screen still shows something sensible.', 'A deliberately blurry photo leads to the check prompts and a retake/upload choice, not a crash or an empty map.', 'A failed photo leaves the existing pins, list, and dates unchanged.'] },
+      { h: '5 · Pins & Unseen Shelf', src: 'scope.md > The Unique Kernel',
+        see: ['A pin on each container with a short age tooltip; tooltips never overlap.', 'Matched containers keep their date; unmatched ones start at the photo’s date.', 'Containers not found in this photo sit on the shelf, each with its clearest earlier crop (or a default image).'],
+        doo: ['Glance. If everything’s right, you’re done.'],
+        states: ['The app does not guess refills — matching is its whole job.', 'First photo: every container is new, with no questions — they’re being registered for the first time.'],
+        ac: ['On a later day’s real photo, previously seen containers show their original age, not 0 days.', 'A container pushed to the back with only its lid showing gets a pin and keeps its date.', 'No two tooltips overlap on the demo photos.', 'A container missing from the latest photo appears on the shelf with its clearest crop.'] },
+      { h: '6 · One-tap Fixes', src: 'scope.md > The POC Boundary (Correct a mistake, Refilled)',
+        see: ['Tap a pin: its crop, age, date, and few most recent history entries.'],
+        doo: ['Refilled — resets the date, keeps the container.', 'This is a new container — splits it off, dated to this photo.', 'This is the same container as… — pick from pins on the most recent earlier photo where it’s clearly visible, or switch to a crop list.', 'On the shelf: Still there (keeps its dates and list spot) / Removed (leaves the fridge, logged).'],
+        states: ['Shelf item left untouched: stays in the list with its date until you tap or it’s seen again (assumption, can wait).'],
+        ac: ['Each fix is one tap (plus one pick for “same as…”), and the age updates right away.', 'After Refilled, the history shows a Refilled entry and the age restarts.', 'After “same as…”, the container shows the picked one’s original date.', 'Still there keeps its date in the list; Removed takes it off the shelf and list and logs it.'] },
+      { h: '7 · View as List', src: 'scope.md > Inspiration & Identity (view as list)',
+        see: ['Every current container, oldest first: crop, age, date.'],
+        doo: ['Tap a row for the same detail as a pin.'],
+        states: ['Still-there containers are listed with their dates.'],
+        ac: ['List order matches the pin ages, oldest at the top.', 'Containers marked Still there appear with their dates.'] },
+      { h: '8 · Timelines', src: 'scope.md > The POC Boundary (Timeline)',
+        see: ['Container Timeline: every crop with date and time, and every action — added, refilled, corrected, still there, removed.', 'Fridge Timeline (each fridge’s button on the Fridge List): everything that happened in that fridge, opened without going into it first.'],
+        doo: ['Scroll back through what happened.'],
+        states: [],
+        ac: ['After a demo run (several photos, one refill, one correction, one removal), the container timeline shows each with its date and time.', 'Each fridge’s timeline button opens that fridge’s history, with only its entries.'] }
+    ],
+    look: [['Inside a fridge', 'Clean and tidy, like a map app. The photo is the focus; pins and tooltips are small, legible, never overlapping.'], ['Everywhere else', 'Round and cute, in the spirit of Cooking Mama: rounded shapes and friendly fridge illustrations. English UI.']],
+    groups: [
+      { name: 'Building now', color: 'var(--now)', items: ['Several fridges: typed name + illustration or own photo', 'Add a photo (camera or upload) with an automatic, changeable date', 'Reminders while matching', 'Photo check and retake when a photo can’t be read', 'Automatic matching across photos, incl. the lid-only case', 'Pins with non-overlapping age tooltips', 'Container detail + one-tap fixes (Refilled / New / Same as…)', 'Unseen Shelf with Still there / Removed', 'View as list, oldest first', 'Container Timeline, and each fridge’s timeline from the Fridge List'] },
+      { name: 'Deferred', color: 'var(--later)', items: ['Settings + choosing the start screen <em>— convenience, not proof</em>', 'Editing any event’s time, and several at once <em>— the photo date covers the demo</em>', 'Your own image for a shelf item <em>— crops and a default are enough</em>', 'Showing the match rate in the demo <em>— test first, then decide</em>'] },
+      { name: 'Non-goals', color: 'var(--cut)', items: ['Typing or labeling containers <em>— the core promise</em>', 'Guessing what’s inside <em>— the camera can’t see in</em>', 'Automatic refill detection <em>— you tap Refilled</em>', 'Login, accounts, multiple users <em>— cut in scope</em>', '“Throw this out” notifications <em>— cut in scope</em>'] }
+    ],
+    decisions: ['The app matches; you decide. A container that disappears and returns is not assumed refilled.', 'Matches apply automatically; any correction is one tap.', 'Missing containers go to a visible Unseen Shelf with Still there / Removed — mirroring the buttons for newly seen ones.', 'Photo date: capture time → stored timestamp → current time, always changeable before matching.', 'Fridge names are typed — “no typing” is about containers.', 'Two tones: a clean map inside a fridge, Cooking Mama everywhere else.', 'Each fridge’s timeline opens from the Fridge List, so you don’t open each fridge.', 'First photo = all new containers; otherwise you’d have to set every first-seen time.', 'A photo that can’t be read gets an ID-scanner-style check and a retake; if it still fails, the app doesn’t work around it.'],
+    open: [
+      ['wait', 'Can wait', 'Exactly which earlier photo the “same as…” pin picker opens on.'],
+      ['wait', 'Can wait', 'Shelf items left untouched: treated like Still there until you tap or they’re seen again.']
+    ],
+    feedback: ['The journey closes: open → photo → pins → fix → list, and every “the app might be wrong” moment now has a button. The Still there / Removed shelf is a sharp move — it answers the open question in scope without making the app guess.', 'Most criteria are checkable on your real photos. The lid-only container is the one that proves the idea, so it is written as its own check.', 'The now list is still the biggest risk: illustrations, reminders, two timelines, and a crop-list picker all sit next to the matching itself. The failure case now has a plan (check, retake, then honest give-up), so a blurry photo in a live demo won’t stall it. The two open items left can wait for the build.']
+  },
+  ko: {
+    title: 'Leftover Clock PRD', toggle: 'English',
+    status: 'PRD · 승인됨',
+    lede: '냉장고 속 반찬통이 각각 며칠째인지 냉장고 사진만으로 알려 줍니다. 용기에 이름을 쓰거나 라벨을 붙이지 않습니다.',
+    h_expand: '스코프에서 제품으로', h_journey: '핵심 여정', h_look: '룩 앤드 필',
+    h_boundary: '지금 만드는 것과 미루는 것', h_decisions: '직접 내린 제품 결정',
+    h_open: '열린 질문', h_feedback: '솔직한 피드백',
+    caption: '상자를 누르거나 아래에서 단계별로 넘겨 보세요. 점선 상자는 곁가지 화면이고, 주황 점선 화살표는 한 번 탭 수정이 핀에 반영되는 흐름입니다.',
+    prev: '← 이전', next: '다음 →',
+    see: '보이는 것', doo: '하는 것', states: '상태와 만약에', ac: '되는지 확인하는 기준',
+    footer: '기준 문서는 devpost/prd.md입니다. 이 페이지는 시각 보조 자료이며, PRD가 바뀌면 다시 만듭니다.',
+    expand: [
+      ['스코프에는 “실수는 한 번 탭으로 고친다”라고만 있었습니다.', '이제 그 뜻이 정확해졌습니다. 매칭 결과는 자동으로 적용되고, 모든 용기에 한 번 탭 답이 있습니다. Refilled, This is a new container, This is the same container as…(앞 사진의 핀이나 crop 목록에서 고름)입니다. 사진에서 못 찾은 용기는 Unseen Shelf에 놓이고 Still there / Removed 버튼이 붙습니다.'],
+      ['스코프에는 “사라졌다 돌아온 용기를 refill로 볼까?”가 열려 있었습니다.', '이렇게 정했습니다. 앱은 추측하지 않습니다. 매칭만 하고, 판단은 사용자가 탭으로 내립니다.']
+    ],
+    nodes: [
+      ['냉장고 목록', '귀여운 카드'], ['냉장고 화면', '사진 + 핀 + 선반'], ['사진 추가', '날짜 자동 입력'],
+      ['매칭 중', '기다리는 동안 리마인더'], ['핀과 선반', '나이 · 안 보인 선반'], ['한 번 탭 수정', '상세 · 선반 버튼'],
+      ['목록으로 보기', '오래된 순'], ['냉장고 타임라인', '냉장고 목록의 버튼'], ['용기 타임라인', '상세에서']
+    ],
+    steps: [
+      { h: '1 · 냉장고 목록', src: 'scope.md > The POC Boundary (Multiple fridges)',
+        see: ['둥글고 귀여운 화면에 냉장고마다 카드가 있습니다. 카드에는 이미지와 이름이 보입니다.', '이미지는 여러 냉장고 일러스트 중 고른 것이거나 내 사진입니다.', '냉장고마다 그 냉장고 타임라인을 여는 버튼이 있습니다.'],
+        doo: ['냉장고를 탭해서 엽니다.', '냉장고 추가: 이름을 입력하고, 일러스트를 고르거나 내 사진을 지정합니다.'],
+        states: ['냉장고가 아직 없음: 반겨 주는 “냉장고 추가”만 보입니다.'],
+        ac: ['이름과 이미지가 다른 냉장고 둘을 만들면 서로 다른 카드 둘이 보인다.', '일러스트와 내 사진 둘 다 냉장고 이미지로 쓸 수 있다.', '한 냉장고의 사진과 용기는 다른 냉장고에 절대 나타나지 않는다.'] },
+      { h: '2 · 냉장고 화면', src: 'scope.md > Inspiration & Identity',
+        see: ['최신 사진이 지도처럼 펼쳐지고, 앱이 찾은 용기마다 핀이 꽂혀 있습니다.', '사진 바로 아래에 Unseen Shelf가 있습니다.', '사진 추가, 목록으로 보기 버튼이 있습니다.'],
+        doo: ['나이를 훑어보고, 핀을 탭하고, 새 사진을 추가합니다.'],
+        states: ['사진이 아직 없음: 빈 지도 대신 첫 사진을 추가하라는 안내가 보입니다.'],
+        ac: ['사진이 있는 냉장고를 열면 최신 사진과 핀이 보인다.'] },
+      { h: '3 · 사진 추가', src: 'scope.md > What the Date Means',
+        see: ['사진과 함께 날짜·시각이 미리 채워져 있습니다.'],
+        doo: ['앱에서 찍거나 기존 사진을 올립니다.', '필요하면 날짜·시각을 바꾼 뒤 매칭을 시작합니다.'],
+        states: ['앱에서 찍음 → 찍은 시각.', '올림 → 사진에 저장된 timestamp.', '저장된 timestamp 없음 → 현재 시각.'],
+        ac: ['예전 날 찍은 사진을 올리면 그날의 날짜·시각이 보인다.', 'timestamp가 없는 사진은 현재 시각이 보인다.', '바꾼 날짜·시각이 모든 곳(나이, 타임라인)에서 그 사진의 날짜가 된다.'] },
+      { h: '4 · 매칭 중 — 리마인더', src: '학습자 추가 항목',
+        see: ['이 냉장고 기록에서 뽑은, 한눈에 읽히는 리마인더가 보입니다. 예: “These are your oldest containers.”, “You refill these often, but it’s been a while since their last refill.”'],
+        doo: ['기다리기만 하면 됩니다. 다음으로 핀이 뜹니다.'],
+        states: ['첫 사진이라 기록이 없음: 빈 공간 대신 무언가 적절한 것을 보여 줍니다.', '사진을 못 읽음(용기를 하나도 못 찾았거나 매칭 실패): 신분증 스캔처럼 확인 문구 몇 개(“Is the photo blurry?”)를 보여 주고, 다시 찍거나 다른 사진을 올리게 합니다.', '그래도 실패: 그 사진에는 기술이 못 미치는 것입니다. 앱은 그 사실을 솔직하게 알리고, 사진은 추가되지 않으며 아무것도 바뀌지 않습니다(영향이 작은 가정).'],
+        ac: ['기록이 있으면 리마인더가 하나 이상 뜨고, 이 냉장고의 실제 용기를 가리킨다.', '기록이 없어도 대기 화면에 적절한 것이 보인다.', '일부러 흐리게 찍은 사진을 넣으면 오류나 빈 지도 대신 확인 문구와 다시 찍기/다른 사진 선택이 나온다.', '실패한 사진은 기존 핀, 목록, 날짜를 바꾸지 않는다.'] },
+      { h: '5 · 핀과 Unseen Shelf', src: 'scope.md > The Unique Kernel',
+        see: ['용기마다 핀이 있고, 나이를 보여 주는 짧은 툴팁이 붙습니다. 툴팁은 서로 겹치지 않습니다.', '매칭된 용기는 날짜를 유지하고, 매칭이 안 된 용기는 이 사진 날짜에서 시작합니다.', '이번 사진에서 못 찾은 용기는 선반에 놓이고, 가장 선명했던 예전 crop(없으면 기본 이미지)으로 보입니다.'],
+        doo: ['훑어봅니다. 다 맞으면 끝입니다.'],
+        states: ['앱은 refill을 추측하지 않습니다. 매칭이 앱이 하는 일의 전부입니다.', '첫 사진: 처음 등록하는 것이므로 묻지 않고 모든 용기를 새 용기로 처리합니다.'],
+        ac: ['다른 날 찍은 실제 사진에서, 전에 본 용기는 0일이 아니라 원래 나이로 보인다.', '뒤로 밀려 뚜껑만 보이는 용기도 핀이 붙고 날짜가 유지된다.', '데모 사진에서 툴팁 두 개가 겹치는 일이 없다.', '최신 사진에 없는 용기는 가장 선명한 crop으로 선반에 보인다.'] },
+      { h: '6 · 한 번 탭 수정', src: 'scope.md > The POC Boundary (Correct a mistake, Refilled)',
+        see: ['핀을 탭하면 crop, 나이, 날짜, 최근 기록 몇 개가 보입니다.'],
+        doo: ['Refilled: 날짜를 새로 시작하고 용기는 그대로 둡니다.', 'This is a new container: 이 사진 날짜의 새 용기로 떼어 냅니다.', 'This is the same container as…: 그 용기가 선명하게 보이는 가장 최근 앞 사진의 핀에서 고르거나, crop 목록으로 바꿔서 고릅니다.', '선반에서: Still there(날짜와 목록 자리 유지) / Removed(냉장고에서 빠지고 기록에 남음).'],
+        states: ['선반의 용기를 그대로 두면: 탭하거나 다시 보일 때까지 날짜를 유지한 채 목록에 남습니다(가정, 나중에 정해도 됨).'],
+        ac: ['수정은 각각 한 번 탭(“same as…”는 고르기 한 번 추가)이고, 나이가 바로 바뀐다.', 'Refilled 뒤에는 기록에 Refilled가 남고 나이가 다시 시작된다.', '“same as…” 뒤에는 고른 용기의 원래 날짜가 보인다.', 'Still there는 목록에서 날짜를 유지하고, Removed는 선반과 목록에서 빠지며 기록에 남는다.'] },
+      { h: '7 · 목록으로 보기', src: 'scope.md > Inspiration & Identity (view as list)',
+        see: ['지금 있는 모든 용기를 오래된 순으로 보여 줍니다. crop, 나이, 날짜가 나옵니다.'],
+        doo: ['행을 탭하면 핀과 같은 상세 화면이 열립니다.'],
+        states: ['Still there 용기도 날짜와 함께 목록에 나옵니다.'],
+        ac: ['목록 순서가 핀의 나이와 맞고, 가장 오래된 것이 맨 위에 있다.', 'Still there로 처리한 용기가 날짜와 함께 나온다.'] },
+      { h: '8 · 타임라인', src: 'scope.md > The POC Boundary (Timeline)',
+        see: ['용기 타임라인: 모든 crop과 날짜·시각, 그리고 추가·refill·수정·still there·제거 같은 모든 행동이 나옵니다.', '냉장고 타임라인(냉장고 목록에서 냉장고마다 있는 버튼): 그 냉장고에서 일어난 모든 일을, 냉장고에 들어가지 않고 바로 봅니다.'],
+        doo: ['지난 일을 거슬러 봅니다.'],
+        states: [],
+        ac: ['데모 한 바퀴(사진 여러 장, refill 1, 수정 1, 제거 1) 뒤에 용기 타임라인에 각각이 날짜·시각과 함께 보인다.', '냉장고마다 있는 타임라인 버튼을 누르면 그 냉장고의 기록만 보인다.'] }
+    ],
+    look: [['냉장고 안', '지도 앱처럼 깔끔하고 정돈된 느낌입니다. 사진이 주인공이고, 핀과 툴팁은 작고 잘 읽히며 겹치지 않습니다.'], ['나머지 화면', 'Cooking Mama처럼 둥글고 귀엽습니다. 둥근 모양과 친근한 냉장고 일러스트를 씁니다. UI는 영어입니다.']],
+    groups: [
+      { name: '지금 만드는 것', color: 'var(--now)', items: ['냉장고 여러 대: 이름 입력 + 일러스트 또는 내 사진', '사진 추가(촬영 또는 업로드), 날짜는 자동으로 채우고 바꿀 수 있음', '매칭 중 리마인더', '사진을 못 읽을 때 확인 문구와 다시 찍기', '사진 간 자동 매칭(뚜껑만 보이는 경우 포함)', '겹치지 않는 나이 툴팁이 달린 핀', '용기 상세 + 한 번 탭 수정(Refilled / New / Same as…)', 'Still there / Removed가 있는 Unseen Shelf', '목록으로 보기(오래된 순)', '용기 타임라인, 그리고 냉장고 목록에서 여는 냉장고별 타임라인'] },
+      { name: '미루는 것', color: 'var(--later)', items: ['Settings + 시작 화면 선택 <em>— 편의 기능이지 증명이 아님</em>', '모든 이벤트 시각 수정과 일괄 수정 <em>— 데모는 사진 날짜로 충분함</em>', '선반 용기에 내 이미지 올리기 <em>— crop과 기본 이미지로 충분함</em>', '데모에서 매칭률 보여 주기 <em>— 먼저 테스트하고 결정</em>'] },
+      { name: '하지 않는 것', color: 'var(--cut)', items: ['용기에 이름 입력·라벨 붙이기 <em>— 핵심 약속</em>', '안에 든 음식 추측 <em>— 카메라로 안이 안 보임</em>', 'refill 자동 감지 <em>— 사용자가 Refilled를 탭함</em>', '로그인·계정·여러 사용자 <em>— 스코프에서 뺌</em>', '“버리세요” 알림 <em>— 스코프에서 뺌</em>'] }
+    ],
+    decisions: ['앱은 매칭만 하고 판단은 사용자가 합니다. 사라졌다 돌아온 용기를 refill로 가정하지 않습니다.', '매칭 결과는 자동으로 적용되고, 수정은 무엇이든 한 번 탭입니다.', '안 보인 용기는 눈에 보이는 Unseen Shelf에 Still there / Removed와 함께 놓입니다. 새로 보인 용기의 버튼과 짝을 이룹니다.', '사진 날짜는 찍은 시각 → 저장된 timestamp → 현재 시각 순으로 정하고, 매칭 전에 언제든 바꿀 수 있습니다.', '냉장고 이름은 입력합니다. “타이핑 없음”은 용기에 대한 원칙입니다.', '두 가지 톤: 냉장고 안은 깔끔한 지도, 나머지는 Cooking Mama.', '냉장고별 타임라인은 냉장고 목록의 버튼으로 엽니다. 냉장고마다 들어가 볼 필요가 없게 하려는 것입니다.', '첫 사진은 전부 새 용기로 처리합니다. 그렇지 않으면 first-seen 시각을 하나하나 다 정해야 합니다.', '사진을 못 읽으면 신분증 스캔처럼 확인하고 다시 찍게 합니다. 그래도 실패하면 앱이 억지로 우회하지 않습니다.'],
+    open: [
+      ['wait', '나중에', '“same as…” 핀 고르기가 정확히 어느 앞 사진으로 열리는지.'],
+      ['wait', '나중에', '선반 용기를 그대로 두면, 탭하거나 다시 보일 때까지 Still there처럼 다루는지.']
+    ],
+    feedback: ['여정이 닫혔습니다. 열기 → 사진 → 핀 → 수정 → 목록으로 이어지고, “앱이 틀릴 수 있는” 순간마다 버튼이 있습니다. Still there / Removed 선반은 날카로운 수입니다. 앱에게 추측을 시키지 않고도 스코프의 열린 질문에 답했습니다.', '기준 대부분은 실제 사진으로 확인할 수 있습니다. 아이디어를 증명하는 것은 뚜껑만 보이는 용기라서, 그것을 별도 확인 항목으로 적었습니다.', '가장 큰 위험은 여전히 “지금” 목록의 크기입니다. 일러스트, 리마인더, 타임라인 두 개, crop 목록 고르기가 매칭 자체와 나란히 있습니다. 실패 상황은 이제 계획이 있습니다(확인 → 다시 찍기 → 솔직하게 포기). 라이브 데모에서 흐린 사진이 나와도 멈추지 않습니다. 남은 열린 질문 둘은 빌드 중에 정해도 됩니다.']
+  }
+};
+
+// node index -> step index; positions [x, y, side]
+var POS = [[20,110],[260,110],[500,110],[500,230],[260,230],[20,230],[260,350],[20,10,1],[20,350,1]];
+var NODE_STEP = [0,1,2,3,4,5,6,7,7];
+var lang = 'en', cur = 0;
+
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+function drawDiagram() {
+  var L = T[lang], W = 200, H = 64, out = [];
+  out.push('<svg viewBox="0 0 720 430" role="img" aria-label="' + esc(L.h_journey) + '">');
+  out.push('<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker>' +
+           '<marker id="ahf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker></defs>');
+  var arrows = ['M220 142H256','M460 142H496','M600 174V226','M500 262H464','M260 262H224','M360 294V346','M120 110V78','M120 294V346'];
+  arrows.forEach(function (d) { out.push('<path class="arrow" d="' + d + '"/>'); });
+  out.push('<path class="arrow fix" d="M170 230C170 200 300 200 330 226"/>');
+  POS.forEach(function (p, i) {
+    var cls = 'node' + (p[2] ? ' side' : '') + (NODE_STEP[i] === cur ? ' on' : '');
+    var num = i < 7 ? (i + 1) + '' : '8';
+    out.push('<g class="' + cls + '" tabindex="0" role="button" data-step="' + NODE_STEP[i] + '">' +
+      '<rect class="box" x="' + p[0] + '" y="' + p[1] + '" width="' + W + '" height="' + H + '" rx="14"/>' +
+      '<text class="n" x="' + (p[0] + 12) + '" y="' + (p[1] + 24) + '">' + num + '</text>' +
+      '<text class="t" x="' + (p[0] + 28) + '" y="' + (p[1] + 25) + '">' + esc(L.nodes[i][0]) + '</text>' +
+      '<text class="s" x="' + (p[0] + 28) + '" y="' + (p[1] + 46) + '">' + esc(L.nodes[i][1]) + '</text></g>');
+  });
+  out.push('</svg>');
+  var box = document.getElementById('diagram');
+  box.innerHTML = out.join('');
+  box.querySelectorAll('.node').forEach(function (g) {
+    var go = function () { show(+g.getAttribute('data-step')); };
+    g.addEventListener('click', go);
+    g.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+  });
+}
+
+function list(items, checkable) {
+  if (!items.length) return '';
+  return (checkable ? '<ul class="ac">' : '<ul>') + items.map(function (it) {
+    if (typeof it === 'object') {
+      return it.a ? '<li class="assume">' + esc(it.a) + '</li>' : '<li class="openq">' + esc(it.o) + '</li>';
+    }
+    return checkable ? '<li><label><input type="checkbox"><span>' + esc(it) + '</span></label></li>' : '<li>' + esc(it) + '</li>';
+  }).join('') + '</ul>';
+}
+
+function show(i) {
+  var L = T[lang], s = L.steps[i];
+  cur = i;
+  document.getElementById('step').innerHTML =
+    '<h3>' + esc(s.h) + '</h3><p class="src">' + esc(s.src) + '</p>' +
+    '<h4>' + L.see + '</h4>' + list(s.see) +
+    '<h4>' + L.doo + '</h4>' + list(s.doo) +
+    (s.states.length ? '<h4>' + L.states + '</h4>' + list(s.states) : '') +
+    '<h4>' + L.ac + '</h4>' + list(s.ac, true);
+  document.getElementById('prev').disabled = i === 0;
+  document.getElementById('next').disabled = i === L.steps.length - 1;
+  document.querySelectorAll('#dots span').forEach(function (d, k) { d.className = k === i ? 'on' : ''; });
+  document.querySelectorAll('#diagram .node').forEach(function (g) {
+    g.classList.toggle('on', +g.getAttribute('data-step') === i);
+  });
+}
+
+function render() {
+  var L = T[lang];
+  document.documentElement.lang = lang;
+  document.title = L.title;
+  document.getElementById('lang-toggle').textContent = L.toggle;
+  document.querySelectorAll('[data-t]').forEach(function (el) { el.textContent = L[el.getAttribute('data-t')]; });
+  document.getElementById('prev').textContent = L.prev;
+  document.getElementById('next').textContent = L.next;
+  document.getElementById('expand').innerHTML = L.expand.map(function (e) {
+    return '<p class="was">' + esc(e[0]) + '</p><p>' + esc(e[1]) + '</p>';
+  }).join('');
+  document.getElementById('dots').innerHTML = L.steps.map(function () { return '<span></span>'; }).join('');
+  document.querySelectorAll('#dots span').forEach(function (d, k) { d.addEventListener('click', function () { show(k); }); });
+  document.getElementById('look').innerHTML = L.look.map(function (c) {
+    return '<div class="card"><h3>' + esc(c[0]) + '</h3><p>' + esc(c[1]) + '</p></div>';
+  }).join('');
+  document.getElementById('boundary').innerHTML = L.groups.map(function (g, k) {
+    return '<details' + (k === 0 ? ' open' : '') + '><summary><span class="dot" style="background:' + g.color + '"></span>' +
+      esc(g.name) + ' <span class="count">' + g.items.length + '</span></summary><ul>' +
+      g.items.map(function (it) { return '<li>' + it + '</li>'; }).join('') + '</ul></details>';
+  }).join('');
+  document.getElementById('decisions').innerHTML = L.decisions.map(function (d) { return '<li>' + esc(d) + '</li>'; }).join('');
+  document.getElementById('open').innerHTML = L.open.map(function (o) {
+    return '<div class="oq"><span class="tag ' + o[0] + '">' + esc(o[1]) + '</span><span>' + esc(o[2]) + '</span></div>';
+  }).join('');
+  document.getElementById('feedback').innerHTML = L.feedback.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('');
+  drawDiagram();
+  show(cur);
+  try { localStorage.setItem('prd-lang', lang); } catch (e) {}
+}
+
+document.getElementById('prev').addEventListener('click', function () { if (cur > 0) show(cur - 1); });
+document.getElementById('next').addEventListener('click', function () { if (cur < T[lang].steps.length - 1) show(cur + 1); });
+document.getElementById('lang-toggle').addEventListener('click', function () { lang = lang === 'ko' ? 'en' : 'ko'; render(); });
+try { lang = localStorage.getItem('prd-lang') || 'en'; } catch (e) {}
+if (!T[lang]) lang = 'en';
+render();
+</script>
+</body>
+</html>
