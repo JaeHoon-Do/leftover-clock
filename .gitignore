@@ -15,3 +15,6 @@ next-env.d.ts
 
 # development record/replay of Gemini responses
 /.cache/
+
+# real fridge photos (GPS, brand labels): never published
+/leftover-clock-photos/

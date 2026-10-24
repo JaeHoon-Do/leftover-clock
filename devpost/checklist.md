@@ -15,7 +15,7 @@ Build mode: fast
   PRD ref: `prd.md > Matching and Pins`
   Spec ref: `spec.md > Matching Server Routes`, `spec.md > Evaluation Harness`, `spec.md > Gemini API`, `spec.md > Stack`, `spec.md > File Structure`, `spec.md > Verify early in the build` (model choice)
   Build: Scaffold Next.js 16 + TypeScript with pinned versions; add `@google/genai`, `tsx`. Write `server/gemini.ts` (step 1 map prompt with "position is weak evidence", step 2 search prompt with claimed boxes, JSON schemas, retry + fallback model, returned model name). Write `eval/run-eval.ts` (box overlap alignment, the five counts, a table per pair plus totals, raw output to `eval/results/`). Convert the confirmed `정답지.md` for 0661 → 0674 into `eval/truth/0661_0674.json` (IDs, boxes, short descriptions only), and show the learner the converted key to confirm. Run on `gemini-3.6-flash` and `gemini-3.8-flash`, keep the better one as primary. If a 10/24 photo exists, draft its answer key the same way (matcher run + numbered boxes + learner confirms) and add it as a tuning pair.
-  Verify (mechanical): `npx tsx eval/run-eval.ts --photos D:/VisualStudio/leftover-clock-photos --pair eval/truth/0661_0674.json` exits 0 and prints the counts table; the totals add up to the containers in the key; a results file is written; `npm run build` passes.
+  Verify (mechanical): `npx tsx eval/run-eval.ts --pair eval/truth/0661_0674.json` (photos from the gitignored `leftover-clock-photos/`) exits 0 and prints the counts table; the totals add up to the containers in the key; a results file is written; `npm run build` passes.
   Learner check: Read the printed table for both models and say whether the numbers match what you saw in the photos (for example, which container was missed or wrongly linked), and which model you want as primary.
   Commit: `Add two-step Gemini matcher and match-rate evaluation`
 
@@ -81,7 +81,8 @@ Build mode: fast
 
 ## Hands-on Checkpoints
 
-- [ ] Early usable behavior explored — after slice 3 (the core loop on your real 10/22 → 10/23 photos, including the lid-only container)
+- [x] Early usable behavior explored — after slice 3 (the core loop on your real 10/22 → 10/23 photos, including the lid-only container)
+  Feedback: "Everything looks good" (tried the 10/22 and 10/23 photos and the blurry photo). Requested change: move the real photos folder into the project folder — done, gitignored.
 - [ ] Final kick-the-tires exploration and feedback completed
 
 ## Final Review

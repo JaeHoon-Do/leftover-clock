@@ -1,7 +1,7 @@
 // Match-rate evaluation: runs the app's own two-step matcher on real photo pairs
 // and compares it with a learner-confirmed answer key.
 //
-//   npx tsx eval/run-eval.ts --photos <folder> --pair eval/truth/<prev>_<next>.json [--pair …]
+//   npx tsx eval/run-eval.ts --pair eval/truth/<prev>_<next>.json [--pair …] [--photos <folder>]
 //        [--model gemini-3.6-flash --model gemini-3.8-flash] [--repeat 3] [--draw <folder>]
 //   npx tsx eval/run-eval.ts --rescore eval/results/<file>.json   (score saved predictions again, no API calls)
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -218,9 +218,10 @@ async function main() {
     return;
   }
   process.loadEnvFile(".env.local");
-  const photos = a.get("photos")?.[0];
+  // real photos stay in this gitignored folder: they carry GPS and brand labels
+  const photos = a.get("photos")?.[0] ?? "leftover-clock-photos";
   const pairs = a.get("pair") ?? [];
-  if (!photos || pairs.length === 0) throw new Error("usage: --photos <folder> --pair <truth.json> [--model <name>] [--draw <folder>]");
+  if (pairs.length === 0) throw new Error("usage: --pair <truth.json> [--photos <folder>] [--model <name>] [--repeat <n>] [--draw <folder>]");
   const results: PairResult[] = [];
   const repeat = Number(a.get("repeat")?.[0] ?? 1);
   for (const model of a.get("model") ?? [PRIMARY_MODEL]) {

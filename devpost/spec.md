@@ -173,7 +173,7 @@ Implements the learner's learning goal and `scope.md > Later` (decide on showing
 
   It prints one table per pair plus totals, and saves raw output to `eval/results/<timestamp>.json`.
 - **Tuning vs test (learner decision):** 10/22 and 10/23 photos (and the 10/24 photo) are for tuning prompts. The 10/25 and 10/26 photos are held out: they aren't looked at during prompt tuning, and they're measured once after the prompts are frozen. Those test numbers are the ones reported.
-- Photos stay outside the repo (`D:/VisualStudio/leftover-clock-photos`, passed with `--photos`), because they contain GPS and brand labels. Truth files contain only IDs, boxes, and short descriptions.
+- Photos live in `leftover-clock-photos/` inside the project folder but are gitignored, so they never reach the public repo, because they contain GPS and brand labels (learner decision, 2026-10-24: moved in from `D:/VisualStudio/leftover-clock-photos`). `--photos` defaults to that folder. Truth files contain only IDs, boxes, and short descriptions.
 
 ## Data Model
 All in IndexedDB (Dexie database `leftover-clock`, version 1). Box coordinates are `[ymin, xmin, ymax, xmax]`, normalized 0–1000 (Gemini's native format).
