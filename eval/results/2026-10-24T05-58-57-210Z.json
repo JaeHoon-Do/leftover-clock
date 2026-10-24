@@ -1,0 +1,2180 @@
+[
+ {
+  "pair": "0661_0674",
+  "model": "gemini-3.6-flash",
+  "modelsUsed": [
+   "gemini-3.6-flash",
+   "gemini-3.6-flash"
+  ],
+  "failures": [
+   "gemini-3.6-flash: 503"
+  ],
+  "ms": {
+   "map": 20640,
+   "search": 3105
+  },
+  "step1": {
+   "model": "gemini-3.6-flash",
+   "failures": [
+    "gemini-3.6-flash: 503"
+   ],
+   "containers": [
+    {
+     "box": [
+      471,
+      28,
+      567,
+      415
+     ],
+     "match": "c14",
+     "confidence": 0.95,
+     "desc": "black saucepan with handle and lid on left middle shelf"
+    },
+    {
+     "box": [
+      599,
+      267,
+      742,
+      495
+     ],
+     "match": "c24",
+     "confidence": 0.95,
+     "desc": "black cooking pot with transparent glass lid on lower shelf"
+    },
+    {
+     "box": [
+      468,
+      432,
+      517,
+      554
+     ],
+     "match": "c16",
+     "confidence": 0.9,
+     "desc": "clear container with bright pink lid middle shelf center"
+    },
+    {
+     "box": [
+      507,
+      427,
+      561,
+      542
+     ],
+     "match": null,
+     "confidence": 0.85,
+     "desc": "clear container with orange/yellow lid below pink lid container"
+    },
+    {
+     "box": [
+      439,
+      552,
+      528,
+      679
+     ],
+     "match": "c19",
+     "confidence": 0.9,
+     "desc": "square tub with light green lid middle shelf center right"
+    },
+    {
+     "box": [
+      522,
+      561,
+      571,
+      663
+     ],
+     "match": "c17",
+     "confidence": 0.85,
+     "desc": "small clear container with green-rimmed lid below green tub"
+    },
+    {
+     "box": [
+      452,
+      663,
+      513,
+      797
+     ],
+     "match": "c21",
+     "confidence": 0.9,
+     "desc": "round plastic container with orange/yellow lid"
+    },
+    {
+     "box": [
+      504,
+      663,
+      569,
+      795
+     ],
+     "match": null,
+     "confidence": 0.85,
+     "desc": "round container with pink lid stacked below yellow lid container"
+    },
+    {
+     "box": [
+      456,
+      792,
+      509,
+      936
+     ],
+     "match": "c22",
+     "confidence": 0.85,
+     "desc": "rectangular clear container with dark translucent lid right stack top"
+    },
+    {
+     "box": [
+      502,
+      792,
+      571,
+      940
+     ],
+     "match": "c23",
+     "confidence": 0.9,
+     "desc": "rectangular tub with green lid right stack bottom"
+    },
+    {
+     "box": [
+      313,
+      172,
+      386,
+      313
+     ],
+     "match": "c2",
+     "confidence": 0.9,
+     "desc": "green rectangular tub on upper left shelf"
+    },
+    {
+     "box": [
+      342,
+      303,
+      394,
+      433
+     ],
+     "match": "c3",
+     "confidence": 0.9,
+     "desc": "small clear container with reddish lid"
+    },
+    {
+     "box": [
+      283,
+      429,
+      338,
+      570
+     ],
+     "match": "c4",
+     "confidence": 0.9,
+     "desc": "clear plastic container upper shelf center"
+    },
+    {
+     "box": [
+      334,
+      435,
+      397,
+      573
+     ],
+     "match": "c5",
+     "confidence": 0.9,
+     "desc": "clear container stacked underneath c4 upper center"
+    },
+    {
+     "box": [
+      313,
+      562,
+      398,
+      706
+     ],
+     "match": "c6",
+     "confidence": 0.9,
+     "desc": "large green translucent tub top shelf"
+    },
+    {
+     "box": [
+      308,
+      686,
+      347,
+      794
+     ],
+     "match": "c7",
+     "confidence": 0.9,
+     "desc": "small rectangular tub with light lid stacked on top shelf"
+    },
+    {
+     "box": [
+      348,
+      683,
+      398,
+      790
+     ],
+     "match": "c8",
+     "confidence": 0.9,
+     "desc": "small container with pink lid under c7"
+    },
+    {
+     "box": [
+      308,
+      829,
+      393,
+      958
+     ],
+     "match": "c9",
+     "confidence": 0.95,
+     "desc": "rectangular clear container with green lid on top right"
+    },
+    {
+     "box": [
+      228,
+      868,
+      309,
+      951
+     ],
+     "match": "c10",
+     "confidence": 0.95,
+     "desc": "tall clear container with orange lid top right"
+    },
+    {
+     "box": [
+      226,
+      659,
+      315,
+      743
+     ],
+     "match": "c11",
+     "confidence": 0.9,
+     "desc": "tall clear jar with red lid top middle right"
+    },
+    {
+     "box": [
+      257,
+      755,
+      381,
+      868
+     ],
+     "match": "c12",
+     "confidence": 0.9,
+     "desc": "glass jar with metal lid behind container top right"
+    },
+    {
+     "box": [
+      666,
+      479,
+      747,
+      634
+     ],
+     "match": null,
+     "confidence": 0.85,
+     "desc": "translucent container with orange lid lower shelf middle"
+    },
+    {
+     "box": [
+      587,
+      597,
+      712,
+      793
+     ],
+     "match": "c26",
+     "confidence": 0.9,
+     "desc": "large round black bowl with lid lower shelf"
+    }
+   ]
+  },
+  "step2": {
+   "model": "gemini-3.6-flash",
+   "failures": [],
+   "found": [],
+   "notFound": [
+    "c1",
+    "c15",
+    "n1",
+    "c18",
+    "c25"
+   ]
+  },
+  "final": [
+   {
+    "box": [
+     471,
+     28,
+     567,
+     415
+    ],
+    "match": "c14",
+    "confidence": 0.95,
+    "desc": "black saucepan with handle and lid on left middle shelf",
+    "source": "match"
+   },
+   {
+    "box": [
+     599,
+     267,
+     742,
+     495
+    ],
+    "match": "c24",
+    "confidence": 0.95,
+    "desc": "black cooking pot with transparent glass lid on lower shelf",
+    "source": "match"
+   },
+   {
+    "box": [
+     308,
+     829,
+     393,
+     958
+    ],
+    "match": "c9",
+    "confidence": 0.95,
+    "desc": "rectangular clear container with green lid on top right",
+    "source": "match"
+   },
+   {
+    "box": [
+     228,
+     868,
+     309,
+     951
+    ],
+    "match": "c10",
+    "confidence": 0.95,
+    "desc": "tall clear container with orange lid top right",
+    "source": "match"
+   },
+   {
+    "box": [
+     468,
+     432,
+     517,
+     554
+    ],
+    "match": "c16",
+    "confidence": 0.9,
+    "desc": "clear container with bright pink lid middle shelf center",
+    "source": "match"
+   },
+   {
+    "box": [
+     439,
+     552,
+     528,
+     679
+    ],
+    "match": "c19",
+    "confidence": 0.9,
+    "desc": "square tub with light green lid middle shelf center right",
+    "source": "match"
+   },
+   {
+    "box": [
+     452,
+     663,
+     513,
+     797
+    ],
+    "match": "c21",
+    "confidence": 0.9,
+    "desc": "round plastic container with orange/yellow lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     502,
+     792,
+     571,
+     940
+    ],
+    "match": "c23",
+    "confidence": 0.9,
+    "desc": "rectangular tub with green lid right stack bottom",
+    "source": "match"
+   },
+   {
+    "box": [
+     313,
+     172,
+     386,
+     313
+    ],
+    "match": "c2",
+    "confidence": 0.9,
+    "desc": "green rectangular tub on upper left shelf",
+    "source": "match"
+   },
+   {
+    "box": [
+     342,
+     303,
+     394,
+     433
+    ],
+    "match": "c3",
+    "confidence": 0.9,
+    "desc": "small clear container with reddish lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     283,
+     429,
+     338,
+     570
+    ],
+    "match": "c4",
+    "confidence": 0.9,
+    "desc": "clear plastic container upper shelf center",
+    "source": "match"
+   },
+   {
+    "box": [
+     334,
+     435,
+     397,
+     573
+    ],
+    "match": "c5",
+    "confidence": 0.9,
+    "desc": "clear container stacked underneath c4 upper center",
+    "source": "match"
+   },
+   {
+    "box": [
+     313,
+     562,
+     398,
+     706
+    ],
+    "match": "c6",
+    "confidence": 0.9,
+    "desc": "large green translucent tub top shelf",
+    "source": "match"
+   },
+   {
+    "box": [
+     308,
+     686,
+     347,
+     794
+    ],
+    "match": "c7",
+    "confidence": 0.9,
+    "desc": "small rectangular tub with light lid stacked on top shelf",
+    "source": "match"
+   },
+   {
+    "box": [
+     348,
+     683,
+     398,
+     790
+    ],
+    "match": "c8",
+    "confidence": 0.9,
+    "desc": "small container with pink lid under c7",
+    "source": "match"
+   },
+   {
+    "box": [
+     226,
+     659,
+     315,
+     743
+    ],
+    "match": "c11",
+    "confidence": 0.9,
+    "desc": "tall clear jar with red lid top middle right",
+    "source": "match"
+   },
+   {
+    "box": [
+     257,
+     755,
+     381,
+     868
+    ],
+    "match": "c12",
+    "confidence": 0.9,
+    "desc": "glass jar with metal lid behind container top right",
+    "source": "match"
+   },
+   {
+    "box": [
+     587,
+     597,
+     712,
+     793
+    ],
+    "match": "c26",
+    "confidence": 0.9,
+    "desc": "large round black bowl with lid lower shelf",
+    "source": "match"
+   },
+   {
+    "box": [
+     507,
+     427,
+     561,
+     542
+    ],
+    "match": null,
+    "confidence": 0.85,
+    "desc": "clear container with orange/yellow lid below pink lid container",
+    "source": "new"
+   },
+   {
+    "box": [
+     522,
+     561,
+     571,
+     663
+    ],
+    "match": "c17",
+    "confidence": 0.85,
+    "desc": "small clear container with green-rimmed lid below green tub",
+    "source": "match"
+   },
+   {
+    "box": [
+     504,
+     663,
+     569,
+     795
+    ],
+    "match": null,
+    "confidence": 0.85,
+    "desc": "round container with pink lid stacked below yellow lid container",
+    "source": "new"
+   },
+   {
+    "box": [
+     456,
+     792,
+     509,
+     936
+    ],
+    "match": "c22",
+    "confidence": 0.85,
+    "desc": "rectangular clear container with dark translucent lid right stack top",
+    "source": "match"
+   },
+   {
+    "box": [
+     666,
+     479,
+     747,
+     634
+    ],
+    "match": null,
+    "confidence": 0.85,
+    "desc": "translucent container with orange lid lower shelf middle",
+    "source": "new"
+   }
+  ],
+  "truth": {
+   "prevPhoto": "IMG_0661.jpeg",
+   "nextPhoto": "IMG_0674.jpeg",
+   "note": "10/22 20:15 -> 10/23 23:44. Tuning pair. Confirmed by the learner (정답지.md); c1 and c25 boxes drawn by hand.",
+   "known": [
+    {
+     "id": "c1",
+     "box": [
+      326,
+      172,
+      355,
+      303
+     ],
+     "desc": "round green plastic container at the far left top"
+    },
+    {
+     "id": "c2",
+     "box": [
+      360,
+      215,
+      417,
+      340
+     ],
+     "desc": "small green lidded rectangular tub left of center"
+    },
+    {
+     "id": "c3",
+     "box": [
+      379,
+      336,
+      423,
+      458
+     ],
+     "desc": "small rectangular clear container with pink/red lid"
+    },
+    {
+     "id": "c4",
+     "box": [
+      318,
+      442,
+      369,
+      568
+     ],
+     "desc": "clear rectangular plastic container stacked above purple lid box"
+    },
+    {
+     "id": "c5",
+     "box": [
+      372,
+      452,
+      422,
+      570
+     ],
+     "desc": "clear plastic container with translucent grey/purple lid"
+    },
+    {
+     "id": "c6",
+     "box": [
+      356,
+      560,
+      428,
+      701
+     ],
+     "desc": "large green translucent tub with light green lid"
+    },
+    {
+     "id": "c7",
+     "box": [
+      355,
+      686,
+      386,
+      782
+     ],
+     "desc": "small rectangular tub with white translucent lid"
+    },
+    {
+     "id": "c8",
+     "box": [
+      384,
+      668,
+      425,
+      768
+     ],
+     "desc": "small rectangular container with bright pink lid stacked below white-lid tub"
+    },
+    {
+     "id": "c9",
+     "box": [
+      354,
+      784,
+      426,
+      903
+     ],
+     "desc": "rectangular clear container with green lid holding seeds"
+    },
+    {
+     "id": "c10",
+     "box": [
+      287,
+      797,
+      358,
+      876
+     ],
+     "desc": "tall clear plastic container with orange lid on top right"
+    },
+    {
+     "id": "c11",
+     "box": [
+      284,
+      650,
+      344,
+      725
+     ],
+     "desc": "tall glass jar with red lid behind front items"
+    },
+    {
+     "id": "c12",
+     "box": [
+      308,
+      735,
+      417,
+      804
+     ],
+     "desc": "glass jar with gold lid and label next to seeds container"
+    },
+    {
+     "id": "c14",
+     "box": [
+      471,
+      91,
+      573,
+      429
+     ],
+     "desc": "black saucepan with lid on left middle shelf"
+    },
+    {
+     "id": "c15",
+     "box": [
+      460,
+      373,
+      524,
+      508
+     ],
+     "desc": "dark rectangular plastic container behind saucepan"
+    },
+    {
+     "id": "n1",
+     "box": [
+      521,
+      429,
+      570,
+      538
+     ],
+     "desc": "clear container with white lid, middle shelf right of the black pot"
+    },
+    {
+     "id": "c16",
+     "box": [
+      482,
+      542,
+      537,
+      658
+     ],
+     "desc": "clear rectangular container with bright pink lid top of stack"
+    },
+    {
+     "id": "c17",
+     "box": [
+      538,
+      554,
+      579,
+      651
+     ],
+     "desc": "small clear container with green rim middle of pink-lid stack"
+    },
+    {
+     "id": "c18",
+     "box": [
+      523,
+      649,
+      582,
+      778
+     ],
+     "desc": "green rectangular tub at bottom of left stack"
+    },
+    {
+     "id": "c19",
+     "box": [
+      458,
+      653,
+      532,
+      774
+     ],
+     "desc": "translucent green-lidded square tub middle right"
+    },
+    {
+     "id": "c21",
+     "box": [
+      450,
+      786,
+      497,
+      922
+     ],
+     "desc": "translucent container with orange/yellow lid top right stack"
+    },
+    {
+     "id": "c22",
+     "box": [
+      492,
+      777,
+      532,
+      908
+     ],
+     "desc": "clear container middle of rightmost stack"
+    },
+    {
+     "id": "c23",
+     "box": [
+      524,
+      775,
+      582,
+      905
+     ],
+     "desc": "green-lidded rectangular tub at bottom right of middle shelf"
+    },
+    {
+     "id": "c24",
+     "box": [
+      566,
+      260,
+      740,
+      511
+     ],
+     "desc": "black cooking pot with transparent glass lid on lower shelf"
+    },
+    {
+     "id": "c25",
+     "box": [
+      671,
+      529,
+      722,
+      637
+     ],
+     "desc": "small white fluted ceramic bowl/ramekin with lid"
+    },
+    {
+     "id": "c26",
+     "box": [
+      576,
+      600,
+      715,
+      808
+     ],
+     "desc": "large round black takeout bowl with clear lid on lower shelf"
+    }
+   ],
+   "next": [
+    {
+     "box": [
+      311,
+      172,
+      388,
+      313
+     ],
+     "truth": "c2",
+     "desc": "bright green tub, top shelf left"
+    },
+    {
+     "box": [
+      337,
+      299,
+      394,
+      429
+     ],
+     "truth": "c3",
+     "desc": "clear tub, pink/red lid"
+    },
+    {
+     "box": [
+      283,
+      429,
+      345,
+      570
+     ],
+     "truth": "c4",
+     "desc": "clear tub stacked on top"
+    },
+    {
+     "box": [
+      339,
+      442,
+      396,
+      569
+     ],
+     "truth": "c5",
+     "desc": "clear tub, grey lid"
+    },
+    {
+     "box": [
+      309,
+      560,
+      396,
+      696
+     ],
+     "truth": "c6",
+     "desc": "large green translucent tub"
+    },
+    {
+     "box": [
+      308,
+      684,
+      347,
+      792
+     ],
+     "truth": "c7",
+     "desc": "small tub, white translucent lid"
+    },
+    {
+     "box": [
+      345,
+      682,
+      397,
+      788
+     ],
+     "truth": "c8",
+     "desc": "small box, bright pink lid"
+    },
+    {
+     "box": [
+      308,
+      829,
+      390,
+      955
+     ],
+     "truth": "c9",
+     "desc": "clear tall tub, green lid"
+    },
+    {
+     "box": [
+      230,
+      866,
+      309,
+      953
+     ],
+     "truth": "c10",
+     "desc": "tall tub, orange lid"
+    },
+    {
+     "box": [
+      226,
+      659,
+      314,
+      742
+     ],
+     "truth": "c11",
+     "desc": "tall glass jar, red lid"
+    },
+    {
+     "box": [
+      258,
+      750,
+      390,
+      858
+     ],
+     "truth": "c12",
+     "desc": "glass jar, gold lid"
+    },
+    {
+     "box": [
+      447,
+      21,
+      563,
+      420
+     ],
+     "truth": "c14",
+     "desc": "black saucepan with lid"
+    },
+    {
+     "box": [
+      426,
+      360,
+      502,
+      503
+     ],
+     "truth": "c15",
+     "desc": "dark box behind saucepan"
+    },
+    {
+     "box": [
+      465,
+      432,
+      517,
+      555
+     ],
+     "truth": "new",
+     "desc": "locking glass box, clear lid (where the banana tub was)"
+    },
+    {
+     "box": [
+      504,
+      427,
+      556,
+      532
+     ],
+     "truth": "new",
+     "desc": "orange-lid tub under it"
+    },
+    {
+     "box": [
+      438,
+      551,
+      526,
+      678
+     ],
+     "truth": "c19",
+     "desc": "square tub, light green lid"
+    },
+    {
+     "box": [
+      525,
+      559,
+      569,
+      663
+     ],
+     "truth": "c17",
+     "desc": "small tub under the green-lid square"
+    },
+    {
+     "box": [
+      454,
+      663,
+      510,
+      796
+     ],
+     "truth": "c21",
+     "desc": "round tub, yellow lid"
+    },
+    {
+     "box": [
+      504,
+      666,
+      567,
+      794
+     ],
+     "truth": "c16",
+     "desc": "tub, pink lid"
+    },
+    {
+     "box": [
+      457,
+      794,
+      507,
+      937
+     ],
+     "truth": "c22",
+     "desc": "tub, clear lid, right"
+    },
+    {
+     "box": [
+      503,
+      794,
+      568,
+      938
+     ],
+     "truth": "c23",
+     "desc": "green-lid tub, right bottom"
+    },
+    {
+     "box": [
+      595,
+      260,
+      742,
+      505
+     ],
+     "truth": "c24",
+     "desc": "black pot, glass lid"
+    },
+    {
+     "box": [
+      667,
+      478,
+      748,
+      638
+     ],
+     "truth": "new",
+     "desc": "square tub, orange rim, bottom shelf front"
+    },
+    {
+     "box": [
+      591,
+      597,
+      715,
+      788
+     ],
+     "truth": "c26",
+     "desc": "large round black takeout container"
+    },
+    {
+     "box": [
+      270,
+      190,
+      295,
+      260
+     ],
+     "truth": "c1",
+     "desc": "green lid edge under lettuce (mostly hidden)"
+    },
+    {
+     "box": [
+      588,
+      518,
+      622,
+      612
+     ],
+     "truth": "c25",
+     "desc": "white fluted round tub behind the seaweed bag (mostly hidden)"
+    }
+   ],
+   "absent": [
+    "n1",
+    "c18"
+   ]
+  }
+ },
+ {
+  "pair": "0661_0674",
+  "model": "gemini-3.6-flash",
+  "modelsUsed": [
+   "gemini-3.6-flash",
+   "gemini-3.6-flash"
+  ],
+  "failures": [
+   "gemini-3.6-flash: 429"
+  ],
+  "ms": {
+   "map": 7841,
+   "search": 6198
+  },
+  "step1": {
+   "model": "gemini-3.6-flash",
+   "failures": [],
+   "containers": [
+    {
+     "box": [
+      471,
+      9,
+      569,
+      420
+     ],
+     "match": "c14",
+     "confidence": 0.98,
+     "desc": "black saucepan with lid on left middle shelf"
+    },
+    {
+     "box": [
+      599,
+      263,
+      739,
+      502
+     ],
+     "match": "c24",
+     "confidence": 0.98,
+     "desc": "black cooking pot with transparent glass lid on lower shelf"
+    },
+    {
+     "box": [
+      313,
+      172,
+      388,
+      309
+     ],
+     "match": "c2",
+     "confidence": 0.95,
+     "desc": "small green rectangular container stacked on top shelf left"
+    },
+    {
+     "box": [
+      342,
+      301,
+      396,
+      431
+     ],
+     "match": "c3",
+     "confidence": 0.9,
+     "desc": "small clear container with red/pink lid top shelf"
+    },
+    {
+     "box": [
+      284,
+      430,
+      342,
+      570
+     ],
+     "match": "c4",
+     "confidence": 0.92,
+     "desc": "clear rectangular plastic container on top shelf"
+    },
+    {
+     "box": [
+      336,
+      442,
+      395,
+      571
+     ],
+     "match": "c5",
+     "confidence": 0.95,
+     "desc": "clear plastic container with translucent grey/purple lid top shelf center"
+    },
+    {
+     "box": [
+      312,
+      560,
+      397,
+      692
+     ],
+     "match": "c6",
+     "confidence": 0.95,
+     "desc": "large green translucent tub with light green lid top shelf"
+    },
+    {
+     "box": [
+      306,
+      686,
+      348,
+      788
+     ],
+     "match": "c7",
+     "confidence": 0.95,
+     "desc": "small rectangular tub with white translucent lid"
+    },
+    {
+     "box": [
+      348,
+      683,
+      396,
+      792
+     ],
+     "match": "c8",
+     "confidence": 0.95,
+     "desc": "small rectangular container with bright pink lid stacked below white-lid tub"
+    },
+    {
+     "box": [
+      308,
+      829,
+      391,
+      958
+     ],
+     "match": "c9",
+     "confidence": 0.95,
+     "desc": "rectangular clear container with green lid holding seeds"
+    },
+    {
+     "box": [
+      230,
+      868,
+      309,
+      951
+     ],
+     "match": "c10",
+     "confidence": 0.95,
+     "desc": "tall clear plastic container with orange lid on top right"
+    },
+    {
+     "box": [
+      226,
+      659,
+      318,
+      742
+     ],
+     "match": "c11",
+     "confidence": 0.95,
+     "desc": "tall glass jar with pink/red lid"
+    },
+    {
+     "box": [
+      466,
+      437,
+      513,
+      555
+     ],
+     "match": null,
+     "confidence": 0.9,
+     "desc": "small clear container with snap lid middle shelf center"
+    },
+    {
+     "box": [
+      504,
+      427,
+      555,
+      540
+     ],
+     "match": null,
+     "confidence": 0.9,
+     "desc": "small rectangular container with orange lid middle shelf center"
+    },
+    {
+     "box": [
+      440,
+      552,
+      526,
+      679
+     ],
+     "match": "c19",
+     "confidence": 0.95,
+     "desc": "translucent green-lidded square tub middle shelf"
+    },
+    {
+     "box": [
+      526,
+      558,
+      567,
+      668
+     ],
+     "match": "c17",
+     "confidence": 0.9,
+     "desc": "small clear container below square green tub"
+    },
+    {
+     "box": [
+      451,
+      661,
+      510,
+      796
+     ],
+     "match": "c21",
+     "confidence": 0.95,
+     "desc": "translucent container with yellow/orange lid middle shelf right"
+    },
+    {
+     "box": [
+      503,
+      666,
+      566,
+      796
+     ],
+     "match": "c16",
+     "confidence": 0.92,
+     "desc": "clear container with bright pink lid below orange lid box"
+    },
+    {
+     "box": [
+      456,
+      794,
+      509,
+      936
+     ],
+     "match": "c22",
+     "confidence": 0.9,
+     "desc": "clear container middle rightmost stack"
+    },
+    {
+     "box": [
+      503,
+      792,
+      568,
+      940
+     ],
+     "match": "c23",
+     "confidence": 0.95,
+     "desc": "green-lidded rectangular tub at bottom right of middle shelf"
+    },
+    {
+     "box": [
+      664,
+      480,
+      747,
+      634
+     ],
+     "match": null,
+     "confidence": 0.95,
+     "desc": "rectangular container with light orange lid on lower shelf center"
+    },
+    {
+     "box": [
+      591,
+      597,
+      712,
+      792
+     ],
+     "match": "c26",
+     "confidence": 0.95,
+     "desc": "large round black takeout bowl with clear lid on lower shelf"
+    }
+   ]
+  },
+  "step2": {
+   "model": "gemini-3.6-flash",
+   "failures": [
+    "gemini-3.6-flash: 429"
+   ],
+   "found": [
+    {
+     "id": "c12",
+     "box": [
+      257,
+      762,
+      391,
+      860
+     ],
+     "confidence": 0.98
+    }
+   ],
+   "notFound": [
+    "c1",
+    "c15",
+    "n1",
+    "c18",
+    "c25"
+   ]
+  },
+  "final": [
+   {
+    "box": [
+     471,
+     9,
+     569,
+     420
+    ],
+    "match": "c14",
+    "confidence": 0.98,
+    "desc": "black saucepan with lid on left middle shelf",
+    "source": "match"
+   },
+   {
+    "box": [
+     599,
+     263,
+     739,
+     502
+    ],
+    "match": "c24",
+    "confidence": 0.98,
+    "desc": "black cooking pot with transparent glass lid on lower shelf",
+    "source": "match"
+   },
+   {
+    "box": [
+     313,
+     172,
+     388,
+     309
+    ],
+    "match": "c2",
+    "confidence": 0.95,
+    "desc": "small green rectangular container stacked on top shelf left",
+    "source": "match"
+   },
+   {
+    "box": [
+     336,
+     442,
+     395,
+     571
+    ],
+    "match": "c5",
+    "confidence": 0.95,
+    "desc": "clear plastic container with translucent grey/purple lid top shelf center",
+    "source": "match"
+   },
+   {
+    "box": [
+     312,
+     560,
+     397,
+     692
+    ],
+    "match": "c6",
+    "confidence": 0.95,
+    "desc": "large green translucent tub with light green lid top shelf",
+    "source": "match"
+   },
+   {
+    "box": [
+     306,
+     686,
+     348,
+     788
+    ],
+    "match": "c7",
+    "confidence": 0.95,
+    "desc": "small rectangular tub with white translucent lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     348,
+     683,
+     396,
+     792
+    ],
+    "match": "c8",
+    "confidence": 0.95,
+    "desc": "small rectangular container with bright pink lid stacked below white-lid tub",
+    "source": "match"
+   },
+   {
+    "box": [
+     308,
+     829,
+     391,
+     958
+    ],
+    "match": "c9",
+    "confidence": 0.95,
+    "desc": "rectangular clear container with green lid holding seeds",
+    "source": "match"
+   },
+   {
+    "box": [
+     230,
+     868,
+     309,
+     951
+    ],
+    "match": "c10",
+    "confidence": 0.95,
+    "desc": "tall clear plastic container with orange lid on top right",
+    "source": "match"
+   },
+   {
+    "box": [
+     226,
+     659,
+     318,
+     742
+    ],
+    "match": "c11",
+    "confidence": 0.95,
+    "desc": "tall glass jar with pink/red lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     440,
+     552,
+     526,
+     679
+    ],
+    "match": "c19",
+    "confidence": 0.95,
+    "desc": "translucent green-lidded square tub middle shelf",
+    "source": "match"
+   },
+   {
+    "box": [
+     451,
+     661,
+     510,
+     796
+    ],
+    "match": "c21",
+    "confidence": 0.95,
+    "desc": "translucent container with yellow/orange lid middle shelf right",
+    "source": "match"
+   },
+   {
+    "box": [
+     503,
+     792,
+     568,
+     940
+    ],
+    "match": "c23",
+    "confidence": 0.95,
+    "desc": "green-lidded rectangular tub at bottom right of middle shelf",
+    "source": "match"
+   },
+   {
+    "box": [
+     664,
+     480,
+     747,
+     634
+    ],
+    "match": null,
+    "confidence": 0.95,
+    "desc": "rectangular container with light orange lid on lower shelf center",
+    "source": "new"
+   },
+   {
+    "box": [
+     591,
+     597,
+     712,
+     792
+    ],
+    "match": "c26",
+    "confidence": 0.95,
+    "desc": "large round black takeout bowl with clear lid on lower shelf",
+    "source": "match"
+   },
+   {
+    "box": [
+     284,
+     430,
+     342,
+     570
+    ],
+    "match": "c4",
+    "confidence": 0.92,
+    "desc": "clear rectangular plastic container on top shelf",
+    "source": "match"
+   },
+   {
+    "box": [
+     503,
+     666,
+     566,
+     796
+    ],
+    "match": "c16",
+    "confidence": 0.92,
+    "desc": "clear container with bright pink lid below orange lid box",
+    "source": "match"
+   },
+   {
+    "box": [
+     342,
+     301,
+     396,
+     431
+    ],
+    "match": "c3",
+    "confidence": 0.9,
+    "desc": "small clear container with red/pink lid top shelf",
+    "source": "match"
+   },
+   {
+    "box": [
+     466,
+     437,
+     513,
+     555
+    ],
+    "match": null,
+    "confidence": 0.9,
+    "desc": "small clear container with snap lid middle shelf center",
+    "source": "new"
+   },
+   {
+    "box": [
+     504,
+     427,
+     555,
+     540
+    ],
+    "match": null,
+    "confidence": 0.9,
+    "desc": "small rectangular container with orange lid middle shelf center",
+    "source": "new"
+   },
+   {
+    "box": [
+     526,
+     558,
+     567,
+     668
+    ],
+    "match": "c17",
+    "confidence": 0.9,
+    "desc": "small clear container below square green tub",
+    "source": "match"
+   },
+   {
+    "box": [
+     456,
+     794,
+     509,
+     936
+    ],
+    "match": "c22",
+    "confidence": 0.9,
+    "desc": "clear container middle rightmost stack",
+    "source": "match"
+   },
+   {
+    "box": [
+     257,
+     762,
+     391,
+     860
+    ],
+    "match": "c12",
+    "confidence": 0.98,
+    "desc": "",
+    "source": "search"
+   }
+  ],
+  "truth": {
+   "prevPhoto": "IMG_0661.jpeg",
+   "nextPhoto": "IMG_0674.jpeg",
+   "note": "10/22 20:15 -> 10/23 23:44. Tuning pair. Confirmed by the learner (정답지.md); c1 and c25 boxes drawn by hand.",
+   "known": [
+    {
+     "id": "c1",
+     "box": [
+      326,
+      172,
+      355,
+      303
+     ],
+     "desc": "round green plastic container at the far left top"
+    },
+    {
+     "id": "c2",
+     "box": [
+      360,
+      215,
+      417,
+      340
+     ],
+     "desc": "small green lidded rectangular tub left of center"
+    },
+    {
+     "id": "c3",
+     "box": [
+      379,
+      336,
+      423,
+      458
+     ],
+     "desc": "small rectangular clear container with pink/red lid"
+    },
+    {
+     "id": "c4",
+     "box": [
+      318,
+      442,
+      369,
+      568
+     ],
+     "desc": "clear rectangular plastic container stacked above purple lid box"
+    },
+    {
+     "id": "c5",
+     "box": [
+      372,
+      452,
+      422,
+      570
+     ],
+     "desc": "clear plastic container with translucent grey/purple lid"
+    },
+    {
+     "id": "c6",
+     "box": [
+      356,
+      560,
+      428,
+      701
+     ],
+     "desc": "large green translucent tub with light green lid"
+    },
+    {
+     "id": "c7",
+     "box": [
+      355,
+      686,
+      386,
+      782
+     ],
+     "desc": "small rectangular tub with white translucent lid"
+    },
+    {
+     "id": "c8",
+     "box": [
+      384,
+      668,
+      425,
+      768
+     ],
+     "desc": "small rectangular container with bright pink lid stacked below white-lid tub"
+    },
+    {
+     "id": "c9",
+     "box": [
+      354,
+      784,
+      426,
+      903
+     ],
+     "desc": "rectangular clear container with green lid holding seeds"
+    },
+    {
+     "id": "c10",
+     "box": [
+      287,
+      797,
+      358,
+      876
+     ],
+     "desc": "tall clear plastic container with orange lid on top right"
+    },
+    {
+     "id": "c11",
+     "box": [
+      284,
+      650,
+      344,
+      725
+     ],
+     "desc": "tall glass jar with red lid behind front items"
+    },
+    {
+     "id": "c12",
+     "box": [
+      308,
+      735,
+      417,
+      804
+     ],
+     "desc": "glass jar with gold lid and label next to seeds container"
+    },
+    {
+     "id": "c14",
+     "box": [
+      471,
+      91,
+      573,
+      429
+     ],
+     "desc": "black saucepan with lid on left middle shelf"
+    },
+    {
+     "id": "c15",
+     "box": [
+      460,
+      373,
+      524,
+      508
+     ],
+     "desc": "dark rectangular plastic container behind saucepan"
+    },
+    {
+     "id": "n1",
+     "box": [
+      521,
+      429,
+      570,
+      538
+     ],
+     "desc": "clear container with white lid, middle shelf right of the black pot"
+    },
+    {
+     "id": "c16",
+     "box": [
+      482,
+      542,
+      537,
+      658
+     ],
+     "desc": "clear rectangular container with bright pink lid top of stack"
+    },
+    {
+     "id": "c17",
+     "box": [
+      538,
+      554,
+      579,
+      651
+     ],
+     "desc": "small clear container with green rim middle of pink-lid stack"
+    },
+    {
+     "id": "c18",
+     "box": [
+      523,
+      649,
+      582,
+      778
+     ],
+     "desc": "green rectangular tub at bottom of left stack"
+    },
+    {
+     "id": "c19",
+     "box": [
+      458,
+      653,
+      532,
+      774
+     ],
+     "desc": "translucent green-lidded square tub middle right"
+    },
+    {
+     "id": "c21",
+     "box": [
+      450,
+      786,
+      497,
+      922
+     ],
+     "desc": "translucent container with orange/yellow lid top right stack"
+    },
+    {
+     "id": "c22",
+     "box": [
+      492,
+      777,
+      532,
+      908
+     ],
+     "desc": "clear container middle of rightmost stack"
+    },
+    {
+     "id": "c23",
+     "box": [
+      524,
+      775,
+      582,
+      905
+     ],
+     "desc": "green-lidded rectangular tub at bottom right of middle shelf"
+    },
+    {
+     "id": "c24",
+     "box": [
+      566,
+      260,
+      740,
+      511
+     ],
+     "desc": "black cooking pot with transparent glass lid on lower shelf"
+    },
+    {
+     "id": "c25",
+     "box": [
+      671,
+      529,
+      722,
+      637
+     ],
+     "desc": "small white fluted ceramic bowl/ramekin with lid"
+    },
+    {
+     "id": "c26",
+     "box": [
+      576,
+      600,
+      715,
+      808
+     ],
+     "desc": "large round black takeout bowl with clear lid on lower shelf"
+    }
+   ],
+   "next": [
+    {
+     "box": [
+      311,
+      172,
+      388,
+      313
+     ],
+     "truth": "c2",
+     "desc": "bright green tub, top shelf left"
+    },
+    {
+     "box": [
+      337,
+      299,
+      394,
+      429
+     ],
+     "truth": "c3",
+     "desc": "clear tub, pink/red lid"
+    },
+    {
+     "box": [
+      283,
+      429,
+      345,
+      570
+     ],
+     "truth": "c4",
+     "desc": "clear tub stacked on top"
+    },
+    {
+     "box": [
+      339,
+      442,
+      396,
+      569
+     ],
+     "truth": "c5",
+     "desc": "clear tub, grey lid"
+    },
+    {
+     "box": [
+      309,
+      560,
+      396,
+      696
+     ],
+     "truth": "c6",
+     "desc": "large green translucent tub"
+    },
+    {
+     "box": [
+      308,
+      684,
+      347,
+      792
+     ],
+     "truth": "c7",
+     "desc": "small tub, white translucent lid"
+    },
+    {
+     "box": [
+      345,
+      682,
+      397,
+      788
+     ],
+     "truth": "c8",
+     "desc": "small box, bright pink lid"
+    },
+    {
+     "box": [
+      308,
+      829,
+      390,
+      955
+     ],
+     "truth": "c9",
+     "desc": "clear tall tub, green lid"
+    },
+    {
+     "box": [
+      230,
+      866,
+      309,
+      953
+     ],
+     "truth": "c10",
+     "desc": "tall tub, orange lid"
+    },
+    {
+     "box": [
+      226,
+      659,
+      314,
+      742
+     ],
+     "truth": "c11",
+     "desc": "tall glass jar, red lid"
+    },
+    {
+     "box": [
+      258,
+      750,
+      390,
+      858
+     ],
+     "truth": "c12",
+     "desc": "glass jar, gold lid"
+    },
+    {
+     "box": [
+      447,
+      21,
+      563,
+      420
+     ],
+     "truth": "c14",
+     "desc": "black saucepan with lid"
+    },
+    {
+     "box": [
+      426,
+      360,
+      502,
+      503
+     ],
+     "truth": "c15",
+     "desc": "dark box behind saucepan"
+    },
+    {
+     "box": [
+      465,
+      432,
+      517,
+      555
+     ],
+     "truth": "new",
+     "desc": "locking glass box, clear lid (where the banana tub was)"
+    },
+    {
+     "box": [
+      504,
+      427,
+      556,
+      532
+     ],
+     "truth": "new",
+     "desc": "orange-lid tub under it"
+    },
+    {
+     "box": [
+      438,
+      551,
+      526,
+      678
+     ],
+     "truth": "c19",
+     "desc": "square tub, light green lid"
+    },
+    {
+     "box": [
+      525,
+      559,
+      569,
+      663
+     ],
+     "truth": "c17",
+     "desc": "small tub under the green-lid square"
+    },
+    {
+     "box": [
+      454,
+      663,
+      510,
+      796
+     ],
+     "truth": "c21",
+     "desc": "round tub, yellow lid"
+    },
+    {
+     "box": [
+      504,
+      666,
+      567,
+      794
+     ],
+     "truth": "c16",
+     "desc": "tub, pink lid"
+    },
+    {
+     "box": [
+      457,
+      794,
+      507,
+      937
+     ],
+     "truth": "c22",
+     "desc": "tub, clear lid, right"
+    },
+    {
+     "box": [
+      503,
+      794,
+      568,
+      938
+     ],
+     "truth": "c23",
+     "desc": "green-lid tub, right bottom"
+    },
+    {
+     "box": [
+      595,
+      260,
+      742,
+      505
+     ],
+     "truth": "c24",
+     "desc": "black pot, glass lid"
+    },
+    {
+     "box": [
+      667,
+      478,
+      748,
+      638
+     ],
+     "truth": "new",
+     "desc": "square tub, orange rim, bottom shelf front"
+    },
+    {
+     "box": [
+      591,
+      597,
+      715,
+      788
+     ],
+     "truth": "c26",
+     "desc": "large round black takeout container"
+    },
+    {
+     "box": [
+      270,
+      190,
+      295,
+      260
+     ],
+     "truth": "c1",
+     "desc": "green lid edge under lettuce (mostly hidden)"
+    },
+    {
+     "box": [
+      588,
+      518,
+      622,
+      612
+     ],
+     "truth": "c25",
+     "desc": "white fluted round tub behind the seaweed bag (mostly hidden)"
+    }
+   ],
+   "absent": [
+    "n1",
+    "c18"
+   ]
+  }
+ }
+]

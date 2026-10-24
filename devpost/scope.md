@@ -45,6 +45,7 @@ Match rate: test first, then decide. If the numbers are surprisingly good, show 
 - Timeline for each container and for the whole fridge: photo crops, date and time, and every action (new container added, refilled, corrected, and so on)
 - Multiple fridges: the learner thinks it's cheap to build and worth having
 - English UI
+- Sample fridge with a replayed matching scene, so judges can try it without using the free daily quota (added in the build, learner decision)
 
 ## Later
 - Showing the match rate in the demo: decide after testing

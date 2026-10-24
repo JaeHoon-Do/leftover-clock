@@ -113,16 +113,22 @@ Reminder cards rotate every few seconds.
 PRD ref: `prd.md > Reminders While Matching`, `prd.md > Matching and Pins`.
 
 ### Photo Check
-Shown when step 1 returns an error after the fallback, or zero containers. An ID-scanner-style checklist ("Is the photo blurry?", "Is the fridge door fully open?", "Is the light on?") and "Retake" / "Upload another". On the second failure for the same attempt: "We couldn't read this photo. Your fridge stays as it was." Nothing is written to IndexedDB.
+Shown when step 1 returns an error after its retry, or zero containers. If Gemini is busy or the daily free quota is used up, it says so ("Gemini is busy right now. Try again in a minute." / "Today's free matching is used up. Try the sample fridge.") instead of the photo checklist. An ID-scanner-style checklist ("Is the photo blurry?", "Is the fridge door fully open?", "Is the light on?") and "Retake" / "Upload another". On the second failure for the same attempt: "We couldn't read this photo. Your fridge stays as it was." Nothing is written to IndexedDB.
 PRD ref: `prd.md > Photo Can't Be Read`.
 
 ### Matching Server Routes
 `app/api/match/route.ts` and `app/api/search/route.ts`, both thin wrappers around `server/gemini.ts` (the eval script uses the same module). Contracts are in `## External Services and Dependencies`.
 - **Step 1 prompt** (based on the two real tests): find every food storage container in the new photo (lidded boxes, tubs, pots with lids, unlabeled jars; ignore packaged retail products, produce, eggs, drawers). For each, decide whether it's the same physical container as one of the known ones. **Position is weak evidence; lid color, body shape and material, and size come first. A container can sit where another one used to.** (This targets the wrong link seen in test 2.) Each known ID is matched at most once. Never name the food. With no known containers (first photo), it only detects.
 - **Step 2 prompt:** for each target crop, is this exact container visible anywhere in the new photo, even partly hidden or showing only its lid? Return its box or "not found". Boxes already claimed by step 1's matches are listed so they aren't reused.
-- **Model fallback:** `gemini-3.6-flash` with `thinkingLevel: "low"`. On 429/503/timeout, retry once, then use `gemini-3.5-flash-lite`. The model used is returned and stored on the photo.
+- **Model and retry:** `gemini-3.6-flash` with `thinkingLevel: "low"`. On 429/503/timeout, wait 2 s and retry once, then give up (busy). No smaller fallback model: on the tuning pair `gemini-3.5-flash-lite` copied the previous boxes and linked 18 of 23 containers wrongly. The model used is returned and stored on the photo.
+- **Step 2 guards:** each target carries its previous box; the prompt says to look there first, and found boxes that are mostly a claimed box, or more than 4× the previous box's area, are dropped.
+- **Development record/replay:** in development, each Gemini response is saved under `.cache/gemini/` keyed by a hash of the request, and the same request is answered from the file. Retrying the same photo costs no quota.
 
 PRD ref: `prd.md > Matching and Pins`.
+
+### Sample Fridge
+A "Try the sample fridge" card on the Fridge List. Tapping it imports `public/sample/` (photos re-encoded without EXIF and with brand labels blurred, plus the fridge's containers, sightings, and events exported from a real run) as an ordinary fridge. Its Add Photo offers the bundled next-day photo; matching shows the reminders and then applies the saved `/api/match` + `/api/search` result through the same apply step, with no request to `/api/*`. Removing and re-adding it resets it.
+PRD ref: `prd.md > Sample Fridge`.
 
 ### Container Detail
 A bottom sheet over the Fridge View or List View: the latest crop, the age and date, and the 3 most recent events. Buttons:
@@ -218,16 +224,18 @@ leftover-clock/
 │   ├── photo.ts                   # timestamp (exifr), shrink, crop from box
 │   ├── labels.ts                  # non-overlapping tooltip placement
 │   ├── reminders.ts
-│   └── age.ts
+│   ├── age.ts
+│   └── boxes.ts                   # box math + step-1/step-2 merge (shared with eval)
 ├── server/
-│   └── gemini.ts                  # prompts, JSON schemas, model fallback (server-only; shared with eval)
+│   └── gemini.ts                  # prompts, JSON schemas, retry (server-only; shared with eval)
 ├── eval/
 │   ├── run-eval.ts                # match-rate measurement
 │   ├── truth/                     # learner-confirmed answer keys per photo pair
 │   └── results/                   # raw outputs per run
 ├── public/
 │   ├── fridges/                   # 4 fridge illustrations (SVG)
-│   └── jar.svg                    # default shelf image
+│   ├── jar.svg                    # default shelf image
+│   └── sample/                    # sample fridge: photos (no EXIF, labels blurred) + rows + replayed result
 ├── devpost/                       # Devpost learning workspace (scope, prd, spec)
 ├── .env.local                     # GEMINI_API_KEY (gitignored)
 ├── package.json
@@ -240,8 +248,8 @@ leftover-clock/
 ### Gemini API
 - **Auth:** API key in `GEMINI_API_KEY`, server-side only (`new GoogleGenAI({ apiKey })`).
 - **Call:** `ai.models.generateContent({ model, contents: [{ role: "user", parts: [{ inlineData: { mimeType: "image/jpeg", data: <base64> } }, …, { text: prompt }] }], config: { responseMimeType: "application/json", responseSchema, thinkingConfig: { thinkingLevel: ThinkingLevel.LOW } } })`. (Levels: MINIMAL, LOW, MEDIUM, HIGH. The default is MEDIUM for 3.6 Flash and MINIMAL for 3.5 Flash-Lite.)
-- **Models:** `gemini-3.6-flash` (primary), `gemini-3.5-flash-lite` (fallback). Both were confirmed available for this key on 2026-10-22 and are marked Stable on the models page (2026-10-24). Google now calls 3.6 Flash "previous-generation"; `gemini-3.8-flash` is newer (see Decisions). 3.6 Flash returned 503 "high demand" once, then 200 on retry.
-- **Measured cost:** about 5,000–5,500 tokens and 6–10 s per mapping call (two real tests). Free tier, no billing linked: the worst case is quota exhaustion, which shows Photo Check. Free-tier inputs may be used to improve Google products, which is disclosed on Add Photo and in the README.
+- **Models:** `gemini-3.6-flash` (primary, no fallback; see `### Matching Server Routes`). `gemini-3.8-flash` was compared on the tuning pair (2026-10-24): most accurate in its one clean run but 504s/90 s timeouts in all three runs and about 3 minutes per photo, so it isn't used. Both were confirmed available for this key on 2026-10-22 and are marked Stable on the models page (2026-10-24). Google now calls 3.6 Flash "previous-generation"; `gemini-3.8-flash` is newer (see Decisions). 3.6 Flash returned 503 "high demand" once, then 200 on retry.
+- **Measured cost:** about 5,000–5,500 tokens and 6–10 s per mapping call (two real tests). Free tier, no billing linked: **20 requests per day per model** for `gemini-3.6-flash` (`GenerateRequestsPerDayPerProjectPerModel-FreeTier`, measured 2026-10-24; resets at midnight Pacific), i.e. about 10 photos a day across tuning, testing, the demo, and judges. Quota exhaustion shows Photo Check's quota message, and the sample fridge works without any calls. Free-tier inputs may be used to improve Google products, which is disclosed on Add Photo and in the README.
 - **Limits:** a whole request must stay under 20 MB of inline data. Our requests are about 1.5 MB.
 - Docs: https://ai.google.dev/gemini-api/docs · models: https://ai.google.dev/gemini-api/docs/models · thinking: https://ai.google.dev/gemini-api/docs/thinking · pricing (free tier "Used to improve our products: Yes"): https://ai.google.dev/gemini-api/docs/pricing
 
@@ -249,7 +257,7 @@ leftover-clock/
 ```jsonc
 // request
 { "newPhoto": "<base64 jpeg>", "prevPhoto": "<base64 jpeg> | null",
-  "known": [{ "id": "c3", "box": [379,336,423,458] }] }
+  "known": [{ "id": "c3", "box": [379,336,423,458], "desc": "clear tub, pink lid" }] }
 // response 200
 { "model": "gemini-3.6-flash",
   "containers": [{ "box": [..], "match": "c3" | null, "confidence": 0.93, "desc": "clear tub, pink lid" }] }
@@ -261,7 +269,7 @@ leftover-clock/
 ```jsonc
 // request
 { "newPhoto": "<base64 jpeg>", "claimed": [[..box..]],
-  "targets": [{ "id": "c20", "crop": "<base64 jpeg>" }] }
+  "targets": [{ "id": "c20", "crop": "<base64 jpeg>", "box": [..previous box..] }] }
 // response 200
 { "model": "...", "found": [{ "id": "c20", "box": [..], "confidence": 0.8 }], "notFound": ["c18"] }
 ```
@@ -271,7 +279,8 @@ A found box that overlaps a step-1 `match: null` box by more than half replaces 
 Hosting plus the two functions. Request and response body limit 4.5 MB (413 `FUNCTION_PAYLOAD_TOO_LARGE` beyond): one photo (~300 KB) + previous photo + up to ~30 crops (~20 KB each), base64, is about 1.5 MB. Docs: https://vercel.com/docs/functions
 
 ## Important Failure Modes
-- **Gemini busy (503/429) or slow** → one retry, then the fallback model. If both fail: Photo Check ("couldn't read") with retry. Existing data is untouched.
+- **Gemini busy (503/429) or slow** → one retry after 2 s. If it still fails: Photo Check with "busy, try again". Existing data is untouched.
+- **Daily free quota used up (429, per-day quota)** → Photo Check says so and points to the sample fridge. Existing data is untouched.
 - **Zero containers found / unreadable photo** → Photo Check, retake or upload another. On the second failure, a plain message and nothing changes.
 - **Wrong link (a new container inherits an old date)** → the prompt rule "position is weak evidence", measured by the eval harness as "wrong link". In the app, "This is a new container" fixes it in one tap.
 - **Crowded tooltips** → the greedy layout with leader lines; "View as list" stays one tap away.
@@ -307,7 +316,8 @@ Hosting plus the two functions. Request and response body limit 4.5 MB (413 `FUN
 ### Implementation details derived from those decisions (agent)
 - Plain CSS with tokens, Fredoka/Nunito, the palette above. Can be changed in review.
 - Container Detail as a bottom sheet; the picker defaults to the most recent earlier photo; "Still there" keeps the item on the shelf with a tag.
-- Model fallback order and one retry; step-2 boxes replace overlapping step-1 "new" boxes.
+- One retry, no fallback model; step-2 boxes replace overlapping step-1 "new" boxes.
+- Sample fridge stored as static files and replayed through the same apply step (learner decision: stay on the free tier, 2026-10-24).
 - The evaluation code calls the same `server/gemini.ts` as the app, so what's measured is what ships.
 - Matching code is written fresh in this repo. The preflight scripts in `leftover-clock-photos/runs/` are reference only and aren't copied (new-project rule).
 

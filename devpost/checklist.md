@@ -24,7 +24,7 @@ Build mode: fast
   Why now: It is the first thing a person can actually use, and it carries the riskiest display pieces right behind the matcher: IndexedDB storage, EXIF time, photo shrinking and cropping, and the non-overlapping tooltips on a ~25-container photo.
   PRD ref: `prd.md > The Core Journey` (steps 1-3, 5), `prd.md > Fridges`, `prd.md > Adding a Photo and Its Date`, `prd.md > Matching and Pins` (first photo), `prd.md > States and Boundaries`, `prd.md > Look and Feel`
   Spec ref: `spec.md > Fridge List`, `spec.md > Add Fridge`, `spec.md > Fridge View`, `spec.md > Pin Layout`, `spec.md > Add Photo`, `spec.md > Data Model`, `spec.md > POST /api/match (our route)`, `spec.md > Look and Feel`
-  Build: `lib/db.ts` (Dexie schema), `lib/photo.ts` (exifr time, shrink to ~1200×1600 JPEG, crop from box), `lib/age.ts`, `lib/labels.ts`, `app/api/match/route.ts` over `server/gemini.ts`, `lib/actions.ts` `applyMatch` for the first photo (all new), the Fridge List / Add Fridge / Fridge View / Add Photo pages, `FridgeCard`, `PhotoMap`, 4 fridge SVGs, design tokens and fonts for both tones, the Gemini notice on Add Photo.
+  Build: `lib/db.ts` (Dexie schema), `lib/photo.ts` (exifr time, shrink to ~1200×1600 JPEG, crop from box), `lib/age.ts`, `lib/labels.ts`, `app/api/match/route.ts` over `server/gemini.ts` with a development-only record/replay cache of Gemini responses (keyed by the request, so retrying the same photo costs no quota), `lib/actions.ts` `applyMatch` for the first photo (all new), the Fridge List / Add Fridge / Fridge View / Add Photo pages, `FridgeCard`, `PhotoMap`, 4 fridge SVGs, design tokens and fonts for both tones, the Gemini notice on Add Photo.
   Verify (mechanical): `npm run build` passes; with the dev server running, a script or browser run adds a fridge, uploads IMG_0661, confirms the pre-filled time is 10/22 20:15, gets a pin per container, and a check on the rendered tooltip boxes finds zero overlaps; reload shows the same fridge and pins.
   Learner check: Open the app, add a fridge with a name and an illustration (and try your own photo as the image), add your 10/22 photo, and check that its date is right, every container has a pin, and no labels overlap. Say how both looks (the cute screens and the map) feel.
   Commit: `Add fridges and first-photo registration with pins`
@@ -59,15 +59,15 @@ Build mode: fast
   Learner check: Open the timeline of the container you refilled and the fridge timeline from the fridge card, and check that what you did is all there with the right times.
   Commit: `Add container and fridge timelines`
 
-- [ ] **6. Anyone can try it from a live link on a phone**
-  Becomes usable: A production URL on Vercel that works on the learner's iPhone (HTTPS camera, Home Screen install with persistent storage), with a README on how to run, deploy, and evaluate, and an MIT license.
-  Why now: The real-phone checks (does the iPhone keep the photo's date, does storage persist) can only happen here, and the demo and judges need the live link a day before submission.
+- [ ] **6. Anyone can try it from a live link on a phone, including a sample fridge that needs no API calls**
+  Becomes usable: A production URL on Vercel that works on the learner's iPhone (HTTPS camera, Home Screen install with persistent storage), a "Try the sample fridge" card on the Fridge List that loads the learner's real fridge history and lets anyone add the next day's photo and watch the matching scene (reminders, then pins, the lid-only container found) replayed from a saved result, a pointer to the sample fridge when live matching hits the daily quota, a README on how to run, deploy, and evaluate, and an MIT license.
+  Why now: The real-phone checks (does the iPhone keep the photo's date, does storage persist) can only happen here, the sample data must come from real runs of the finished app, and the demo and judges need the live link a day before submission.
   PRD ref: `prd.md > States and Boundaries` (what persists), `prd.md > Adding a Photo and Its Date`
   Spec ref: `spec.md > Where It Runs and How Someone Tries It`, `spec.md > Important Failure Modes` (timestamp, iPhone data), `spec.md > Verify early in the build`
-  Build: web app manifest + icon, `navigator.storage.persist()`, `maxDuration = 60` on both routes, README, LICENSE; deploy with the `vercel` CLI and set `GEMINI_API_KEY` as a Vercel environment variable (with the learner's go-ahead at that moment).
-  Verify (mechanical): `npm run build` passes; the production URL returns 200; a `POST /api/match` with a real photo against production returns containers; the key does not appear in the client bundle or the repo.
-  Learner check: Open the link on your iPhone, add it to the Home Screen, upload a photo from your camera roll and tell me whether the date it shows is the day you took it; take one live too.
-  Commit: `Add manifest, persistent storage, README, license, and deploy config`
+  Build: sample fridge (export a real fridge's photos and rows to `public/sample/`, photos re-encoded without EXIF and with brand labels blurred; import on demand; its "Add photo" replays the saved next-day result through the same apply step); quota-exhausted message in Photo Check pointing to the sample fridge; web app manifest + icon, `navigator.storage.persist()`, `maxDuration` on both routes, README, LICENSE; deploy with the `vercel` CLI and set `GEMINI_API_KEY` as a Vercel environment variable (with the learner's go-ahead at that moment).
+  Verify (mechanical): `npm run build` passes; with `GEMINI_API_KEY` unset, the sample fridge loads, its add-photo step replays matching and shows pins, and no request reaches `/api/*`; the published sample photos carry no EXIF (checked with exifr); the production URL returns 200; a `POST /api/match` with a real photo against production returns containers; the key does not appear in the client bundle or the repo.
+  Learner check: Open the sample fridge as a judge would and add its next-day photo; then open the link on your iPhone, add it to the Home Screen, upload a photo from your camera roll and tell me whether the date it shows is the day you took it; take one live too.
+  Commit: `Add sample fridge, manifest, persistent storage, README, license, and deploy config`
 
 - [ ] **7. The match rate is measured once on held-out photos**
   Becomes usable: The reported match rate: correct links, misses, and wrong links on the 10/24 → 10/25 and 10/25 → 10/26 pairs, measured once with the frozen prompts and model, saved in `eval/results/` and summarized in the README.
@@ -101,3 +101,10 @@ Reflection:
 Activity mode: 
 
 ## Revisions
+
+- Removed the Flash-Lite fallback; a busy model now gets one retry, then "busy, try again" with nothing saved — on the tuning pair 3.5 Flash-Lite copied the previous boxes and linked 18 of 23 containers wrongly (7/23 correct), which would silently hand containers other containers' dates.
+- Primary model stays `gemini-3.6-flash` (learner decision) — `gemini-3.8-flash` was the most accurate in its one clean run (20/23, 0 wrong links) but hit 504s and 90-second timeouts in all three runs and took about 3 minutes; 3.6 Flash answered in 11–20 s with 19–20/23 and 1–2 wrong links.
+- Added a sample fridge with replayed matching (slice 6) and a development record/replay cache (slice 2), learner decision to stay on the free tier — the free tier allows 20 requests per day per model for `gemini-3.6-flash` (2 per photo), which can't cover tuning, testing, the demo, and judges trying the live URL.
+- Known containers now carry their short description, step-2 targets carry their previous box (a "look here first" hint and a size sanity check), and step-2 finds that overlap a claimed box are dropped — the first runs returned a box already claimed by another container and one box half a shelf wide.
+- Added `lib/boxes.ts` (box math and the step-1 + step-2 merge, shared by the phone and the eval) and `sharp` as a dev dependency for the eval's image preparation — so the eval measures the same merge the app ships.
+- Prompt tuning continues after the slice-1 commit within the daily quota, as separate commits; prompts are frozen before slice 7 — the learner chose to tune, and the quota ran out mid-session.

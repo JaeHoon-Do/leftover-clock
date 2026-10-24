@@ -2,3 +2,13 @@
 .env
 .env.*
 !.env.example
+
+# dependencies and build output
+/node_modules
+/.next/
+/out/
+*.tsbuildinfo
+next-env.d.ts
+
+# vercel
+.vercel

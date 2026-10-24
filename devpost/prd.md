@@ -105,6 +105,14 @@ Develops `scope.md > Inspiration & Identity` ("view as list").
   - [ ] The list order matches the ages on the pins, oldest at the top.
   - [ ] Containers marked "Still there" appear in the list with their dates.
 
+### Sample Fridge
+The live app runs on Gemini's free tier, about 10 photos a day in total, so judges and visitors can try a ready-made fridge without using any of it.
+- The Fridge List has a "Try the sample fridge" card: the learner's real fridge, several days of photos with containers, dates, and history already in place.
+- In the sample fridge, adding a photo offers the next day's photo and plays the matching scene (reminders, then pins with ages, including the lid-only container) from a saved result.
+- When today's free matching is used up, the app says so and points to the sample fridge.
+  - [ ] With no API key at all, the sample fridge opens and its next-day photo produces pins and ages.
+  - [ ] The sample photos reveal no location (no EXIF) and show no readable brand labels.
+
 ### Timelines
 Develops `scope.md > The POC Boundary` ("Timeline for each container and for the whole fridge").
 - **Container Timeline** (from Container Detail): every crop of this container with date and time, and every action — added, refilled, corrected, still there, removed, and so on.
@@ -119,6 +127,7 @@ Develops `scope.md > The POC Boundary` ("Timeline for each container and for the
 - **First photo** — every container becomes a new container; nothing is on the shelf.
 - **Photo without a timestamp** — the current time is used, and the user can change it.
 - **No containers found / matching fails** — photo check prompts, then retake or upload another; if it still fails, nothing changes (see **Photo Can't Be Read**).
+- **Today's free matching used up** — the app says so, nothing changes, and it points to the sample fridge.
 - **What persists** — fridges, photos, containers, dates, and history stay on the learner's phone between visits. No account.
 
 ## Product Decisions
@@ -145,6 +154,7 @@ Develops `scope.md > The POC Boundary` ("Timeline for each container and for the
 - Unseen Shelf with Still there / Removed
 - View as list, oldest first
 - Container Timeline, and a Fridge Timeline for each fridge opened from the Fridge List
+- Sample fridge with a replayed matching scene, for judges and visitors (no API calls)
 - English UI
 
 ## Deferred From the POC
