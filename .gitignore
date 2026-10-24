@@ -12,3 +12,6 @@ next-env.d.ts
 
 # vercel
 .vercel
+
+# development record/replay of Gemini responses
+/.cache/

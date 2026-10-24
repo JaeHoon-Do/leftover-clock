@@ -9,7 +9,7 @@ Build mode: fast
 
 ## Slices
 
-- [ ] **1. The matcher runs on real photos and reports an honest match rate**
+- [x] **1. The matcher runs on real photos and reports an honest match rate**
   Becomes usable: A command that runs the app's own two-step matcher (map, then search for the unmatched) on the 10/22 → 10/23 photo pair and prints correct links, misses, and wrong links against the learner-confirmed answer key, for both candidate models.
   Why now: The kernel is the biggest risk and everything else is a display of its output. This is the one allowed single-layer slice: it proves the critical risk with runnable evidence before any screen depends on it. Bootstrapping (Next.js project, dependencies, `.env.local` wiring) happens here so the matcher already lives where the server routes will call it.
   PRD ref: `prd.md > Matching and Pins`
@@ -19,7 +19,7 @@ Build mode: fast
   Learner check: Read the printed table for both models and say whether the numbers match what you saw in the photos (for example, which container was missed or wrongly linked), and which model you want as primary.
   Commit: `Add two-step Gemini matcher and match-rate evaluation`
 
-- [ ] **2. You can add a fridge and register its containers from a first photo**
+- [x] **2. You can add a fridge and register its containers from a first photo**
   Becomes usable: On the phone or PC: the Fridge List (empty state, then cards), Add Fridge (name + illustration or own photo), and a Fridge View where uploading or taking the first photo — with its date read from the photo and editable — puts a pin with an age chip on every container, laid out without overlaps. Everything is still there after a reload.
   Why now: It is the first thing a person can actually use, and it carries the riskiest display pieces right behind the matcher: IndexedDB storage, EXIF time, photo shrinking and cropping, and the non-overlapping tooltips on a ~25-container photo.
   PRD ref: `prd.md > The Core Journey` (steps 1-3, 5), `prd.md > Fridges`, `prd.md > Adding a Photo and Its Date`, `prd.md > Matching and Pins` (first photo), `prd.md > States and Boundaries`, `prd.md > Look and Feel`
@@ -108,3 +108,4 @@ Activity mode:
 - Known containers now carry their short description, step-2 targets carry their previous box (a "look here first" hint and a size sanity check), and step-2 finds that overlap a claimed box are dropped — the first runs returned a box already claimed by another container and one box half a shelf wide.
 - Added `lib/boxes.ts` (box math and the step-1 + step-2 merge, shared by the phone and the eval) and `sharp` as a dev dependency for the eval's image preparation — so the eval measures the same merge the app ships.
 - Prompt tuning continues after the slice-1 commit within the daily quota, as separate commits; prompts are frozen before slice 7 — the learner chose to tune, and the quota ran out mid-session.
+- Turned off `cacheComponents` in `next.config.ts`, added `dexie-react-hooks` (live queries so pins re-render after every change), gave both routes `maxDuration = 120`, and send Gemini short aliases (c1, c2, …) for stored container IDs — every screen is a client page reading IndexedDB (Cache Components would only demand Suspense around `useParams`), and a retry after a 40 s timeout can pass 60 s.

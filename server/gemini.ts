@@ -20,7 +20,7 @@ export interface SearchTarget {
 }
 
 export class GeminiError extends Error {
-  constructor(public kind: "busy" | "unreadable", message: string) {
+  constructor(public kind: "busy" | "quota" | "unreadable", message: string) {
     super(message);
   }
 }
@@ -108,7 +108,13 @@ These areas of the NEW photo already belong to other containers, so don't return
 For each id return found, box_2d in the NEW photo ([ymin, xmin, ymax, xmax], normalized 0-1000) when found, and confidence (0-1).`;
 }
 
+/** The free tier's daily request limit: retrying won't help until it resets. */
+function isDailyQuota(e: unknown): boolean {
+  return e instanceof ApiError && e.status === 429 && /PerDay/.test(e.message);
+}
+
 function isRetryable(e: unknown): boolean {
+  if (isDailyQuota(e)) return false;
   if (e instanceof ApiError) return e.status === 429 || e.status === 503 || e.status === 500 || e.status === 504;
   // timeouts and network failures surface as plain errors
   return true;
@@ -143,7 +149,7 @@ async function generate(parts: Part[], schema: object, model?: string): Promise<
     }
   }
   const msg = last instanceof Error ? last.message : String(last);
-  throw new GeminiError(isRetryable(last) ? "busy" : "unreadable", msg);
+  throw new GeminiError(isDailyQuota(last) ? "quota" : isRetryable(last) ? "busy" : "unreadable", msg);
 }
 
 /** Step 1: find every container in the new photo and map it to the known ones. */
