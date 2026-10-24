@@ -49,7 +49,11 @@ interface PairResult {
 function args(): Map<string, string[]> {
   const m = new Map<string, string[]>();
   const a = process.argv.slice(2);
-  for (let i = 0; i < a.length; i += 2) m.set(a[i].replace(/^--/, ""), [...(m.get(a[i].replace(/^--/, "")) ?? []), a[i + 1]]);
+  for (let i = 0; i < a.length; i++) {
+    const key = a[i].replace(/^--/, "");
+    const value = a[i + 1]?.startsWith("--") === false ? a[++i] : ""; // a bare flag has no value
+    m.set(key, [...(m.get(key) ?? []), value]);
+  }
   return m;
 }
 

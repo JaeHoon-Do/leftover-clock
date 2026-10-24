@@ -100,10 +100,8 @@ Return box_2d for the NEW photo.`;
 }
 
 function searchPrompt(targets: SearchTarget[], claimed: Box[]): string {
-  return `Image 1 is a NEW photo of a home fridge. After it come close-up crops of specific food storage containers, cut from earlier photos of the same fridge. Where each one was on its earlier photo (box_2d = [ymin, xmin, ymax, xmax], normalized 0-1000; the camera position may differ a little):
-${targets.map((t) => `${t.id}: ${JSON.stringify(t.box)}`).join("\n")}
-For each crop, decide whether that exact physical container is visible anywhere in the NEW photo. Look around where it was first: containers usually stay put while other things get put in front of or on top of them, so often only a lid edge, a corner, or a strip of its color still shows. Then look elsewhere in case it was moved.
-Compare lid color and shape, body material, and size. A merely similar container is not a match, and neither is a different-looking container sitting in the same spot.
+  return `Image 1 is a NEW photo of a home fridge. After it come close-up crops of specific food storage containers, cut from earlier photos of the same fridge: ${targets.map((t) => t.id).join(", ")}.
+For each crop, decide whether that exact physical container is visible anywhere in the NEW photo, even if it is partly hidden behind other things, pushed to the back, stacked under something, or shows only its lid or an edge. Compare lid color and shape, body material, and size; a merely similar container is not a match.
 These areas of the NEW photo already belong to other containers, so don't return them: ${JSON.stringify(claimed)}
 For each id return found, box_2d in the NEW photo ([ymin, xmin, ymax, xmax], normalized 0-1000) when found, and confidence (0-1).`;
 }
