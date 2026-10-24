@@ -1,0 +1,568 @@
+{
+ "name": "Sample fridge",
+ "source": "A saved real run: eval/results/2026-10-24T05-46-01-558Z.json run 0 (gemini-3.6-flash, frozen baseline prompts). Day-1 containers are the 10/22 detections it was given; matching ran on the unblurred photos, the published photos are blurred copies.",
+ "day1": {
+  "file": "day1.jpg",
+  "takenAt": 1792667754000,
+  "model": "gemini-3.6-flash",
+  "containers": [
+   {
+    "box": [
+     326,
+     172,
+     355,
+     303
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "round green plastic container at the far left top"
+   },
+   {
+    "box": [
+     360,
+     215,
+     417,
+     340
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "small green lidded rectangular tub left of center"
+   },
+   {
+    "box": [
+     379,
+     336,
+     423,
+     458
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "small rectangular clear container with pink/red lid"
+   },
+   {
+    "box": [
+     318,
+     442,
+     369,
+     568
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "clear rectangular plastic container stacked above purple lid box"
+   },
+   {
+    "box": [
+     372,
+     452,
+     422,
+     570
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "clear plastic container with translucent grey/purple lid"
+   },
+   {
+    "box": [
+     356,
+     560,
+     428,
+     701
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "large green translucent tub with light green lid"
+   },
+   {
+    "box": [
+     355,
+     686,
+     386,
+     782
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "small rectangular tub with white translucent lid"
+   },
+   {
+    "box": [
+     384,
+     668,
+     425,
+     768
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "small rectangular container with bright pink lid stacked below white-lid tub"
+   },
+   {
+    "box": [
+     354,
+     784,
+     426,
+     903
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "rectangular clear container with green lid holding seeds"
+   },
+   {
+    "box": [
+     287,
+     797,
+     358,
+     876
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "tall clear plastic container with orange lid on top right"
+   },
+   {
+    "box": [
+     284,
+     650,
+     344,
+     725
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "tall glass jar with red lid behind front items"
+   },
+   {
+    "box": [
+     308,
+     735,
+     417,
+     804
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "glass jar with gold lid and label next to seeds container"
+   },
+   {
+    "box": [
+     471,
+     91,
+     573,
+     429
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "black saucepan with lid on left middle shelf"
+   },
+   {
+    "box": [
+     460,
+     373,
+     524,
+     508
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "dark rectangular plastic container behind saucepan"
+   },
+   {
+    "box": [
+     521,
+     429,
+     570,
+     538
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "clear container with white lid, middle shelf right of the black pot"
+   },
+   {
+    "box": [
+     482,
+     542,
+     537,
+     658
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "clear rectangular container with bright pink lid top of stack"
+   },
+   {
+    "box": [
+     538,
+     554,
+     579,
+     651
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "small clear container with green rim middle of pink-lid stack"
+   },
+   {
+    "box": [
+     523,
+     649,
+     582,
+     778
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "green rectangular tub at bottom of left stack"
+   },
+   {
+    "box": [
+     458,
+     653,
+     532,
+     774
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "translucent green-lidded square tub middle right"
+   },
+   {
+    "box": [
+     450,
+     786,
+     497,
+     922
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "translucent container with orange/yellow lid top right stack"
+   },
+   {
+    "box": [
+     492,
+     777,
+     532,
+     908
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "clear container middle of rightmost stack"
+   },
+   {
+    "box": [
+     524,
+     775,
+     582,
+     905
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "green-lidded rectangular tub at bottom right of middle shelf"
+   },
+   {
+    "box": [
+     566,
+     260,
+     740,
+     511
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "black cooking pot with transparent glass lid on lower shelf"
+   },
+   {
+    "box": [
+     671,
+     529,
+     722,
+     637
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "small white fluted ceramic bowl/ramekin with lid"
+   },
+   {
+    "box": [
+     576,
+     600,
+     715,
+     808
+    ],
+    "match": null,
+    "confidence": 1,
+    "desc": "large round black takeout bowl with clear lid on lower shelf"
+   }
+  ]
+ },
+ "day2": {
+  "file": "day2.jpg",
+  "takenAt": 1792766651000,
+  "model": "gemini-3.6-flash",
+  "step1": [
+   {
+    "box": [
+     471,
+     10,
+     564,
+     412
+    ],
+    "match": "c13",
+    "confidence": 0.95,
+    "desc": "black saucepan with lid on left middle shelf"
+   },
+   {
+    "box": [
+     599,
+     260,
+     742,
+     492
+    ],
+    "match": "c23",
+    "confidence": 0.95,
+    "desc": "black cooking pot with transparent glass lid on lower shelf"
+   },
+   {
+    "box": [
+     313,
+     172,
+     388,
+     308
+    ],
+    "match": "c2",
+    "confidence": 0.9,
+    "desc": "small green lidded rectangular tub on upper left shelf"
+   },
+   {
+    "box": [
+     342,
+     303,
+     396,
+     431
+    ],
+    "match": "c3",
+    "confidence": 0.9,
+    "desc": "small rectangular clear container with pink/red lid"
+   },
+   {
+    "box": [
+     283,
+     429,
+     342,
+     570
+    ],
+    "match": "c4",
+    "confidence": 0.85,
+    "desc": "clear rectangular plastic container on upper shelf"
+   },
+   {
+    "box": [
+     336,
+     442,
+     396,
+     570
+    ],
+    "match": "c5",
+    "confidence": 0.85,
+    "desc": "clear plastic container with translucent lid below c4"
+   },
+   {
+    "box": [
+     310,
+     560,
+     397,
+     701
+    ],
+    "match": "c6",
+    "confidence": 0.9,
+    "desc": "large green translucent tub with light green lid"
+   },
+   {
+    "box": [
+     308,
+     686,
+     351,
+     792
+    ],
+    "match": "c7",
+    "confidence": 0.85,
+    "desc": "small rectangular tub with white translucent lid"
+   },
+   {
+    "box": [
+     347,
+     680,
+     398,
+     790
+    ],
+    "match": "c8",
+    "confidence": 0.9,
+    "desc": "small rectangular container with bright pink lid"
+   },
+   {
+    "box": [
+     308,
+     826,
+     392,
+     955
+    ],
+    "match": "c9",
+    "confidence": 0.95,
+    "desc": "rectangular clear container with green lid holding seeds"
+   },
+   {
+    "box": [
+     230,
+     868,
+     309,
+     951
+    ],
+    "match": "c10",
+    "confidence": 0.9,
+    "desc": "tall clear plastic container with orange lid top right"
+   },
+   {
+    "box": [
+     226,
+     655,
+     313,
+     742
+    ],
+    "match": "c11",
+    "confidence": 0.85,
+    "desc": "tall glass jar behind items"
+   },
+   {
+    "box": [
+     257,
+     755,
+     381,
+     865
+    ],
+    "match": "c12",
+    "confidence": 0.85,
+    "desc": "glass jar with label"
+   },
+   {
+    "box": [
+     465,
+     435,
+     517,
+     556
+    ],
+    "match": null,
+    "confidence": 0.85,
+    "desc": "small clear container with white snap-lock lid on middle shelf"
+   },
+   {
+    "box": [
+     504,
+     429,
+     558,
+     550
+    ],
+    "match": null,
+    "confidence": 0.85,
+    "desc": "small glass/plastic container with orange lid below c-new1"
+   },
+   {
+    "box": [
+     438,
+     551,
+     527,
+     679
+    ],
+    "match": "c19",
+    "confidence": 0.9,
+    "desc": "translucent green-lidded square tub"
+   },
+   {
+    "box": [
+     525,
+     565,
+     567,
+     663
+    ],
+    "match": "c17",
+    "confidence": 0.8,
+    "desc": "small clear container with green rim/lid below square tub"
+   },
+   {
+    "box": [
+     453,
+     663,
+     511,
+     800
+    ],
+    "match": "c20",
+    "confidence": 0.9,
+    "desc": "translucent container with orange/yellow lid middle shelf"
+   },
+   {
+    "box": [
+     503,
+     665,
+     567,
+     792
+    ],
+    "match": null,
+    "confidence": 0.85,
+    "desc": "clear round container with bright pink lid below yellow lid tub"
+   },
+   {
+    "box": [
+     455,
+     796,
+     511,
+     928
+    ],
+    "match": "c21",
+    "confidence": 0.85,
+    "desc": "clear container middle of rightmost stack"
+   },
+   {
+    "box": [
+     502,
+     793,
+     569,
+     941
+    ],
+    "match": "c22",
+    "confidence": 0.9,
+    "desc": "green-lidded rectangular tub bottom right stack"
+   },
+   {
+    "box": [
+     669,
+     478,
+     747,
+     634
+    ],
+    "match": null,
+    "confidence": 0.85,
+    "desc": "rectangular clear container with orange lid on lower shelf center"
+   },
+   {
+    "box": [
+     595,
+     597,
+     712,
+     795
+    ],
+    "match": "c25",
+    "confidence": 0.95,
+    "desc": "large round black takeout bowl with clear lid"
+   }
+  ],
+  "found": [
+   {
+    "id": "c16",
+    "box": [
+     463,
+     436,
+     517,
+     558
+    ],
+    "confidence": 0.96
+   },
+   {
+    "id": "c24",
+    "box": [
+     587,
+     521,
+     626,
+     611
+    ],
+    "confidence": 0.92
+   }
+  ]
+ }
+}

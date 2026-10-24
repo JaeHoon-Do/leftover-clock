@@ -3,10 +3,22 @@ import type { FinalContainer } from "./boxes";
 import { db, latestPhoto, newId, type Container, type FridgeEvent, type FridgeImage, type Sighting } from "./db";
 import { cropBox } from "./photo";
 
-export async function addFridge(name: string, image: FridgeImage): Promise<string> {
+export async function addFridge(name: string, image: FridgeImage, sample = false): Promise<string> {
   const id = newId();
-  await db.fridges.add({ id, name, image, createdAt: Date.now() });
+  await db.fridges.add({ id, name, image, createdAt: Date.now(), ...(sample ? { sample } : {}) });
   return id;
+}
+
+/** Remove a fridge and everything in it. */
+export async function deleteFridge(fridgeId: string): Promise<void> {
+  await db.transaction("rw", [db.fridges, db.photos, db.containers, db.sightings, db.events], async () => {
+    const photoIds = await db.photos.where("fridgeId").equals(fridgeId).primaryKeys();
+    await db.sightings.where("photoId").anyOf(photoIds).delete();
+    await db.photos.bulkDelete(photoIds);
+    await db.containers.where("fridgeId").equals(fridgeId).delete();
+    await db.events.where("fridgeId").equals(fridgeId).delete();
+    await db.fridges.delete(fridgeId);
+  });
 }
 
 export interface NewPhoto {

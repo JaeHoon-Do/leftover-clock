@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import type { MatchError } from "@/lib/matching-client";
 import styles from "./PhotoCheck.module.css";
 
@@ -39,7 +40,14 @@ export function PhotoCheck({
           </ul>
         </>
       )}
-      {kind === "quota" && <p className="muted">It resets at midnight Pacific time. Your fridge stays as it was.</p>}
+      {kind === "quota" && (
+        <>
+          <p className="muted">It resets at midnight Pacific time. Your fridge stays as it was.</p>
+          <p>
+            <Link href="/">Try the sample fridge</Link> in the meantime. It needs no matching.
+          </p>
+        </>
+      )}
       {!gaveUp && (
         <div className={styles.buttons}>
           <label className="pill accent">

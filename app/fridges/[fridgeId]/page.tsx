@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { ContainerList, type ListItem } from "@/components/ContainerList";
@@ -10,12 +10,14 @@ import { UnseenShelf, type ShelfItem } from "@/components/UnseenShelf";
 import { ageChip } from "@/lib/age";
 import { db, latestPhoto } from "@/lib/db";
 import { clearestSighting } from "@/lib/reminders";
+import { resetSample } from "@/lib/sample";
 import styles from "./fridge.module.css";
 
 export default function FridgeView() {
   const { fridgeId } = useParams<{ fridgeId: string }>();
   const [view, setView] = useState<"map" | "list">("map");
   const [open, setOpen] = useState<string>();
+  const router = useRouter();
   const close = useCallback(() => setOpen(undefined), []);
 
   const data = useLiveQuery(async () => {
@@ -62,6 +64,11 @@ export default function FridgeView() {
           ←
         </Link>
         <h1 className={styles.name}>{fridge.name}</h1>
+        {fridge.sample && (
+          <button className={styles.reset} onClick={async () => router.replace(`/fridges/${await resetSample(fridgeId)}`)}>
+            Reset sample
+          </button>
+        )}
       </header>
       {photo ? (
         <>

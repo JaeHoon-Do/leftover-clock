@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fredoka, Nunito } from "next/font/google";
+import { PersistStorage } from "@/components/PersistStorage";
 import "./globals.css";
 
 const display = Fredoka({ variable: "--font-display", subsets: ["latin"] });
@@ -10,10 +11,17 @@ export const metadata: Metadata = {
   description: "How old is each leftover container in your fridge? Just from photos.",
 };
 
+export const viewport: Viewport = {
+  themeColor: "#fff8ee",
+};
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
-      <body>{children}</body>
+      <body>
+        <PersistStorage />
+        {children}
+      </body>
     </html>
   );
 }

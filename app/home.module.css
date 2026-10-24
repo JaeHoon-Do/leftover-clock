@@ -36,3 +36,16 @@
   width: 96px;
   height: 128px;
 }
+
+.sample {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.sample p {
+  margin: 0;
+}

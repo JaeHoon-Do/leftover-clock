@@ -1,13 +1,23 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { FridgeCard } from "@/components/FridgeCard";
 import { db } from "@/lib/db";
+import { importSample } from "@/lib/sample";
 import styles from "./home.module.css";
 
 export default function FridgeList() {
   const fridges = useLiveQuery(() => db.fridges.orderBy("createdAt").toArray());
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   if (!fridges) return null;
+
+  async function trySample() {
+    setLoading(true);
+    router.push(`/fridges/${await importSample()}`);
+  }
   return (
     <main className="page">
       <header className={styles.header}>
@@ -35,6 +45,17 @@ export default function FridgeList() {
             </Link>
           </div>
         </>
+      )}
+      {!fridges.some((f) => f.sample) && (
+        <div className={`card ${styles.sample}`}>
+          <p>
+            <strong>Just looking?</strong> Open a real fridge with a day of history, then add the next day&apos;s photo and watch the
+            matching.
+          </p>
+          <button className="pill mint" onClick={trySample} disabled={loading}>
+            Try the sample fridge
+          </button>
+        </div>
       )}
     </main>
   );

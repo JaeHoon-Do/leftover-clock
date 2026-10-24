@@ -9,6 +9,8 @@ export interface Fridge {
   name: string;
   image: FridgeImage;
   createdAt: number;
+  /** The bundled sample fridge (public/sample/), whose next photo is replayed, not matched live. */
+  sample?: boolean;
 }
 
 export interface Photo {

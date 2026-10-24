@@ -2,16 +2,19 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
+import { useLiveQuery } from "dexie-react-hooks";
 import { PhotoCheck } from "@/components/PhotoCheck";
 import { Reminders } from "@/components/Reminders";
 import { fromLocalInput, toLocalInput } from "@/lib/age";
 import { matchAndSave, MatchError } from "@/lib/matching-client";
 import { readTakenAt, shrink } from "@/lib/photo";
 import { computeReminders, type ReminderCard } from "@/lib/reminders";
+import { db } from "@/lib/db";
+import { replaySampleMatch, sampleNextPhoto } from "@/lib/sample";
 import { useObjectUrl } from "@/lib/use-object-url";
 import styles from "./add-photo.module.css";
 
-type Picked = { blob: Blob; width: number; height: number; takenAt: number; dateFrom: "camera" | "photo" | "now" };
+type Picked = { blob: Blob; width: number; height: number; takenAt: number; dateFrom: "camera" | "photo" | "now"; replay?: boolean };
 
 export default function AddPhoto() {
   const { fridgeId } = useParams<{ fridgeId: string }>();
@@ -22,6 +25,11 @@ export default function AddPhoto() {
   const [unreadable, setUnreadable] = useState(0);
   const [cards, setCards] = useState<ReminderCard[]>([]);
   const preview = useObjectUrl(picked?.blob);
+  // the sample fridge offers its saved next-day photo while it still has only its first one
+  const offerSample = useLiveQuery(async () => {
+    const f = await db.fridges.get(fridgeId);
+    return !!f?.sample && (await db.photos.where("fridgeId").equals(fridgeId).count()) === 1;
+  }, [fridgeId]);
 
   async function pick(file: File | undefined, fromCamera: boolean) {
     if (!file) return;
@@ -37,6 +45,11 @@ export default function AddPhoto() {
     setPhase("matching");
     setCards(await computeReminders(fridgeId));
     try {
+      if (picked.replay) {
+        await new Promise((r) => setTimeout(r, 5000)); // let the reminders show, as in a live match
+        await replaySampleMatch(fridgeId);
+        return router.replace(`/fridges/${fridgeId}`);
+      }
       await matchAndSave(fridgeId, picked);
       router.replace(`/fridges/${fridgeId}`);
     } catch (e) {
@@ -77,6 +90,14 @@ export default function AddPhoto() {
             </label>
           </div>
 
+          {offerSample && !picked && (
+            <div className={`card ${styles.sampleOffer}`}>
+              <p>This is the sample fridge. Add the photo taken the next day and watch it match.</p>
+              <button className="pill mint" onClick={async () => setPicked({ ...(await sampleNextPhoto()), dateFrom: "photo", replay: true })}>
+                Add the next day&apos;s photo
+              </button>
+            </div>
+          )}
           {picked && preview && (
             <div className="card">
               <img src={preview} alt="New fridge photo" className={styles.preview} />

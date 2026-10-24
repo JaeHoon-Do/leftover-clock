@@ -1,0 +1,9 @@
+# real fridge photos (GPS, brand labels) and local-only files never leave this PC
+leftover-clock-photos
+.cache
+.env*
+.agents
+.claude
+agent
+eval/results
+devpost
