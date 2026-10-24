@@ -2,9 +2,12 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
+import { PhotoCheck } from "@/components/PhotoCheck";
+import { Reminders } from "@/components/Reminders";
 import { fromLocalInput, toLocalInput } from "@/lib/age";
 import { matchAndSave, MatchError } from "@/lib/matching-client";
 import { readTakenAt, shrink } from "@/lib/photo";
+import { computeReminders, type ReminderCard } from "@/lib/reminders";
 import { useObjectUrl } from "@/lib/use-object-url";
 import styles from "./add-photo.module.css";
 
@@ -16,6 +19,8 @@ export default function AddPhoto() {
   const [picked, setPicked] = useState<Picked>();
   const [phase, setPhase] = useState<"pick" | "matching" | "failed">("pick");
   const [error, setError] = useState<MatchError["kind"]>();
+  const [unreadable, setUnreadable] = useState(0);
+  const [cards, setCards] = useState<ReminderCard[]>([]);
   const preview = useObjectUrl(picked?.blob);
 
   async function pick(file: File | undefined, fromCamera: boolean) {
@@ -30,11 +35,14 @@ export default function AddPhoto() {
   async function start() {
     if (!picked) return;
     setPhase("matching");
+    setCards(await computeReminders(fridgeId));
     try {
       await matchAndSave(fridgeId, picked);
       router.replace(`/fridges/${fridgeId}`);
     } catch (e) {
-      setError(e instanceof MatchError ? e.kind : "unreadable");
+      const kind = e instanceof MatchError ? e.kind : "unreadable";
+      if (kind === "unreadable" || kind === "empty") setUnreadable((n) => n + 1);
+      setError(kind);
       setPhase("failed");
     }
   }
@@ -47,11 +55,15 @@ export default function AddPhoto() {
       <h1 className={styles.title}>Add a photo</h1>
 
       {phase === "matching" ? (
-        <div className={`card ${styles.center}`}>
-          <div className={styles.spinner} aria-hidden />
-          <h2>Matching your containers…</h2>
-          <p className="muted">This takes about 10–20 seconds.</p>
-        </div>
+        <>
+          <div className={styles.matching}>
+            <div className={styles.spinner} aria-hidden />
+            <span>Matching your containers… about 20 seconds</span>
+          </div>
+          <Reminders cards={cards} />
+        </>
+      ) : phase === "failed" && error ? (
+        <PhotoCheck kind={error} gaveUp={unreadable >= 2} onFile={pick} />
       ) : (
         <>
           <div className={styles.buttons}>
@@ -84,9 +96,8 @@ export default function AddPhoto() {
                     ? "The time you took it."
                     : "This photo has no date in it, so it's set to now. Change it if you took it earlier."}
               </p>
-              {phase === "failed" && <p className={styles.error}>{errorText(error)}</p>}
               <button className={`pill accent ${styles.start}`} onClick={start}>
-                {phase === "failed" ? "Try again" : "Start matching"}
+                Start matching
               </button>
             </div>
           )}
@@ -100,15 +111,3 @@ export default function AddPhoto() {
   );
 }
 
-function errorText(kind: MatchError["kind"] | undefined): string {
-  switch (kind) {
-    case "busy":
-      return "Gemini is busy right now. Try again in a minute.";
-    case "quota":
-      return "Today's free matching is used up. It resets at midnight Pacific time.";
-    case "empty":
-      return "No containers were found in this photo.";
-    default:
-      return "We couldn't read this photo.";
-  }
-}

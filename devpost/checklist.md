@@ -29,7 +29,7 @@ Build mode: fast
   Learner check: Open the app, add a fridge with a name and an illustration (and try your own photo as the image), add your 10/22 photo, and check that its date is right, every container has a pin, and no labels overlap. Say how both looks (the cute screens and the map) feel.
   Commit: `Add fridges and first-photo registration with pins`
 
-- [ ] **3. A later photo keeps each container's date, finds the lid-only one, and shelves the rest**
+- [x] **3. A later photo keeps each container's date, finds the lid-only one, and shelves the rest**
   Becomes usable: Adding the 10/23 photo to the same fridge shows matched containers with their original age, the half-hidden lid-only containers found by the search step, new containers at "today", and the containers not seen in the photo on the Unseen Shelf below it. Reminders show while matching runs; a photo that can't be read leads to the photo check and a retake instead of a crash, and leaves the fridge unchanged.
   Why now: This is the unique kernel inside the app, the "oh, that's cool" beat. It comes right after the first usable screen so the early feedback on it can still change everything that follows.
   PRD ref: `prd.md > The Core Journey` (steps 4-5), `prd.md > Matching and Pins`, `prd.md > Reminders While Matching`, `prd.md > Photo Can't Be Read`, `prd.md > Unseen Shelf` (shown)
@@ -109,3 +109,4 @@ Activity mode:
 - Added `lib/boxes.ts` (box math and the step-1 + step-2 merge, shared by the phone and the eval) and `sharp` as a dev dependency for the eval's image preparation — so the eval measures the same merge the app ships.
 - Prompt tuning continues after the slice-1 commit within the daily quota, as separate commits; prompts are frozen before slice 7 — the learner chose to tune, and the quota ran out mid-session.
 - Turned off `cacheComponents` in `next.config.ts`, added `dexie-react-hooks` (live queries so pins re-render after every change), gave both routes `maxDuration = 120`, and send Gemini short aliases (c1, c2, …) for stored container IDs — every screen is a client page reading IndexedDB (Cache Components would only demand Suspense around `useParams`), and a retry after a 40 s timeout can pass 60 s.
+- A failed step 2 (search) no longer fails the whole photo: step 1's result is saved and the containers it missed go to the Unseen Shelf — step 1 alone is still a correct, useful result, and failing it would waste the quota already spent.
