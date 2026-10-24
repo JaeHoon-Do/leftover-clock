@@ -1,0 +1,90 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(58, 46, 42, 0.35);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 10;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 560px;
+  background: var(--bg);
+  border-radius: 28px 28px 0 0;
+  padding: 20px 16px 28px;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.2);
+  animation: up 0.2s ease-out;
+}
+
+.head {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.head p {
+  margin: 2px 0;
+}
+
+.crop {
+  width: 88px;
+  height: 88px;
+  object-fit: cover;
+  border-radius: 20px;
+  border: 3px solid var(--butter);
+  background: #fff;
+}
+
+.age {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.unseen {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.close {
+  margin-left: auto;
+  align-self: flex-start;
+  border: 0;
+  background: none;
+  font-size: 28px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.events {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+  display: grid;
+  gap: 6px;
+}
+
+.events li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--card);
+  border-radius: 14px;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.buttons {
+  display: grid;
+  gap: 10px;
+}
+
+@keyframes up {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+}

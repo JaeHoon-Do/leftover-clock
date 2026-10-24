@@ -39,7 +39,7 @@ Build mode: fast
   Learner check: Add your 10/23 photo to the fridge. Look for the container that only shows its lid: does it have a pin with its 10/22 age? Check the shelf below for anything not seen. Then try a blurry photo and see what happens.
   Commit: `Match later photos, search for hidden containers, show Unseen Shelf`
 
-- [ ] **4. One tap fixes anything wrong, and the list shows everything oldest first**
+- [x] **4. One tap fixes anything wrong, and the list shows everything oldest first**
   Becomes usable: Tapping a pin, shelf item, or list row opens Container Detail with its crop, age, and recent history. "Refilled", "This is a new container", and "This is the same container as…" (pin picker on the earlier photo, or a crop grid) each fix it in one tap and the age updates at once. Shelf items have "Still there" / "Removed". "View as list" shows every active container oldest first.
   Why now: Once matching works, the promise is "right unless you tap"; these fixes are what make a wrong link (like the banana-tub case) harmless. The list shares the same detail sheet, so it is built with it.
   PRD ref: `prd.md > Container Detail and One-Tap Fixes`, `prd.md > Unseen Shelf`, `prd.md > View as List`, `prd.md > The Core Journey` (steps 6-7)
@@ -111,3 +111,4 @@ Activity mode:
 - Prompt tuning continues after the slice-1 commit within the daily quota, as separate commits; prompts are frozen before slice 7 — the learner chose to tune, and the quota ran out mid-session.
 - Turned off `cacheComponents` in `next.config.ts`, added `dexie-react-hooks` (live queries so pins re-render after every change), gave both routes `maxDuration = 120`, and send Gemini short aliases (c1, c2, …) for stored container IDs — every screen is a client page reading IndexedDB (Cache Components would only demand Suspense around `useParams`), and a retry after a 40 s timeout can pass 60 s.
 - A failed step 2 (search) no longer fails the whole photo: step 1's result is saved and the containers it missed go to the Unseen Shelf — step 1 alone is still a correct, useful result, and failing it would waste the quota already spent.
+- "Same as…" keeps the sighting the user just fixed when both containers were seen on the same photo (the other one's sighting on that photo is dropped), and shelf items' detail sheet offers Still there / Removed instead of split / same-as — a merge could otherwise leave two pins for one container, and a container not on the latest photo has no sighting to split.

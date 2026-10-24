@@ -46,3 +46,34 @@
   background: linear-gradient(#e8c99a, #d4ad78);
   border-top: 3px solid #c79d66;
 }
+
+.open {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.small {
+  border: 0;
+  border-radius: 999px;
+  padding: 5px 10px;
+  background: var(--mint);
+  color: var(--ink);
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 92px;
+}
+
+.gone {
+  background: var(--bg);
+}
+
+.tag {
+  font-size: 12px;
+  font-weight: 700;
+  color: #2f8f78;
+  padding: 5px 0;
+}
