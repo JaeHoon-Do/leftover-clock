@@ -17,6 +17,9 @@ export function FridgeCard({ fridge }: { fridge: Fridge }) {
         <FridgeArt image={fridge.image} className={fridge.image.kind === "photo" ? styles.photo : styles.art} />
         <span className={styles.name}>{fridge.name}</span>
       </Link>
+      <Link href={`/fridges/${fridge.id}/timeline`} className={styles.timeline}>
+        Timeline
+      </Link>
     </div>
   );
 }

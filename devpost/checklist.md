@@ -49,7 +49,7 @@ Build mode: fast
   Learner check: Find a container the app linked wrongly (or pick any) and fix it with "This is a new container"; join two that should be one with "same as…"; tap "Refilled" on one; mark a shelf item "Removed". Then open "View as list" and check the oldest is on top.
   Commit: `Add container detail, one-tap fixes, shelf actions, and list view`
 
-- [ ] **5. Timelines show everything that happened, per container and per fridge**
+- [x] **5. Timelines show everything that happened, per container and per fridge**
   Becomes usable: From Container Detail, a Container Timeline of every crop with its time and every action; from each fridge card on the Fridge List, a Fridge Timeline of photos and every container action in that fridge only.
   Why now: Timelines only read what slices 2-4 write, so they come once every event type exists.
   PRD ref: `prd.md > Timelines`

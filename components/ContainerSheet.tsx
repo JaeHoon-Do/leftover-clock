@@ -45,6 +45,9 @@ export function ContainerSheet({ containerId, onClose }: { containerId: string; 
             ×
           </button>
         </div>
+        <Link className={styles.timeline} href={`/fridges/${c.fridgeId}/containers/${c.id}/timeline`}>
+          Timeline →
+        </Link>
         <ul className={styles.events}>
           {events.slice(0, 3).map((e) => (
             <li key={e.id}>

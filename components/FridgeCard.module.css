@@ -33,3 +33,15 @@
   font-weight: 600;
   text-align: center;
 }
+
+.timeline {
+  display: block;
+  padding: 10px;
+  border-top: 2px dashed var(--line);
+  text-align: center;
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--muted);
+  text-decoration: none;
+}

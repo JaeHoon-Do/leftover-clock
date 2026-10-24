@@ -88,3 +88,11 @@
     opacity: 0;
   }
 }
+
+.timeline {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 600;
+  color: var(--ink);
+}
