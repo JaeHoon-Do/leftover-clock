@@ -17,6 +17,17 @@
   margin: 6px 16px 14px;
 }
 
+.dates {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 0 16px 12px;
+}
+
+.dates > button {
+  flex: none;
+}
+
 .toggle {
   display: flex;
   justify-content: center;
