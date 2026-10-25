@@ -1,7 +1,8 @@
 // Builds the sample fridge in public/sample/ from two real photos: shrunk and re-encoded (no EXIF,
 // so no GPS), brand labels blurred, then matched once with the app's own matcher and saved, so the
 // live app can replay the matching scene without any API call.
-//   npx tsx scripts/make-sample.ts
+//   npx tsx scripts/make-sample.ts                (photos + one matching run: 3 Gemini requests)
+//   npx tsx scripts/make-sample.ts --photos-only  (re-make the photos only; sample.json is kept)
 import { writeFileSync } from "node:fs";
 import exifr from "exifr";
 import sharp from "sharp";
@@ -11,39 +12,44 @@ import { mapContainers, searchContainers } from "../server/gemini";
 const PHOTOS = "leftover-clock-photos";
 const OUT = "public/sample";
 
-// Printed brand labels, found by eye on a 0–1000 grid of each photo.
+// Only the printed brand names and logos, found by eye on a 0–1000 grid of each photo: small
+// soft-edged patches, so the rest of each package and every container stays sharp.
 const DAYS: { file: string; out: string; blur: Box[] }[] = [
   {
     file: "IMG_0661.jpeg",
     out: "day1.jpg",
     blur: [
-      [330, 80, 420, 160], [325, 145, 390, 330], [265, 325, 320, 510], [340, 735, 425, 800],
-      [445, 135, 550, 245], [590, 90, 725, 320], [632, 505, 685, 600], [690, 0, 705, 30],
+      [350, 78, 425, 152], [350, 190, 368, 295], [275, 320, 300, 380], [272, 455, 292, 505], [340, 742, 415, 810],
+      [448, 138, 468, 190], [645, 165, 692, 275], [695, 85, 725, 245], [643, 535, 656, 580], [696, 0, 714, 85],
     ],
   },
   {
     file: "IMG_0674.jpeg",
     out: "day2.jpg",
     blur: [
-      [290, 0, 395, 100], [210, 285, 275, 500], [292, 80, 330, 300], [300, 760, 390, 860],
-      [415, 85, 495, 180], [500, 20, 565, 160], [590, 40, 725, 260],
+      [297, 0, 352, 70], [300, 60, 336, 150], [298, 170, 325, 270], [205, 300, 230, 340], [205, 440, 225, 480],
+      [255, 448, 285, 470], [300, 772, 372, 842], [295, 838, 312, 862], [415, 80, 442, 140], [500, 50, 552, 118],
+      [650, 55, 692, 200], [697, 42, 724, 200], [634, 55, 648, 95],
     ],
   },
 ];
+const FEATHER = 6; // px of soft edge around each patch
+const GROW = 2 * FEATHER; // px each patch grows by, so the soft edge falls outside the box, not on the letters
 
 async function prepare(file: string, blur: Box[]): Promise<Buffer> {
   const base = await sharp(`${PHOTOS}/${file}`).rotate().resize(1200, 1600, { fit: "inside" }).toBuffer();
   const { width = 0, height = 0 } = await sharp(base).metadata();
-  const patches = await Promise.all(
-    blur.map(async ([y0, x0, y1, x1]) => {
-      const left = Math.round((x0 * width) / 1000);
-      const top = Math.round((y0 * height) / 1000);
-      const w = Math.round(((x1 - x0) * width) / 1000);
-      const h = Math.round(((y1 - y0) * height) / 1000);
-      return { input: await sharp(base).extract({ left, top, width: w, height: h }).blur(14).toBuffer(), left, top };
-    }),
-  );
-  return sharp(base).composite(patches).jpeg({ quality: 85 }).toBuffer(); // no withMetadata(): EXIF dropped
+  // A blurred copy shows through a white-on-black mask whose rectangles are themselves blurred.
+  const rects = blur
+    .map(([y0, x0, y1, x1]) => {
+      const x = (x0 * width) / 1000 - GROW, y = (y0 * height) / 1000 - GROW;
+      return `<rect x="${x}" y="${y}" width="${((x1 - x0) * width) / 1000 + 2 * GROW}" height="${((y1 - y0) * height) / 1000 + 2 * GROW}" rx="${GROW}" fill="#fff"/>`;
+    })
+    .join("");
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"><rect width="100%" height="100%" fill="#000"/>${rects}</svg>`;
+  const mask = await sharp(Buffer.from(svg)).blur(FEATHER).extractChannel(0).toBuffer();
+  const overlay = await sharp(base).blur(16).joinChannel(mask).png().toBuffer();
+  return sharp(base).composite([{ input: overlay }]).jpeg({ quality: 85 }).toBuffer(); // no withMetadata(): EXIF dropped
 }
 
 async function crop(photo: Buffer, box: Box): Promise<string> {
@@ -63,6 +69,7 @@ async function main() {
   process.loadEnvFile(".env.local");
   const photos = await Promise.all(DAYS.map((d) => prepare(d.file, d.blur)));
   DAYS.forEach((d, i) => writeFileSync(`${OUT}/${d.out}`, photos[i]));
+  if (process.argv.includes("--photos-only")) return;
   const takenAt = await Promise.all(DAYS.map(async (d) => ((await exifr.parse(`${PHOTOS}/${d.file}`, ["DateTimeOriginal"])).DateTimeOriginal as Date).getTime()));
   const [day1, day2] = photos.map((p) => p.toString("base64"));
 
