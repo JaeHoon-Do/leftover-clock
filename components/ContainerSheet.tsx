@@ -19,7 +19,11 @@ export function ContainerSheet({ containerId, onClose }: { containerId: string; 
     const sightings = await db.sightings.where("containerId").equals(containerId).toArray();
     const onLatest = sightings.find((s) => s.photoId === photo?.id);
     const events = (await db.events.where("containerId").equals(containerId).sortBy("at")).reverse();
-    return { c, onLatest, crop: (onLatest ?? clearestSighting(sightings))?.crop, events };
+    // Refilled / new container only change something if the date is older than the latest photo,
+    // and "same as" needs an earlier photo to pick from.
+    const older = !!photo && c.dateStart < photo.takenAt;
+    const hasEarlier = (await db.photos.where("fridgeId").equals(c.fridgeId).count()) > 1;
+    return { c, onLatest, crop: (onLatest ?? clearestSighting(sightings))?.crop, events, older, hasEarlier };
   }, [containerId]);
   const url = useObjectUrl(data?.crop);
   // the container was merged away or removed
@@ -27,7 +31,7 @@ export function ContainerSheet({ containerId, onClose }: { containerId: string; 
     if (data === null) onClose();
   }, [data, onClose]);
   if (!data) return null;
-  const { c, onLatest, events } = data;
+  const { c, onLatest, events, older, hasEarlier } = data;
 
   return (
     <div className={styles.backdrop} onClick={onClose}>
@@ -57,18 +61,23 @@ export function ContainerSheet({ containerId, onClose }: { containerId: string; 
           ))}
         </ul>
         <div className={styles.buttons}>
-          <button className="pill accent" onClick={() => refill(c.id)}>
-            Refilled
-          </button>
-          {onLatest && (
-            <>
-              <button className="pill" onClick={() => split(onLatest.id).then(onClose)}>
-                This is a new container
-              </button>
-              <Link className="pill mint" href={`/fridges/${c.fridgeId}/pick?from=${c.id}`}>
-                This is the same container as…
-              </Link>
-            </>
+          {older && (
+            <button className="pill accent" onClick={() => refill(c.id)}>
+              Refilled
+            </button>
+          )}
+          {onLatest && older && (
+            <button className="pill" onClick={() => split(onLatest.id).then(onClose)}>
+              This is a new container
+            </button>
+          )}
+          {onLatest && hasEarlier && (
+            <Link className="pill mint" href={`/fridges/${c.fridgeId}/pick?from=${c.id}`}>
+              This is the same container as…
+            </Link>
+          )}
+          {onLatest && !older && !hasEarlier && (
+            <p className="muted">This is the first photo, so every container starts from its date. Fixes appear after the next photo.</p>
           )}
           {!onLatest && (
             <>
