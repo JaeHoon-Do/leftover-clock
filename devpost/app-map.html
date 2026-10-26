@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leftover Clock App Map</title>
+<style>
+:root {
+  --bg: #fff8ef; --panel: #ffffff; --text: #2b2420; --muted: #6f655d; --line: #eadfd3;
+  --accent: #e8574c; --mint: #2f9e7a; --sun: #f2b84b; --code: #f6efe6;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #1b1714; --panel: #25201c; --text: #f1e9e1; --muted: #b3a79c; --line: #3a322c;
+    --accent: #ff7a6e; --mint: #5cc9a3; --sun: #f5c96d; --code: #2f2924; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 820px; margin: 0 auto; padding: 32px 16px 64px; }
+h1 { font-size: 30px; margin: 0 0 4px; }
+h2 { font-size: 20px; margin: 36px 0 10px; }
+p.lead { color: var(--muted); margin: 0 0 8px; }
+code { background: var(--code); border-radius: 5px; padding: 1px 5px; font: 14px ui-monospace, Consolas, monospace; overflow-wrap: anywhere; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; margin: 12px 0; }
+.pieces { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.pieces .card { margin: 0; }
+.pieces b { display: block; }
+ol.route { padding-left: 0; list-style: none; counter-reset: stop; }
+ol.route li { counter-increment: stop; position: relative; padding-left: 44px; }
+ol.route li::before { content: counter(stop); position: absolute; left: 0; top: 16px; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--accent); color: #fff; font-weight: 700; text-align: center; line-height: 30px; }
+.where { font-size: 14px; color: var(--muted); }
+table { width: 100%; border-collapse: collapse; font-size: 15px; }
+th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; }
+svg { width: 100%; height: auto; display: block; }
+svg .box { fill: var(--panel); stroke: var(--line); stroke-width: 2; }
+svg .ext { fill: var(--panel); stroke: var(--sun); stroke-width: 2; stroke-dasharray: 6 4; }
+svg .store { fill: var(--panel); stroke: var(--mint); stroke-width: 2; }
+svg text { fill: var(--text); font: 600 13px system-ui, sans-serif; }
+svg text.sub { fill: var(--muted); font: 12px ui-monospace, Consolas, monospace; }
+svg .arrow { stroke: var(--accent); stroke-width: 2; fill: none; marker-end: url(#tip); }
+details { margin-top: 8px; }
+summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+footer { margin-top: 40px; font-size: 14px; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Leftover Clock — App Map</h1>
+  <p class="lead">A take-home guide to where things live. Home leftovers in opaque containers get a "first seen" date from fridge photos alone: take a photo, the app finds each container, matches it to the earlier photo, and pins its age.</p>
+
+  <h2>The main pieces</h2>
+  <div class="pieces">
+    <div class="card"><b>Screens (phone)</b>Next.js pages under <code>app/</code>: Fridge List, Fridge View with pins, Add Photo, timelines.</div>
+    <div class="card"><b>Matching client</b><code>lib/matching-client.ts</code> sends the photos to the server and maps the answer back to stored containers.</div>
+    <div class="card"><b>Gemini routes (server)</b><code>app/api/match</code> and <code>app/api/search</code> call <code>server/gemini.ts</code>. The API key never leaves the server.</div>
+    <div class="card"><b>Storage (phone)</b>IndexedDB through Dexie (<code>lib/db.ts</code>, writes in <code>lib/actions.ts</code>). The server stores nothing.</div>
+    <div class="card"><b>Evaluation</b><code>eval/run-eval.ts</code> runs the same matcher on real photo pairs and scores it against hand-confirmed answer keys in <code>eval/truth/</code>.</div>
+  </div>
+
+  <h2>One action: adding a photo</h2>
+  <div class="card">
+    <svg viewBox="0 0 760 250" role="img" aria-labelledby="flowTitle">
+      <title id="flowTitle">Adding a photo: the Add Photo page calls matchAndSave, which calls two server routes backed by Gemini, then applyMatch saves to IndexedDB and the Fridge View shows pins.</title>
+      <defs><marker id="tip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e8574c"/></marker></defs>
+      <rect class="box" x="10" y="20" width="170" height="64" rx="10"/><text x="22" y="46">Add Photo page</text><text class="sub" x="22" y="66">start()</text>
+      <rect class="box" x="230" y="20" width="200" height="64" rx="10"/><text x="242" y="46">Matching client</text><text class="sub" x="242" y="66">matchAndSave()</text>
+      <rect class="ext" x="480" y="10" width="270" height="88" rx="10"/><text x="492" y="34">Server routes → Gemini</text><text class="sub" x="492" y="56">1. /api/match  mapContainers()</text><text class="sub" x="492" y="76">2. /api/search searchContainers()</text>
+      <rect class="store" x="230" y="160" width="200" height="64" rx="10"/><text x="242" y="186">Save to IndexedDB</text><text class="sub" x="242" y="206">applyMatch()</text>
+      <rect class="box" x="10" y="160" width="170" height="64" rx="10"/><text x="22" y="186">Fridge View</text><text class="sub" x="22" y="206">pins + Unseen Shelf</text>
+      <path class="arrow" d="M180 52 H226"/>
+      <path class="arrow" d="M430 45 H476"/>
+      <path class="arrow" d="M476 72 H434"/>
+      <path class="arrow" d="M330 84 V156"/>
+      <path class="arrow" d="M230 192 H184"/>
+    </svg>
+  </div>
+
+  <h2>Reference route (3 stops)</h2>
+  <p class="where">Search for the anchor in your editor; line numbers drift.</p>
+  <ol class="route">
+    <li class="card"><b>Entry: the "Start matching" button</b>
+      <div class="where"><code>app/fridges/[fridgeId]/add-photo/page.tsx</code> → <code>async function start()</code></div>
+      Refuses a photo dated before the fridge's latest photo or in the future (<code>olderThan</code>, <code>future</code>), shows the reminder cards while waiting, then calls <code>matchAndSave</code>. On failure it shows <code>PhotoCheck</code>; nothing is saved.</li>
+    <li class="card"><b>Logic: two-step matching</b>
+      <div class="where"><code>lib/matching-client.ts</code> → <code>matchAndSave</code>, and <code>server/gemini.ts</code> → <code>mapPrompt</code>, <code>searchPrompt</code>, <code>generate</code></div>
+      Step 1 maps the new photo against the previous one's containers (short aliases c1, c2, …). Step 2 searches for every container step 1 missed, by its close-up crop. <code>generate</code> retries once on "busy" and never falls back to a weaker model.</li>
+    <li class="card"><b>Result: saved and pinned</b>
+      <div class="where"><code>lib/actions.ts</code> → <code>applyMatch</code>, then <code>app/fridges/[fridgeId]/page.tsx</code> with <code>components/PhotoMap.tsx</code> and <code>components/UnseenShelf.tsx</code></div>
+      Saves the photo, one crop and sighting per container, and new containers dated to the photo. The Fridge View reads the latest photo live and pins each container's age; containers not seen go to the Unseen Shelf.</li>
+  </ol>
+
+  <h2>To change this, start here</h2>
+  <div class="card">
+    <table>
+      <tr><th>If you want to change…</th><th>Start at</th></tr>
+      <tr><td>What Gemini is asked</td><td><code>server/gemini.ts</code> → <code>mapPrompt</code> / <code>searchPrompt</code> (then re-run the eval: prompts are frozen for the reported number)</td></tr>
+      <tr><td>Retry and error kinds (busy, quota, unreadable)</td><td><code>server/gemini.ts</code> → <code>isRetryable</code>, <code>generate</code>; messages in <code>components/PhotoCheck.tsx</code></td></tr>
+      <tr><td>How ages read ("4d", "3 days")</td><td><code>lib/age.ts</code> → <code>ageChip</code>, <code>ageText</code>, <code>dateText</code></td></tr>
+      <tr><td>The one-tap fixes</td><td><code>components/ContainerSheet.tsx</code>; writes in <code>lib/actions.ts</code> → <code>refill</code>, <code>split</code>, <code>merge</code>, <code>stillThere</code>, <code>remove</code></td></tr>
+      <tr><td>The photo date rule</td><td><code>app/fridges/[fridgeId]/add-photo/page.tsx</code> → <code>olderThan</code>, <code>future</code></td></tr>
+      <tr><td>The sample fridge</td><td><code>lib/sample.ts</code> and <code>public/sample/</code> (photos built by <code>scripts/make-sample.ts</code>)</td></tr>
+      <tr><td>How matching is scored</td><td><code>eval/run-eval.ts</code> → <code>align</code>, <code>score</code>; answer keys in <code>eval/truth/</code></td></tr>
+    </table>
+  </div>
+
+  <h2>A practice to reuse: measure a model on photos it was never tuned on</h2>
+  <div class="card">
+    <p><b>What was done.</b> Prompts were tuned on one photo pair (10/22 → 10/23) and frozen in commit <code>5da96af</code>. Two later pairs were held out. Each held-out answer key was drafted from one matcher run, confirmed box by box against both full photos, and saved in <code>eval/truth/</code> <em>before</em> the scored run. Correct links, misses, and wrong links were counted separately, because a wrong link silently gives a container someone else's date.</p>
+    <p><b>What the evidence showed.</b> The tuning pair scored 19–20 of 23 with about 1 wrong link per run. The held-out pairs scored 27 of 43 with 14 wrong links (<code>eval/results/heldout-2026-10-26.json</code>; table in the README). In the fridge reorganized overnight, the model placed several boxes near where containers used to be. Tuning-set numbers alone would have overstated the matcher, and they are why the one-tap fixes are part of the core flow.</p>
+    <p><b>How to reuse it.</b> For any model-backed feature: freeze the prompt and model, keep test cases the tuning never saw, fix the answer key before you score, and count each kind of error by what it costs the user instead of one combined accuracy.</p>
+  </div>
+
+  <h2>Run it again</h2>
+  <div class="card">
+    <p><code>npm install</code>, put <code>GEMINI_API_KEY=…</code> in <code>.env.local</code>, then <code>npm run dev</code> and open http://localhost:3000. Re-print the held-out table without API calls: <code>npx tsx eval/run-eval.ts --rescore eval/results/heldout-2026-10-26.json</code>.</p>
+    <details><summary>Live version</summary><p>https://leftover-clock.vercel.app — "Try the sample fridge" works without any setup.</p></details>
+  </div>
+
+  <footer>Snapshot of the code at commit <code>a86f0f1</code> (2026-10-26). Paths and names can drift as the code changes.</footer>
+</main>
+</body>
+</html>
