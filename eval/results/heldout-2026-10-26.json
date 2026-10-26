@@ -1,0 +1,2427 @@
+[
+ {
+  "pair": "0674_0678",
+  "model": "gemini-3.6-flash",
+  "modelsUsed": [
+   "gemini-3.6-flash",
+   "gemini-3.6-flash"
+  ],
+  "failures": [],
+  "ms": {
+   "map": 9378,
+   "search": 7811
+  },
+  "step1": {
+   "model": "gemini-3.6-flash",
+   "failures": [],
+   "containers": [
+    {
+     "box": [
+      268,
+      301,
+      323,
+      441
+     ],
+     "match": "c3",
+     "confidence": 0.88,
+     "desc": "clear tub, pink/orange lid"
+    },
+    {
+     "box": [
+      244,
+      506,
+      281,
+      717
+     ],
+     "match": null,
+     "confidence": 0.95,
+     "desc": "long flat clear tub, grey lid"
+    },
+    {
+     "box": [
+      278,
+      425,
+      326,
+      705
+     ],
+     "match": null,
+     "confidence": 0.92,
+     "desc": "black takeout tray"
+    },
+    {
+     "box": [
+      240,
+      715,
+      276,
+      811
+     ],
+     "match": "c7",
+     "confidence": 0.85,
+     "desc": "small tub, translucent lid"
+    },
+    {
+     "box": [
+      276,
+      718,
+      320,
+      818
+     ],
+     "match": "c8",
+     "confidence": 0.92,
+     "desc": "small tub, bright pink lid"
+    },
+    {
+     "box": [
+      238,
+      827,
+      322,
+      960
+     ],
+     "match": "c9",
+     "confidence": 0.92,
+     "desc": "clear tall tub, green lid"
+    },
+    {
+     "box": [
+      152,
+      838,
+      243,
+      939
+     ],
+     "match": "c10",
+     "confidence": 0.95,
+     "desc": "tall tub, orange lid"
+    },
+    {
+     "box": [
+      151,
+      658,
+      242,
+      741
+     ],
+     "match": "c11",
+     "confidence": 0.92,
+     "desc": "tall glass jar, pink/red lid"
+    },
+    {
+     "box": [
+      186,
+      756,
+      320,
+      859
+     ],
+     "match": "c12",
+     "confidence": 0.9,
+     "desc": "glass jar, gold lid"
+    },
+    {
+     "box": [
+      191,
+      573,
+      245,
+      714
+     ],
+     "match": "c4",
+     "confidence": 0.82,
+     "desc": "clear tub with clear lid"
+    },
+    {
+     "box": [
+      431,
+      61,
+      493,
+      175
+     ],
+     "match": null,
+     "confidence": 0.95,
+     "desc": "small white round tub"
+    },
+    {
+     "box": [
+      399,
+      61,
+      438,
+      167
+     ],
+     "match": "c25",
+     "confidence": 0.85,
+     "desc": "small fluted clear/white tub"
+    },
+    {
+     "box": [
+      363,
+      172,
+      488,
+      345
+     ],
+     "match": "c14",
+     "confidence": 0.96,
+     "desc": "black saucepan with lid"
+    },
+    {
+     "box": [
+      395,
+      381,
+      448,
+      518
+     ],
+     "match": "n2",
+     "confidence": 0.95,
+     "desc": "locking glass box, clear lid"
+    },
+    {
+     "box": [
+      440,
+      385,
+      492,
+      513
+     ],
+     "match": "n3",
+     "confidence": 0.95,
+     "desc": "tub with orange lid"
+    },
+    {
+     "box": [
+      351,
+      551,
+      410,
+      713
+     ],
+     "match": null,
+     "confidence": 0.9,
+     "desc": "glass tub, grey rim locking lid"
+    },
+    {
+     "box": [
+      408,
+      561,
+      452,
+      688
+     ],
+     "match": null,
+     "confidence": 0.9,
+     "desc": "glass tub, yellow lid"
+    },
+    {
+     "box": [
+      452,
+      573,
+      496,
+      673
+     ],
+     "match": "c17",
+     "confidence": 0.92,
+     "desc": "small tub, grey lid"
+    },
+    {
+     "box": [
+      423,
+      677,
+      497,
+      800
+     ],
+     "match": "c6",
+     "confidence": 0.85,
+     "desc": "translucent green tub"
+    },
+    {
+     "box": [
+      344,
+      778,
+      392,
+      939
+     ],
+     "match": "c22",
+     "confidence": 0.92,
+     "desc": "tub, clear lid"
+    },
+    {
+     "box": [
+      391,
+      797,
+      449,
+      941
+     ],
+     "match": "c16",
+     "confidence": 0.95,
+     "desc": "tub, bright pink lid"
+    },
+    {
+     "box": [
+      438,
+      798,
+      494,
+      940
+     ],
+     "match": null,
+     "confidence": 0.9,
+     "desc": "tub, yellow/orange lid"
+    },
+    {
+     "box": [
+      516,
+      220,
+      654,
+      489
+     ],
+     "match": "c24",
+     "confidence": 0.98,
+     "desc": "black pot with glass lid"
+    },
+    {
+     "box": [
+      567,
+      506,
+      653,
+      672
+     ],
+     "match": null,
+     "confidence": 0.95,
+     "desc": "glass box, blue lid"
+    },
+    {
+     "box": [
+      527,
+      660,
+      597,
+      786
+     ],
+     "match": null,
+     "confidence": 0.9,
+     "desc": "glass tub, clear lid"
+    },
+    {
+     "box": [
+      591,
+      660,
+      639,
+      783
+     ],
+     "match": "n4",
+     "confidence": 0.9,
+     "desc": "flat glass tub, brown rim lid"
+    }
+   ]
+  },
+  "step2": {
+   "model": "gemini-3.6-flash",
+   "failures": [],
+   "found": [],
+   "notFound": [
+    "c2",
+    "c5",
+    "c15",
+    "c19",
+    "c21",
+    "c23",
+    "c26",
+    "c1"
+   ]
+  },
+  "final": [
+   {
+    "box": [
+     516,
+     220,
+     654,
+     489
+    ],
+    "match": "c24",
+    "confidence": 0.98,
+    "desc": "black pot with glass lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     363,
+     172,
+     488,
+     345
+    ],
+    "match": "c14",
+    "confidence": 0.96,
+    "desc": "black saucepan with lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     244,
+     506,
+     281,
+     717
+    ],
+    "match": null,
+    "confidence": 0.95,
+    "desc": "long flat clear tub, grey lid",
+    "source": "new"
+   },
+   {
+    "box": [
+     152,
+     838,
+     243,
+     939
+    ],
+    "match": "c10",
+    "confidence": 0.95,
+    "desc": "tall tub, orange lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     431,
+     61,
+     493,
+     175
+    ],
+    "match": null,
+    "confidence": 0.95,
+    "desc": "small white round tub",
+    "source": "new"
+   },
+   {
+    "box": [
+     395,
+     381,
+     448,
+     518
+    ],
+    "match": "n2",
+    "confidence": 0.95,
+    "desc": "locking glass box, clear lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     440,
+     385,
+     492,
+     513
+    ],
+    "match": "n3",
+    "confidence": 0.95,
+    "desc": "tub with orange lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     391,
+     797,
+     449,
+     941
+    ],
+    "match": "c16",
+    "confidence": 0.95,
+    "desc": "tub, bright pink lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     567,
+     506,
+     653,
+     672
+    ],
+    "match": null,
+    "confidence": 0.95,
+    "desc": "glass box, blue lid",
+    "source": "new"
+   },
+   {
+    "box": [
+     278,
+     425,
+     326,
+     705
+    ],
+    "match": null,
+    "confidence": 0.92,
+    "desc": "black takeout tray",
+    "source": "new"
+   },
+   {
+    "box": [
+     276,
+     718,
+     320,
+     818
+    ],
+    "match": "c8",
+    "confidence": 0.92,
+    "desc": "small tub, bright pink lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     238,
+     827,
+     322,
+     960
+    ],
+    "match": "c9",
+    "confidence": 0.92,
+    "desc": "clear tall tub, green lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     151,
+     658,
+     242,
+     741
+    ],
+    "match": "c11",
+    "confidence": 0.92,
+    "desc": "tall glass jar, pink/red lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     452,
+     573,
+     496,
+     673
+    ],
+    "match": "c17",
+    "confidence": 0.92,
+    "desc": "small tub, grey lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     344,
+     778,
+     392,
+     939
+    ],
+    "match": "c22",
+    "confidence": 0.92,
+    "desc": "tub, clear lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     186,
+     756,
+     320,
+     859
+    ],
+    "match": "c12",
+    "confidence": 0.9,
+    "desc": "glass jar, gold lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     351,
+     551,
+     410,
+     713
+    ],
+    "match": null,
+    "confidence": 0.9,
+    "desc": "glass tub, grey rim locking lid",
+    "source": "new"
+   },
+   {
+    "box": [
+     408,
+     561,
+     452,
+     688
+    ],
+    "match": null,
+    "confidence": 0.9,
+    "desc": "glass tub, yellow lid",
+    "source": "new"
+   },
+   {
+    "box": [
+     438,
+     798,
+     494,
+     940
+    ],
+    "match": null,
+    "confidence": 0.9,
+    "desc": "tub, yellow/orange lid",
+    "source": "new"
+   },
+   {
+    "box": [
+     527,
+     660,
+     597,
+     786
+    ],
+    "match": null,
+    "confidence": 0.9,
+    "desc": "glass tub, clear lid",
+    "source": "new"
+   },
+   {
+    "box": [
+     591,
+     660,
+     639,
+     783
+    ],
+    "match": "n4",
+    "confidence": 0.9,
+    "desc": "flat glass tub, brown rim lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     268,
+     301,
+     323,
+     441
+    ],
+    "match": "c3",
+    "confidence": 0.88,
+    "desc": "clear tub, pink/orange lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     240,
+     715,
+     276,
+     811
+    ],
+    "match": "c7",
+    "confidence": 0.85,
+    "desc": "small tub, translucent lid",
+    "source": "match"
+   },
+   {
+    "box": [
+     399,
+     61,
+     438,
+     167
+    ],
+    "match": "c25",
+    "confidence": 0.85,
+    "desc": "small fluted clear/white tub",
+    "source": "match"
+   },
+   {
+    "box": [
+     423,
+     677,
+     497,
+     800
+    ],
+    "match": "c6",
+    "confidence": 0.85,
+    "desc": "translucent green tub",
+    "source": "match"
+   },
+   {
+    "box": [
+     191,
+     573,
+     245,
+     714
+    ],
+    "match": "c4",
+    "confidence": 0.82,
+    "desc": "clear tub with clear lid",
+    "source": "match"
+   }
+  ],
+  "truth": {
+   "prevPhoto": "IMG_0674.jpeg",
+   "nextPhoto": "IMG_0678.jpeg",
+   "note": "10/23 23:44 -> 10/25 11:11. Held-out pair. Confirmed by the learner in a review page over one draft run of gemini-3.6-flash (정답지.md). c10 was refilled (same container). The white tub under c25 was hidden in 0674 and never registered, so it counts as new here. c1 and c6 boxes drawn by hand.",
+   "known": [
+    {
+     "id": "c2",
+     "box": [
+      311,
+      172,
+      388,
+      313
+     ],
+     "desc": "bright green tub, top shelf left"
+    },
+    {
+     "id": "c3",
+     "box": [
+      337,
+      299,
+      394,
+      429
+     ],
+     "desc": "clear tub, pink/red lid"
+    },
+    {
+     "id": "c4",
+     "box": [
+      283,
+      429,
+      345,
+      570
+     ],
+     "desc": "clear tub stacked on top"
+    },
+    {
+     "id": "c5",
+     "box": [
+      339,
+      442,
+      396,
+      569
+     ],
+     "desc": "clear tub, grey lid"
+    },
+    {
+     "id": "c6",
+     "box": [
+      309,
+      560,
+      396,
+      696
+     ],
+     "desc": "large green translucent tub"
+    },
+    {
+     "id": "c7",
+     "box": [
+      308,
+      684,
+      347,
+      792
+     ],
+     "desc": "small tub, white translucent lid"
+    },
+    {
+     "id": "c8",
+     "box": [
+      345,
+      682,
+      397,
+      788
+     ],
+     "desc": "small box, bright pink lid"
+    },
+    {
+     "id": "c9",
+     "box": [
+      308,
+      829,
+      390,
+      955
+     ],
+     "desc": "clear tall tub, green lid"
+    },
+    {
+     "id": "c10",
+     "box": [
+      230,
+      866,
+      309,
+      953
+     ],
+     "desc": "tall tub, orange lid"
+    },
+    {
+     "id": "c11",
+     "box": [
+      226,
+      659,
+      314,
+      742
+     ],
+     "desc": "tall glass jar, red lid"
+    },
+    {
+     "id": "c12",
+     "box": [
+      258,
+      750,
+      390,
+      858
+     ],
+     "desc": "glass jar, gold lid"
+    },
+    {
+     "id": "c14",
+     "box": [
+      447,
+      21,
+      563,
+      420
+     ],
+     "desc": "black saucepan with lid"
+    },
+    {
+     "id": "c15",
+     "box": [
+      426,
+      360,
+      502,
+      503
+     ],
+     "desc": "dark box behind saucepan"
+    },
+    {
+     "id": "n2",
+     "box": [
+      465,
+      432,
+      517,
+      555
+     ],
+     "desc": "locking glass box, clear lid (where the banana tub was)"
+    },
+    {
+     "id": "n3",
+     "box": [
+      504,
+      427,
+      556,
+      532
+     ],
+     "desc": "orange-lid tub under it"
+    },
+    {
+     "id": "c19",
+     "box": [
+      438,
+      551,
+      526,
+      678
+     ],
+     "desc": "square tub, light green lid"
+    },
+    {
+     "id": "c17",
+     "box": [
+      525,
+      559,
+      569,
+      663
+     ],
+     "desc": "small tub under the green-lid square"
+    },
+    {
+     "id": "c21",
+     "box": [
+      454,
+      663,
+      510,
+      796
+     ],
+     "desc": "round tub, yellow lid"
+    },
+    {
+     "id": "c16",
+     "box": [
+      504,
+      666,
+      567,
+      794
+     ],
+     "desc": "tub, pink lid"
+    },
+    {
+     "id": "c22",
+     "box": [
+      457,
+      794,
+      507,
+      937
+     ],
+     "desc": "tub, clear lid, right"
+    },
+    {
+     "id": "c23",
+     "box": [
+      503,
+      794,
+      568,
+      938
+     ],
+     "desc": "green-lid tub, right bottom"
+    },
+    {
+     "id": "c24",
+     "box": [
+      595,
+      260,
+      742,
+      505
+     ],
+     "desc": "black pot, glass lid"
+    },
+    {
+     "id": "n4",
+     "box": [
+      667,
+      478,
+      748,
+      638
+     ],
+     "desc": "square tub, orange rim, bottom shelf front"
+    },
+    {
+     "id": "c26",
+     "box": [
+      591,
+      597,
+      715,
+      788
+     ],
+     "desc": "large round black takeout container"
+    },
+    {
+     "id": "c1",
+     "box": [
+      270,
+      190,
+      295,
+      260
+     ],
+     "desc": "green lid edge under lettuce (mostly hidden)"
+    },
+    {
+     "id": "c25",
+     "box": [
+      588,
+      518,
+      622,
+      612
+     ],
+     "desc": "white fluted round tub behind the seaweed bag (mostly hidden)"
+    }
+   ],
+   "next": [
+    {
+     "box": [
+      363,
+      172,
+      487,
+      344
+     ],
+     "truth": "c14",
+     "desc": "black saucepan with lid, middle shelf left"
+    },
+    {
+     "box": [
+      513,
+      219,
+      650,
+      484
+     ],
+     "truth": "c24",
+     "desc": "black pot with glass lid, third shelf left"
+    },
+    {
+     "box": [
+      569,
+      506,
+      655,
+      672
+     ],
+     "truth": "new",
+     "desc": "rectangular tub, light blue lid, containing grapes"
+    },
+    {
+     "box": [
+      151,
+      834,
+      239,
+      944
+     ],
+     "truth": "c10",
+     "desc": "tall tub, orange lid"
+    },
+    {
+     "box": [
+      151,
+      654,
+      240,
+      741
+     ],
+     "truth": "c11",
+     "desc": "tall jar with red lid"
+    },
+    {
+     "box": [
+      351,
+      554,
+      409,
+      714
+     ],
+     "truth": "new",
+     "desc": "locking rectangular container with clear lid"
+    },
+    {
+     "box": [
+      396,
+      381,
+      448,
+      517
+     ],
+     "truth": "new",
+     "desc": "locking glass box, clear lid"
+    },
+    {
+     "box": [
+      442,
+      385,
+      492,
+      515
+     ],
+     "truth": "n3",
+     "desc": "tub with orange rim/lid under locking glass box"
+    },
+    {
+     "box": [
+      235,
+      824,
+      318,
+      960
+     ],
+     "truth": "c9",
+     "desc": "clear tall tub, bright green lid"
+    },
+    {
+     "box": [
+      528,
+      663,
+      597,
+      785
+     ],
+     "truth": "new",
+     "desc": "locking clear lid tub, third shelf center-right"
+    },
+    {
+     "box": [
+      411,
+      563,
+      452,
+      687
+     ],
+     "truth": "new",
+     "desc": "tub with yellow lid, middle shelf center"
+    },
+    {
+     "box": [
+      395,
+      796,
+      447,
+      941
+     ],
+     "truth": "c16",
+     "desc": "tub with bright pink lid, middle shelf right"
+    },
+    {
+     "box": [
+      442,
+      795,
+      494,
+      940
+     ],
+     "truth": "c21",
+     "desc": "tub with yellow lid, middle shelf right"
+    },
+    {
+     "box": [
+      276,
+      427,
+      326,
+      706
+     ],
+     "truth": "new",
+     "desc": "black tray container with clear lid"
+    },
+    {
+     "box": [
+      242,
+      508,
+      281,
+      722
+     ],
+     "truth": "new",
+     "desc": "shallow tub with white lid, top shelf"
+    },
+    {
+     "box": [
+      240,
+      714,
+      276,
+      816
+     ],
+     "truth": "c7",
+     "desc": "small tub, white translucent lid"
+    },
+    {
+     "box": [
+      276,
+      717,
+      319,
+      821
+     ],
+     "truth": "c8",
+     "desc": "small tub, pink lid"
+    },
+    {
+     "box": [
+      591,
+      664,
+      638,
+      777
+     ],
+     "truth": "new",
+     "desc": "dark brown lid tub, third shelf center-right"
+    },
+    {
+     "box": [
+      453,
+      568,
+      497,
+      676
+     ],
+     "truth": "c17",
+     "desc": "small tub under yellow-lid tub"
+    },
+    {
+     "box": [
+      343,
+      777,
+      396,
+      937
+     ],
+     "truth": "n2",
+     "desc": "tub with clear locking lid, middle shelf right"
+    },
+    {
+     "box": [
+      270,
+      303,
+      317,
+      439
+     ],
+     "truth": "c3",
+     "desc": "clear tub, pink/red lid, top shelf left"
+    },
+    {
+     "box": [
+      183,
+      755,
+      276,
+      861
+     ],
+     "truth": "c12",
+     "desc": "glass jar with gold lid"
+    },
+    {
+     "box": [
+      433,
+      67,
+      492,
+      178
+     ],
+     "truth": "new",
+     "desc": "white plastic tub, second shelf left"
+    },
+    {
+     "box": [
+      421,
+      678,
+      498,
+      804
+     ],
+     "truth": "c23",
+     "desc": "green translucent tub, middle shelf"
+    },
+    {
+     "box": [
+      403,
+      70,
+      440,
+      168
+     ],
+     "truth": "c25",
+     "desc": "white fluted round tub"
+    },
+    {
+     "box": [
+      190,
+      574,
+      245,
+      715
+     ],
+     "truth": "c4",
+     "desc": "clear lid/tub behind main shelf items"
+    },
+    {
+     "box": [
+      241,
+      507,
+      323,
+      719
+     ],
+     "truth": "c6",
+     "desc": "large green translucent tub"
+    },
+    {
+     "box": [
+      208,
+      188,
+      278,
+      261
+     ],
+     "truth": "c1",
+     "desc": "green lid edge under lettuce (mostly hidden)"
+    }
+   ],
+   "absent": [
+    "c2",
+    "c5",
+    "c15",
+    "c19",
+    "c22",
+    "n4",
+    "c26"
+   ]
+  }
+ },
+ {
+  "pair": "0678_0695",
+  "model": "gemini-3.6-flash",
+  "modelsUsed": [
+   "gemini-3.6-flash",
+   "gemini-3.6-flash"
+  ],
+  "failures": [
+   "gemini-3.6-flash: 503"
+  ],
+  "ms": {
+   "map": 12321,
+   "search": 8771
+  },
+  "step1": {
+   "model": "gemini-3.6-flash",
+   "failures": [
+    "gemini-3.6-flash: 503"
+   ],
+   "containers": [
+    {
+     "box": [
+      193,
+      218,
+      273,
+      396
+     ],
+     "match": "n5",
+     "confidence": 0.95,
+     "desc": "rectangular tub with light blue lid, top shelf left"
+    },
+    {
+     "box": [
+      272,
+      222,
+      351,
+      396
+     ],
+     "match": null,
+     "confidence": 0.92,
+     "desc": "clear tub with white/translucent lid under blue lid tub"
+    },
+    {
+     "box": [
+      303,
+      387,
+      351,
+      513
+     ],
+     "match": "c3",
+     "confidence": 0.9,
+     "desc": "clear tub with pink/red lid, top shelf center-left"
+    },
+    {
+     "box": [
+      194,
+      597,
+      252,
+      745
+     ],
+     "match": "c4",
+     "confidence": 0.9,
+     "desc": "clear tub with clear lid, top shelf center"
+    },
+    {
+     "box": [
+      262,
+      574,
+      323,
+      755
+     ],
+     "match": "n10",
+     "confidence": 0.92,
+     "desc": "black tray container with clear lid, top shelf center"
+    },
+    {
+     "box": [
+      151,
+      836,
+      240,
+      940
+     ],
+     "match": "c10",
+     "confidence": 0.95,
+     "desc": "tall tub with orange lid, top shelf right"
+    },
+    {
+     "box": [
+      235,
+      824,
+      319,
+      966
+     ],
+     "match": "c9",
+     "confidence": 0.95,
+     "desc": "clear tall tub with bright green lid, top shelf right"
+    },
+    {
+     "box": [
+      276,
+      715,
+      321,
+      826
+     ],
+     "match": "c8",
+     "confidence": 0.9,
+     "desc": "small tub with pink lid, top shelf right"
+    },
+    {
+     "box": [
+      240,
+      715,
+      276,
+      814
+     ],
+     "match": "c7",
+     "confidence": 0.9,
+     "desc": "small tub with white translucent lid, top shelf right"
+    },
+    {
+     "box": [
+      183,
+      750,
+      316,
+      847
+     ],
+     "match": "c12",
+     "confidence": 0.9,
+     "desc": "glass jar with gold lid, top shelf right"
+    },
+    {
+     "box": [
+      433,
+      90,
+      492,
+      198
+     ],
+     "match": "n13",
+     "confidence": 0.95,
+     "desc": "white plastic tub, second shelf left"
+    },
+    {
+     "box": [
+      403,
+      90,
+      440,
+      191
+     ],
+     "match": "c25",
+     "confidence": 0.95,
+     "desc": "white fluted round tub, second shelf left"
+    },
+    {
+     "box": [
+      363,
+      191,
+      487,
+      396
+     ],
+     "match": "c14",
+     "confidence": 0.95,
+     "desc": "black saucepan with lid, second shelf left"
+    },
+    {
+     "box": [
+      418,
+      434,
+      467,
+      576
+     ],
+     "match": "n7",
+     "confidence": 0.85,
+     "desc": "locking glass box with clear lid, second shelf center"
+    },
+    {
+     "box": [
+      453,
+      434,
+      513,
+      567
+     ],
+     "match": "c17",
+     "confidence": 0.85,
+     "desc": "glass box with dark red food, second shelf center"
+    },
+    {
+     "box": [
+      388,
+      571,
+      431,
+      693
+     ],
+     "match": null,
+     "confidence": 0.9,
+     "desc": "locking clear lid tub, middle shelf center"
+    },
+    {
+     "box": [
+      411,
+      563,
+      452,
+      693
+     ],
+     "match": "n9",
+     "confidence": 0.95,
+     "desc": "tub with yellow lid, middle shelf center"
+    },
+    {
+     "box": [
+      453,
+      569,
+      496,
+      679
+     ],
+     "match": null,
+     "confidence": 0.85,
+     "desc": "small tub under yellow-lid tub, middle shelf center"
+    },
+    {
+     "box": [
+      410,
+      680,
+      447,
+      808
+     ],
+     "match": "c16",
+     "confidence": 0.92,
+     "desc": "tub with bright pink lid, middle shelf right"
+    },
+    {
+     "box": [
+      443,
+      678,
+      496,
+      808
+     ],
+     "match": "c23",
+     "confidence": 0.95,
+     "desc": "green translucent tub, middle shelf right"
+    },
+    {
+     "box": [
+      418,
+      777,
+      471,
+      953
+     ],
+     "match": "n2",
+     "confidence": 0.9,
+     "desc": "tub with clear locking lid, middle shelf far right"
+    },
+    {
+     "box": [
+      442,
+      796,
+      494,
+      940
+     ],
+     "match": "c21",
+     "confidence": 0.95,
+     "desc": "tub with yellow lid, middle shelf far right"
+    },
+    {
+     "box": [
+      513,
+      243,
+      654,
+      501
+     ],
+     "match": "c24",
+     "confidence": 0.95,
+     "desc": "black pot with glass lid, third shelf left"
+    },
+    {
+     "box": [
+      555,
+      498,
+      687,
+      670
+     ],
+     "match": "c11",
+     "confidence": 0.85,
+     "desc": "black pot with black lid, third shelf center"
+    },
+    {
+     "box": [
+      567,
+      506,
+      655,
+      673
+     ],
+     "match": null,
+     "confidence": 0.95,
+     "desc": "rectangular tub with light blue lid containing grapes, third shelf center"
+    },
+    {
+     "box": [
+      528,
+      663,
+      597,
+      782
+     ],
+     "match": "n8",
+     "confidence": 0.95,
+     "desc": "locking clear lid tub, third shelf center-right"
+    },
+    {
+     "box": [
+      591,
+      667,
+      638,
+      782
+     ],
+     "match": "n12",
+     "confidence": 0.95,
+     "desc": "dark brown lid tub, third shelf center-right"
+    }
+   ]
+  },
+  "step2": {
+   "model": "gemini-3.6-flash",
+   "failures": [],
+   "found": [],
+   "notFound": [
+    "n6",
+    "n3",
+    "n11",
+    "c6",
+    "c1"
+   ]
+  },
+  "final": [
+   {
+    "box": [
+     193,
+     218,
+     273,
+     396
+    ],
+    "match": "n5",
+    "confidence": 0.95,
+    "desc": "rectangular tub with light blue lid, top shelf left",
+    "source": "match"
+   },
+   {
+    "box": [
+     151,
+     836,
+     240,
+     940
+    ],
+    "match": "c10",
+    "confidence": 0.95,
+    "desc": "tall tub with orange lid, top shelf right",
+    "source": "match"
+   },
+   {
+    "box": [
+     235,
+     824,
+     319,
+     966
+    ],
+    "match": "c9",
+    "confidence": 0.95,
+    "desc": "clear tall tub with bright green lid, top shelf right",
+    "source": "match"
+   },
+   {
+    "box": [
+     433,
+     90,
+     492,
+     198
+    ],
+    "match": "n13",
+    "confidence": 0.95,
+    "desc": "white plastic tub, second shelf left",
+    "source": "match"
+   },
+   {
+    "box": [
+     403,
+     90,
+     440,
+     191
+    ],
+    "match": "c25",
+    "confidence": 0.95,
+    "desc": "white fluted round tub, second shelf left",
+    "source": "match"
+   },
+   {
+    "box": [
+     363,
+     191,
+     487,
+     396
+    ],
+    "match": "c14",
+    "confidence": 0.95,
+    "desc": "black saucepan with lid, second shelf left",
+    "source": "match"
+   },
+   {
+    "box": [
+     411,
+     563,
+     452,
+     693
+    ],
+    "match": "n9",
+    "confidence": 0.95,
+    "desc": "tub with yellow lid, middle shelf center",
+    "source": "match"
+   },
+   {
+    "box": [
+     443,
+     678,
+     496,
+     808
+    ],
+    "match": "c23",
+    "confidence": 0.95,
+    "desc": "green translucent tub, middle shelf right",
+    "source": "match"
+   },
+   {
+    "box": [
+     442,
+     796,
+     494,
+     940
+    ],
+    "match": "c21",
+    "confidence": 0.95,
+    "desc": "tub with yellow lid, middle shelf far right",
+    "source": "match"
+   },
+   {
+    "box": [
+     513,
+     243,
+     654,
+     501
+    ],
+    "match": "c24",
+    "confidence": 0.95,
+    "desc": "black pot with glass lid, third shelf left",
+    "source": "match"
+   },
+   {
+    "box": [
+     567,
+     506,
+     655,
+     673
+    ],
+    "match": null,
+    "confidence": 0.95,
+    "desc": "rectangular tub with light blue lid containing grapes, third shelf center",
+    "source": "new"
+   },
+   {
+    "box": [
+     528,
+     663,
+     597,
+     782
+    ],
+    "match": "n8",
+    "confidence": 0.95,
+    "desc": "locking clear lid tub, third shelf center-right",
+    "source": "match"
+   },
+   {
+    "box": [
+     591,
+     667,
+     638,
+     782
+    ],
+    "match": "n12",
+    "confidence": 0.95,
+    "desc": "dark brown lid tub, third shelf center-right",
+    "source": "match"
+   },
+   {
+    "box": [
+     272,
+     222,
+     351,
+     396
+    ],
+    "match": null,
+    "confidence": 0.92,
+    "desc": "clear tub with white/translucent lid under blue lid tub",
+    "source": "new"
+   },
+   {
+    "box": [
+     262,
+     574,
+     323,
+     755
+    ],
+    "match": "n10",
+    "confidence": 0.92,
+    "desc": "black tray container with clear lid, top shelf center",
+    "source": "match"
+   },
+   {
+    "box": [
+     410,
+     680,
+     447,
+     808
+    ],
+    "match": "c16",
+    "confidence": 0.92,
+    "desc": "tub with bright pink lid, middle shelf right",
+    "source": "match"
+   },
+   {
+    "box": [
+     303,
+     387,
+     351,
+     513
+    ],
+    "match": "c3",
+    "confidence": 0.9,
+    "desc": "clear tub with pink/red lid, top shelf center-left",
+    "source": "match"
+   },
+   {
+    "box": [
+     194,
+     597,
+     252,
+     745
+    ],
+    "match": "c4",
+    "confidence": 0.9,
+    "desc": "clear tub with clear lid, top shelf center",
+    "source": "match"
+   },
+   {
+    "box": [
+     276,
+     715,
+     321,
+     826
+    ],
+    "match": "c8",
+    "confidence": 0.9,
+    "desc": "small tub with pink lid, top shelf right",
+    "source": "match"
+   },
+   {
+    "box": [
+     240,
+     715,
+     276,
+     814
+    ],
+    "match": "c7",
+    "confidence": 0.9,
+    "desc": "small tub with white translucent lid, top shelf right",
+    "source": "match"
+   },
+   {
+    "box": [
+     183,
+     750,
+     316,
+     847
+    ],
+    "match": "c12",
+    "confidence": 0.9,
+    "desc": "glass jar with gold lid, top shelf right",
+    "source": "match"
+   },
+   {
+    "box": [
+     388,
+     571,
+     431,
+     693
+    ],
+    "match": null,
+    "confidence": 0.9,
+    "desc": "locking clear lid tub, middle shelf center",
+    "source": "new"
+   },
+   {
+    "box": [
+     418,
+     777,
+     471,
+     953
+    ],
+    "match": "n2",
+    "confidence": 0.9,
+    "desc": "tub with clear locking lid, middle shelf far right",
+    "source": "match"
+   },
+   {
+    "box": [
+     418,
+     434,
+     467,
+     576
+    ],
+    "match": "n7",
+    "confidence": 0.85,
+    "desc": "locking glass box with clear lid, second shelf center",
+    "source": "match"
+   },
+   {
+    "box": [
+     453,
+     434,
+     513,
+     567
+    ],
+    "match": "c17",
+    "confidence": 0.85,
+    "desc": "glass box with dark red food, second shelf center",
+    "source": "match"
+   },
+   {
+    "box": [
+     453,
+     569,
+     496,
+     679
+    ],
+    "match": null,
+    "confidence": 0.85,
+    "desc": "small tub under yellow-lid tub, middle shelf center",
+    "source": "new"
+   },
+   {
+    "box": [
+     555,
+     498,
+     687,
+     670
+    ],
+    "match": "c11",
+    "confidence": 0.85,
+    "desc": "black pot with black lid, third shelf center",
+    "source": "match"
+   }
+  ],
+  "truth": {
+   "prevPhoto": "IMG_0678.jpeg",
+   "nextPhoto": "IMG_0695.jpeg",
+   "note": "10/25 11:11 -> 10/26 02:36. Held-out pair; the fridge was reorganized overnight. Confirmed by the learner in a review page over one draft run of gemini-3.6-flash (정답지.md); 10 draft boxes redrawn tighter, c1 drawn by hand. n2 to n13 are the containers that were new in 0674/0678 (eval/truth/0674_0678.json order).",
+   "known": [
+    {
+     "id": "c14",
+     "box": [
+      363,
+      172,
+      487,
+      344
+     ],
+     "desc": "black saucepan with lid, middle shelf left"
+    },
+    {
+     "id": "c24",
+     "box": [
+      513,
+      219,
+      650,
+      484
+     ],
+     "desc": "black pot with glass lid, third shelf left"
+    },
+    {
+     "id": "n5",
+     "box": [
+      569,
+      506,
+      655,
+      672
+     ],
+     "desc": "rectangular tub, light blue lid, containing grapes"
+    },
+    {
+     "id": "c10",
+     "box": [
+      151,
+      834,
+      239,
+      944
+     ],
+     "desc": "tall tub, orange lid"
+    },
+    {
+     "id": "c11",
+     "box": [
+      151,
+      654,
+      240,
+      741
+     ],
+     "desc": "tall jar with red lid"
+    },
+    {
+     "id": "n6",
+     "box": [
+      351,
+      554,
+      409,
+      714
+     ],
+     "desc": "locking rectangular container with clear lid"
+    },
+    {
+     "id": "n7",
+     "box": [
+      396,
+      381,
+      448,
+      517
+     ],
+     "desc": "locking glass box, clear lid"
+    },
+    {
+     "id": "n3",
+     "box": [
+      442,
+      385,
+      492,
+      515
+     ],
+     "desc": "tub with orange rim/lid under locking glass box"
+    },
+    {
+     "id": "c9",
+     "box": [
+      235,
+      824,
+      318,
+      960
+     ],
+     "desc": "clear tall tub, bright green lid"
+    },
+    {
+     "id": "n8",
+     "box": [
+      528,
+      663,
+      597,
+      785
+     ],
+     "desc": "locking clear lid tub, third shelf center-right"
+    },
+    {
+     "id": "n9",
+     "box": [
+      411,
+      563,
+      452,
+      687
+     ],
+     "desc": "tub with yellow lid, middle shelf center"
+    },
+    {
+     "id": "c16",
+     "box": [
+      395,
+      796,
+      447,
+      941
+     ],
+     "desc": "tub with bright pink lid, middle shelf right"
+    },
+    {
+     "id": "c21",
+     "box": [
+      442,
+      795,
+      494,
+      940
+     ],
+     "desc": "tub with yellow lid, middle shelf right"
+    },
+    {
+     "id": "n10",
+     "box": [
+      276,
+      427,
+      326,
+      706
+     ],
+     "desc": "black tray container with clear lid"
+    },
+    {
+     "id": "n11",
+     "box": [
+      242,
+      508,
+      281,
+      722
+     ],
+     "desc": "shallow tub with white lid, top shelf"
+    },
+    {
+     "id": "c7",
+     "box": [
+      240,
+      714,
+      276,
+      816
+     ],
+     "desc": "small tub, white translucent lid"
+    },
+    {
+     "id": "c8",
+     "box": [
+      276,
+      717,
+      319,
+      821
+     ],
+     "desc": "small tub, pink lid"
+    },
+    {
+     "id": "n12",
+     "box": [
+      591,
+      664,
+      638,
+      777
+     ],
+     "desc": "dark brown lid tub, third shelf center-right"
+    },
+    {
+     "id": "c17",
+     "box": [
+      453,
+      568,
+      497,
+      676
+     ],
+     "desc": "small tub under yellow-lid tub"
+    },
+    {
+     "id": "n2",
+     "box": [
+      343,
+      777,
+      396,
+      937
+     ],
+     "desc": "tub with clear locking lid, middle shelf right"
+    },
+    {
+     "id": "c3",
+     "box": [
+      270,
+      303,
+      317,
+      439
+     ],
+     "desc": "clear tub, pink/red lid, top shelf left"
+    },
+    {
+     "id": "c12",
+     "box": [
+      183,
+      755,
+      276,
+      861
+     ],
+     "desc": "glass jar with gold lid"
+    },
+    {
+     "id": "n13",
+     "box": [
+      433,
+      67,
+      492,
+      178
+     ],
+     "desc": "white plastic tub, second shelf left"
+    },
+    {
+     "id": "c23",
+     "box": [
+      421,
+      678,
+      498,
+      804
+     ],
+     "desc": "green translucent tub, middle shelf"
+    },
+    {
+     "id": "c25",
+     "box": [
+      403,
+      70,
+      440,
+      168
+     ],
+     "desc": "white fluted round tub"
+    },
+    {
+     "id": "c4",
+     "box": [
+      190,
+      574,
+      245,
+      715
+     ],
+     "desc": "clear lid/tub behind main shelf items"
+    },
+    {
+     "id": "c6",
+     "box": [
+      241,
+      507,
+      323,
+      719
+     ],
+     "desc": "large green translucent tub"
+    },
+    {
+     "id": "c1",
+     "box": [
+      208,
+      188,
+      278,
+      261
+     ],
+     "desc": "green lid edge under lettuce (mostly hidden)"
+    }
+   ],
+   "next": [
+    {
+     "box": [
+      193,
+      219,
+      276,
+      396
+     ],
+     "truth": "n5",
+     "desc": "light blue lidded rectangular container with grapes, top shelf"
+    },
+    {
+     "box": [
+      273,
+      224,
+      350,
+      401
+     ],
+     "truth": "new",
+     "desc": "translucent rectangular container, top shelf left"
+    },
+    {
+     "box": [
+      301,
+      398,
+      352,
+      517
+     ],
+     "truth": "c3",
+     "desc": "small translucent tub with red lid, top shelf center"
+    },
+    {
+     "box": [
+      291,
+      584,
+      353,
+      762
+     ],
+     "truth": "new",
+     "desc": "egg carton container, top shelf center-right"
+    },
+    {
+     "box": [
+      308,
+      778,
+      349,
+      871
+     ],
+     "truth": "c8",
+     "desc": "small tub with pink lid, top shelf right"
+    },
+    {
+     "box": [
+      264,
+      853,
+      343,
+      961
+     ],
+     "truth": "c9",
+     "desc": "tall clear tub with green lid, top shelf right"
+    },
+    {
+     "box": [
+      196,
+      835,
+      273,
+      935
+     ],
+     "truth": "c10",
+     "desc": "tall tub with orange lid, top shelf right"
+    },
+    {
+     "box": [
+      435,
+      172,
+      521,
+      417
+     ],
+     "truth": "c14",
+     "desc": "black saucepan with lid, second shelf left"
+    },
+    {
+     "box": [
+      459,
+      86,
+      517,
+      196
+     ],
+     "truth": "n13",
+     "desc": "white plastic tub, second shelf left"
+    },
+    {
+     "box": [
+      419,
+      458,
+      467,
+      575
+     ],
+     "truth": "n3",
+     "desc": "tub with orange rim/lid, second shelf center"
+    },
+    {
+     "box": [
+      386,
+      572,
+      431,
+      693
+     ],
+     "truth": "n2",
+     "desc": "locking clear lid glass container, second shelf center"
+    },
+    {
+     "box": [
+      428,
+      579,
+      471,
+      700
+     ],
+     "truth": "n9",
+     "desc": "tub with yellow lid, second shelf center"
+    },
+    {
+     "box": [
+      468,
+      578,
+      516,
+      687
+     ],
+     "truth": "c17",
+     "desc": "glass container under yellow lid tub, second shelf center"
+    },
+    {
+     "box": [
+      408,
+      685,
+      453,
+      810
+     ],
+     "truth": "c16",
+     "desc": "tub with bright pink lid, second shelf right"
+    },
+    {
+     "box": [
+      448,
+      682,
+      511,
+      795
+     ],
+     "truth": "c23",
+     "desc": "green translucent tub, second shelf right"
+    },
+    {
+     "box": [
+      456,
+      795,
+      505,
+      940
+     ],
+     "truth": "c21",
+     "desc": "tub with yellow lid, second shelf right"
+    },
+    {
+     "box": [
+      530,
+      240,
+      656,
+      500
+     ],
+     "truth": "c24",
+     "desc": "black pot with glass lid, third shelf left"
+    },
+    {
+     "box": [
+      554,
+      498,
+      681,
+      693
+     ],
+     "truth": "new",
+     "desc": "black pot with handle lid, third shelf center"
+    },
+    {
+     "box": [
+      551,
+      659,
+      600,
+      782
+     ],
+     "truth": "new",
+     "desc": "locking clear lid container, third shelf right"
+    },
+    {
+     "box": [
+      604,
+      669,
+      657,
+      797
+     ],
+     "truth": "n12",
+     "desc": "dark brown lid tub, third shelf right"
+    },
+    {
+     "box": [
+      195,
+      597,
+      252,
+      745
+     ],
+     "truth": "c4",
+     "desc": "clear tub with clear lid behind items, top shelf center"
+    },
+    {
+     "box": [
+      249,
+      586,
+      291,
+      757
+     ],
+     "truth": "n10",
+     "desc": "black tray container with clear lid, top shelf center"
+    },
+    {
+     "box": [
+      278,
+      778,
+      311,
+      861
+     ],
+     "truth": "c7",
+     "desc": "small tub with white translucent lid, top shelf right"
+    },
+    {
+     "box": [
+      428,
+      80,
+      468,
+      205
+     ],
+     "truth": "c25",
+     "desc": "fluted white round tub, second shelf left"
+    },
+    {
+     "box": [
+      452,
+      437,
+      517,
+      574
+     ],
+     "truth": "n6",
+     "desc": "dark brown glass container with clear lid, second shelf center"
+    },
+    {
+     "box": [
+      417,
+      792,
+      471,
+      955
+     ],
+     "truth": "n8",
+     "desc": "tub with clear locking lid, second shelf right"
+    },
+    {
+     "box": [
+      229,
+      762,
+      325,
+      850
+     ],
+     "truth": "c12",
+     "desc": "jar with brown/gold lid, top shelf right"
+    },
+    {
+     "box": [
+      265,
+      117,
+      322,
+      248
+     ],
+     "truth": "c1",
+     "desc": "green lid edge under lettuce (mostly hidden)"
+    }
+   ],
+   "absent": [
+    "c11",
+    "n7",
+    "n11",
+    "c6"
+   ]
+  }
+ }
+]

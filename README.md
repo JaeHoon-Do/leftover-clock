@@ -39,7 +39,21 @@ npx tsx eval/run-eval.ts --pair eval/truth/0661_0674.json --repeat 2
 
 `eval/run-eval.ts` runs the same matcher the app ships on real photo pairs and compares it with an answer key confirmed by hand (`eval/truth/`). It counts **correct links**, **misses**, and **wrong links** separately; a wrong link is the worst error, because a new container inherits an old date. Photos are not in this repo (they carry GPS and brand labels).
 
-Tuning pair (10/22 → 10/23, 23 containers in both photos), `gemini-3.6-flash`, over 5 runs: 19–20 correct links, about 1 wrong link per run. Two prompt variants were tried and reverted (no fewer misses, more wrong links). Held-out results: _measured once on later photos, added below._
+Tuning pair (10/22 → 10/23, 23 containers in both photos), `gemini-3.6-flash`, over 5 runs: 19–20 correct links, about 1 wrong link per run. Two prompt variants were tried and reverted (no fewer misses, more wrong links).
+
+**Held-out pairs**, measured once after the prompts were frozen (`gemini-3.6-flash`, one run per pair; the answer keys were confirmed by hand before the run):
+
+| Pair | Correct links | Missed | Wrong links | New containers called new | Removed containers noticed |
+|---|---|---|---|---|---|
+| 10/23 → 10/25 | 14 / 19 | 3 | 4 | 7 / 9 | 5 / 7 |
+| 10/25 → 10/26 (fridge reorganized overnight) | 13 / 24 | 7 | 10 | 1 / 4 | 2 / 4 |
+| **Total** | **27 / 43 (63%)** | **10** | **14** | **8 / 13** | **7 / 11** |
+
+```bash
+npx tsx eval/run-eval.ts --rescore eval/results/heldout-2026-10-26.json   # prints these tables, no API calls
+```
+
+The held-out numbers are much worse than the tuning pair's, and that is the honest number. When the whole fridge was rearranged, several boxes landed near where those containers used to be rather than where they now were: the model leans on the old layout. Wrong links are why the one-tap fixes (**Refilled**, **This is a new container**, **This is the same container as…**) are part of the core flow, not an extra. The first pair's first attempts got "model busy" (503) and returned nothing; the reported run is the first one that finished.
 
 ## Privacy
 
