@@ -96,18 +96,18 @@ Build mode: fast
 - [x] Crops are cut one at a time when saving (each decodes the whole photo; 20+ at once risked a phone running out of memory)
   Verified: `tsc` and `npm run build` pass; on a local production build the date block (older, future, valid dates), Reset sample, and the sample's next-day replay (one-at-a-time crops) worked; the empty-answer, offline-reset, and reminder-failure paths were not reproduced. Deployed to production 10/26 (bundle carries the new message); the learner retried the date block on the iPhone: "checked, it works".
   Not fixed, by decision: the match routes have no login or rate limit (PoC; noted in the README) and three cleanups (repeated date format, full event-log reads, a second box-area formula).
-- [ ] Final review complete — feedback resolved and learner confirms ready to ship
+- [x] Final review complete — feedback resolved and learner confirms ready to ship (10/26: "yes")
 
 ## Code Tour and App Map
 
 - [x] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
-- [ ] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
+- [x] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
 - [x] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
 
 Activity and evidence: prior practice connected. The learner's goal was testing whether a vision model recognizes the same opaque container across photos and measuring it honestly; in slice 7 they confirmed both held-out answer keys box by box (review page, 10 boxes redrawn) before the single scored run, and saw the held-out result (27/43, 14 wrong links) fall well below the tuning pair (19–20/23). The map's "A practice to reuse" section ties that to `5da96af`, `eval/truth/`, and `eval/results/heldout-2026-10-26.json`.
 Route and stops: reference route in the map (not toured): add-photo `start()` → `matchAndSave` / `server/gemini.ts` → `applyMatch` and the Fridge View.
 Edit outcome: not applicable — the practice was the evaluation, not a code edit.
-Reflection: 
+Reflection: offered (optional), not answered.
 Activity mode: focused alternative (plan-first learner), covered by slice 7.
 
 ## Revisions
