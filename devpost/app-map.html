@@ -106,7 +106,7 @@ footer { margin-top: 40px; font-size: 14px; color: var(--muted); }
 
   <h2>A practice to reuse: measure a model on photos it was never tuned on</h2>
   <div class="card">
-    <p><b>What was done.</b> Prompts were tuned on one photo pair (10/22 → 10/23) and frozen in commit <code>5da96af</code>. Two later pairs were held out. Each held-out answer key was drafted from one matcher run, confirmed box by box against both full photos, and saved in <code>eval/truth/</code> <em>before</em> the scored run. Correct links, misses, and wrong links were counted separately, because a wrong link silently gives a container someone else's date.</p>
+    <p><b>What was done.</b> Prompts were tuned on one photo pair (10/22 → 10/23) and frozen in commit <code>6ab3c62</code>. Two later pairs were held out. Each held-out answer key was drafted from one matcher run, confirmed box by box against both full photos, and saved in <code>eval/truth/</code> <em>before</em> the scored run. Correct links, misses, and wrong links were counted separately, because a wrong link silently gives a container someone else's date.</p>
     <p><b>What the evidence showed.</b> The tuning pair scored 19–20 of 23 with about 1 wrong link per run. The held-out pairs scored 27 of 43 with 14 wrong links (<code>eval/results/heldout-2026-10-26.json</code>; table in the README). In the fridge reorganized overnight, the model placed several boxes near where containers used to be. Tuning-set numbers alone would have overstated the matcher, and they are why the one-tap fixes are part of the core flow.</p>
     <p><b>How to reuse it.</b> For any model-backed feature: freeze the prompt and model, keep test cases the tuning never saw, fix the answer key before you score, and count each kind of error by what it costs the user instead of one combined accuracy.</p>
   </div>
@@ -117,7 +117,7 @@ footer { margin-top: 40px; font-size: 14px; color: var(--muted); }
     <details><summary>Live version</summary><p>https://leftover-clock.vercel.app — "Try the sample fridge" works without any setup.</p></details>
   </div>
 
-  <footer>Snapshot of the code at commit <code>a86f0f1</code> (2026-10-26). Paths and names can drift as the code changes.</footer>
+  <footer>Snapshot of the code at commit <code>7602626</code> (2026-10-26). Paths and names can drift as the code changes.</footer>
 </main>
 </body>
 </html>
