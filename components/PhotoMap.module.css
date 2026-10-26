@@ -19,36 +19,67 @@
 }
 
 .leaders line {
-  stroke: #fff;
+  stroke: var(--ink);
   stroke-width: 1.5;
-  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.6));
+  stroke-linecap: round;
+  opacity: 0.75;
 }
 
-.pin {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  margin: -5px 0 0 -5px;
-  padding: 0;
-  border-radius: 50%;
-  border: 2px solid #fff;
-  background: var(--accent);
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
-  cursor: pointer;
-}
-
+/* The age chip is the pin: a butter sticker whose tail points at the container. */
 .chip {
   position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 4px;
+  padding: 0 6px;
   border: 0;
-  border-radius: 6px;
-  background: #fff;
-  color: #222;
-  font: 700 11px/1 system-ui, sans-serif;
+  border-radius: 999px;
+  background: var(--butter);
+  color: var(--ink);
+  font: 600 12px/1 var(--font-display), system-ui, sans-serif;
   white-space: nowrap;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 0 1.5px #fff, 0 2px 5px rgba(58, 46, 42, 0.35);
   cursor: pointer;
+}
+
+/* Tail: 7px long (PIN_RADIUS + GAP in lib/labels.ts), so its tip sits on the container. */
+.above::after,
+.below::after,
+.right::after,
+.left::after {
+  content: "";
+  position: absolute;
+  border: 5px solid transparent;
+}
+
+.above::after {
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-bottom: 0;
+  border-top: 7px solid var(--butter);
+}
+
+.below::after {
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-top: 0;
+  border-bottom: 7px solid var(--butter);
+}
+
+.right::after {
+  right: 100%;
+  top: 50%;
+  margin-top: -5px;
+  border-left: 0;
+  border-right: 7px solid var(--butter);
+}
+
+.left::after {
+  left: 100%;
+  top: 50%;
+  margin-top: -5px;
+  border-right: 0;
+  border-left: 7px solid var(--butter);
 }

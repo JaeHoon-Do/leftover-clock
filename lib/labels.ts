@@ -17,16 +17,21 @@ export interface PlacedLabel {
   height: number;
   /** True when the chip was nudged away from its pin and needs a leader line. */
   leader: boolean;
+  /** Which side of the pin a chip next to it sits on (its tail points back at the pin); null with a leader. */
+  side: Side | null;
 }
 
-export const CHIP_HEIGHT = 18;
-const GAP = 5;
+export type Side = "above" | "below" | "right" | "left";
+
+export const CHIP_HEIGHT = 20;
+const GAP = 4;
 const MARGIN = 2;
-const PIN_RADIUS = 5;
+/** No dot is drawn; this keeps other chips off the spot a tail points at. */
+const PIN_RADIUS = 3;
 
 /** Chip width from its text; deterministic so the layout can be checked without a DOM. */
 export function chipWidth(text: string): number {
-  return Math.ceil(10 + text.length * 6.6);
+  return Math.ceil(14 + text.length * 7);
 }
 
 type Rect = { left: number; top: number; width: number; height: number };
@@ -41,7 +46,7 @@ function overlaps(a: Rect, b: Rect): boolean {
 }
 
 /**
- * Greedy, top of the photo down: try right, left, above, below the pin; keep the first spot
+ * Greedy, top of the photo down: try above, below, right, left of the pin; keep the first spot
  * that stays inside the photo and overlaps no placed chip or other pin; otherwise nudge
  * outward in small steps around the pin and draw a leader line back to it.
  */
@@ -59,13 +64,14 @@ export function placeLabels(pins: LabelInput[], width: number, height: number): 
   for (const p of [...pins].sort((a, b) => a.y - b.y || a.x - b.x)) {
     const w = chipWidth(p.text);
     const h = CHIP_HEIGHT;
-    const near: Rect[] = [
-      { left: p.x + PIN_RADIUS + GAP, top: p.y - h / 2, width: w, height: h },
-      { left: p.x - PIN_RADIUS - GAP - w, top: p.y - h / 2, width: w, height: h },
-      { left: p.x - w / 2, top: p.y - PIN_RADIUS - GAP - h, width: w, height: h },
-      { left: p.x - w / 2, top: p.y + PIN_RADIUS + GAP, width: w, height: h },
+    const near: (Rect & { side: Side })[] = [
+      { side: "above", left: p.x - w / 2, top: p.y - PIN_RADIUS - GAP - h, width: w, height: h },
+      { side: "below", left: p.x - w / 2, top: p.y + PIN_RADIUS + GAP, width: w, height: h },
+      { side: "right", left: p.x + PIN_RADIUS + GAP, top: p.y - h / 2, width: w, height: h },
+      { side: "left", left: p.x - PIN_RADIUS - GAP - w, top: p.y - h / 2, width: w, height: h },
     ];
-    let spot = near.find(free);
+    const hit = near.find(free);
+    let spot: Rect | undefined = hit && { left: hit.left, top: hit.top, width: w, height: h };
     let leader = false;
     for (let r = 14; !spot && r <= Math.max(width, height); r += 6) {
       for (let k = 0; k < 16 && !spot; k++) {
@@ -77,7 +83,7 @@ export function placeLabels(pins: LabelInput[], width: number, height: number): 
     }
     // A photo too small for every chip: clamp into the photo rather than drop the age.
     spot ??= { left: Math.min(Math.max(0, p.x - w / 2), width - w), top: Math.min(Math.max(0, p.y - h / 2), height - h), width: w, height: h };
-    placed.push({ id: p.id, ...spot, leader });
+    placed.push({ id: p.id, ...spot, leader, side: leader ? null : (hit?.side ?? null) });
   }
   return placed;
 }

@@ -13,6 +13,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#fff8ee",
+  // Light only: the palette has no dark variant, and auto-darkened pins looked wrong.
+  colorScheme: "only light",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

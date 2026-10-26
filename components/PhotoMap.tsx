@@ -11,7 +11,7 @@ export interface MapPin {
   text: string;
 }
 
-/** The latest photo, edge to edge, with a pin per container and non-overlapping age chips. */
+/** The latest photo, edge to edge, with a non-overlapping age chip per container (the chip is the pin). */
 export function PhotoMap({
   photo,
   pins,
@@ -55,21 +55,13 @@ export function PhotoMap({
             return <line key={l.id} x1={p.x} y1={p.y} x2={l.left + l.width / 2} y2={l.top + l.height / 2} />;
           })}
       </svg>
-      {points.map((p) => (
-        <button
-          key={`pin-${p.id}`}
-          className={styles.pin}
-          style={{ left: p.x, top: p.y }}
-          aria-label={`Container, ${p.text}`}
-          onClick={() => onPinTap?.(p.id)}
-        />
-      ))}
       {labels.map((l) => (
         <button
           key={`chip-${l.id}`}
           data-chip={l.id}
-          className={styles.chip}
+          className={`${styles.chip} ${l.side ? styles[l.side] : ""}`}
           style={{ left: l.left, top: l.top, width: l.width, height: l.height }}
+          aria-label={`Container, ${byId.get(l.id)?.text}`}
           onClick={() => onPinTap?.(l.id)}
         >
           {byId.get(l.id)?.text}
