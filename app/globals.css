@@ -113,6 +113,18 @@ input[type="datetime-local"] {
   color: var(--ink);
 }
 
+/* iOS Safari gives the native date field its own minimum width, which overflowed narrow cards */
+input[type="datetime-local"] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  min-width: 0;
+}
+
+input[type="datetime-local"]::-webkit-date-and-time-value {
+  text-align: left;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
