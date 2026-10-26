@@ -5,11 +5,11 @@ import { useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { PhotoCheck } from "@/components/PhotoCheck";
 import { Reminders } from "@/components/Reminders";
-import { fromLocalInput, toLocalInput } from "@/lib/age";
+import { dateText, fromLocalInput, toLocalInput } from "@/lib/age";
 import { matchAndSave, MatchError } from "@/lib/matching-client";
 import { readTakenAt, shrink } from "@/lib/photo";
 import { computeReminders, type ReminderCard } from "@/lib/reminders";
-import { db } from "@/lib/db";
+import { db, latestPhoto } from "@/lib/db";
 import { replaySampleMatch, sampleNextPhoto } from "@/lib/sample";
 import { useObjectUrl } from "@/lib/use-object-url";
 import styles from "./add-photo.module.css";
@@ -30,6 +30,10 @@ export default function AddPhoto() {
     const f = await db.fridges.get(fridgeId);
     return !!f?.sample && (await db.photos.where("fridgeId").equals(fridgeId).count()) === 1;
   }, [fridgeId]);
+  // matching treats the new photo as the newest, so an older (or future) date would scramble the history
+  const latest = useLiveQuery(() => latestPhoto(fridgeId), [fridgeId]);
+  const olderThan = picked && latest && picked.takenAt <= latest.takenAt ? latest : undefined;
+  const future = !!picked && picked.takenAt > Date.now() + 60_000;
 
   async function pick(file: File | undefined, fromCamera: boolean) {
     if (!file) return;
@@ -41,10 +45,10 @@ export default function AddPhoto() {
   }
 
   async function start() {
-    if (!picked) return;
+    if (!picked || olderThan || future) return;
     setPhase("matching");
-    setCards(await computeReminders(fridgeId));
     try {
+      setCards(await computeReminders(fridgeId));
       if (picked.replay) {
         await new Promise((r) => setTimeout(r, 5000)); // let the reminders show, as in a live match
         await replaySampleMatch(fridgeId);
@@ -108,6 +112,7 @@ export default function AddPhoto() {
                 id="when"
                 type="datetime-local"
                 value={toLocalInput(picked.takenAt)}
+                max={toLocalInput(Date.now())}
                 onChange={(e) => e.target.value && setPicked({ ...picked, takenAt: fromLocalInput(e.target.value) })}
               />
               <p className={styles.hint}>
@@ -117,7 +122,14 @@ export default function AddPhoto() {
                     ? "The time you took it."
                     : "This photo has no date in it, so it's set to now. Change it if you took it earlier."}
               </p>
-              <button className={`pill accent ${styles.start}`} onClick={start}>
+              {(olderThan || future) && (
+                <p className={styles.blocked}>
+                  {olderThan
+                    ? `Add photos in the order you took them. This fridge's latest photo is from ${dateText(olderThan.takenAt)}. If the date above is wrong, change it.`
+                    : "That time is in the future. Set when you took the photo."}
+                </p>
+              )}
+              <button className={`pill accent ${styles.start}`} onClick={start} disabled={!!olderThan || future}>
                 Start matching
               </button>
             </div>

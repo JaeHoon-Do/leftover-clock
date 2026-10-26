@@ -78,3 +78,9 @@
 .sampleOffer p {
   margin: 0;
 }
+
+.blocked {
+  margin: 12px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+}

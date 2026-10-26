@@ -48,7 +48,7 @@ export function PhotoCheck({
           </p>
         </>
       )}
-      {!gaveUp && (
+      {(!gaveUp || service) && (
         <div className={styles.buttons}>
           <label className="pill accent">
             {service ? "Take another" : "Retake"}

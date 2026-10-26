@@ -83,10 +83,18 @@ Build mode: fast
 
 - [x] Early usable behavior explored — after slice 3 (the core loop on your real 10/22 → 10/23 photos, including the lid-only container)
   Feedback: "Everything looks good" (tried the 10/22 and 10/23 photos and the blurry photo). Requested change: move the real photos folder into the project folder — done, gitignored.
-- [ ] Final kick-the-tires exploration and feedback completed
+- [x] Final kick-the-tires exploration and feedback completed
+  Feedback (10/26, on the live URL after slice 7): "everything is good" — no change requested; the learner asked for a bug check before sign-off (code review of app, components, lib, server).
 
 ## Final Review
 
+- [ ] Bug check (code review, 10/26; learner approved fixing six, "block" for out-of-order dates): a photo dated at or before the fridge's latest photo, or in the future, can't start matching (message + disabled button; the date field stops at now)
+- [ ] An empty or blocked Gemini answer is reported as "check the photo" without a second request, instead of "busy"
+- [ ] Retake / Upload stay on the Photo Check card for busy and quota errors after two unreadable photos
+- [ ] Reset sample loads the new sample before deleting the old one (offline no longer loses it)
+- [ ] A failure while computing reminders shows Photo Check instead of a spinner that never ends
+- [ ] Crops are cut one at a time when saving (each decodes the whole photo; 20+ at once risked a phone running out of memory)
+  Not fixed, by decision: the match routes have no login or rate limit (PoC; noted in the README) and three cleanups (repeated date format, full event-log reads, a second box-area formula).
 - [ ] Final review complete — feedback resolved and learner confirms ready to ship
 
 ## Code Tour and App Map

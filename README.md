@@ -14,7 +14,7 @@ Packaged food has a printed date. Home leftovers in opaque lidded containers don
 2. **Search** (`/api/search`): every known container that step 1 didn't find is searched for by its close-up crop, to catch the half-hidden ones.
 3. Whatever is still not found goes to the **Unseen Shelf** below the photo ("Still there" / "Removed"). Wrong matches are fixed with one tap: **Refilled**, **This is a new container**, **This is the same container as…**
 
-The Gemini key stays on the server (two Next.js route handlers); the server stores nothing.
+The Gemini key stays on the server (two Next.js route handlers); the server stores nothing. The two routes have no login or rate limit (a proof of concept), so anyone with the URL can use up the day's free quota; the sample fridge keeps working when it is.
 
 ## Run it locally
 

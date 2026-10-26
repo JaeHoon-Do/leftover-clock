@@ -37,7 +37,9 @@ export interface NewPhoto {
 export async function applyMatch(fridgeId: string, photo: NewPhoto, containers: FinalContainer[]): Promise<string> {
   const photoId = newId();
   // Crops use canvas (async), which can't run inside an IndexedDB transaction.
-  const crops = await Promise.all(containers.map((c) => cropBox(photo.blob, c.box)));
+  // One at a time: each crop decodes the whole photo, and 20+ at once can run a phone out of memory.
+  const crops: Blob[] = [];
+  for (const c of containers) crops.push(await cropBox(photo.blob, c.box));
   const now = Date.now();
   await db.transaction("rw", [db.photos, db.containers, db.sightings, db.events], async () => {
     await db.photos.add({ id: photoId, fridgeId, ...photo, createdAt: now });

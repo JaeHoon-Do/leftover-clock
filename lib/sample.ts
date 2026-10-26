@@ -32,8 +32,10 @@ export async function importSample(): Promise<string> {
 }
 
 export async function resetSample(fridgeId: string): Promise<string> {
+  // import first: if loading fails (offline), the old sample stays
+  const id = await importSample();
   await deleteFridge(fridgeId);
-  return importSample();
+  return id;
 }
 
 /** The sample's next-day photo, offered on its Add Photo screen. */

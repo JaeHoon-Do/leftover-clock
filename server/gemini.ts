@@ -113,6 +113,8 @@ function isDailyQuota(e: unknown): boolean {
 
 function isRetryable(e: unknown): boolean {
   if (isDailyQuota(e)) return false;
+  // an empty or blocked answer doesn't parse, and a retry won't change that
+  if (e instanceof SyntaxError) return false;
   if (e instanceof ApiError) return e.status === 429 || e.status === 503 || e.status === 500 || e.status === 504;
   // timeouts and network failures surface as plain errors
   return true;
