@@ -18,3 +18,7 @@ next-env.d.ts
 
 # real fridge photos (GPS, brand labels): never published
 /leftover-clock-photos/
+
+# local agent setup: duplicate skill copy, symlinks, private helpers (the skill pack is in .agents/skills)
+/agent/
+/.claude/
